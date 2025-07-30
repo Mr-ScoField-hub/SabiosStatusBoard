@@ -413,10 +413,8 @@
             const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
             const seconds = Math.floor((distance % (1000 * 60)) / 1000);
 
-            // Update status text
             countdownStatusEl.textContent = "Time Remaining";
 
-            // Update individual units with zero padding
             daysEl.textContent = days.toString().padStart(2, '0');
             hoursEl.textContent = hours.toString().padStart(2, '0');
             minutesEl.textContent = minutes.toString().padStart(2, '0');
@@ -424,45 +422,35 @@
         }
 
         function navigateTo(hash) {
-            // Add haptic feedback simulation
             if (navigator.vibrate) {
                 navigator.vibrate(10);
             }
 
-            // Simulate navigation
-            function navigateTo(hash) {
-                // Add haptic feedback simulation
-                if (navigator.vibrate) {
-                    navigator.vibrate(10);
-                }
-
-                // Log for debug
-                console.log(`Navigating to: ${hash}`);
-
-                // Scroll to section if it exists
-                const section = document.querySelector(hash);
-                if (section) {
-                    section.scrollIntoView({ behavior: 'smooth' });
-                } else {
-                    console.warn(`Section ${hash} not found.`);
-                }
+            console.log(`Navigating to: ${hash}`);
+            const section = document.querySelector(hash);
+            if (section) {
+                section.scrollIntoView({ behavior: 'smooth' });
+            } else {
+                console.warn(`Section ${hash} not found.`);
             }
+        }
 
-            // Initialize
-            updateCountdown();
-            setInterval(updateCountdown, 1000);
+        // ✅ Timer starts when page loads
+        updateCountdown();
+        setInterval(updateCountdown, 1000);
 
-            // Add some interactive polish
-            document.querySelectorAll('.nav-item').forEach(item => {
-                item.addEventListener('touchstart', function () {
-                    this.style.transform = 'scale(0.98)';
-                });
-
-                item.addEventListener('touchend', function () {
-                    this.style.transform = '';
-                });
+        // Touch animation
+        document.querySelectorAll('.nav-item').forEach(item => {
+            item.addEventListener('touchstart', function () {
+                this.style.transform = 'scale(0.98)';
             });
+
+            item.addEventListener('touchend', function () {
+                this.style.transform = '';
+            });
+        });
     </script>
+
 </body>
 
 </html>
