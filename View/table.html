@@ -3,7 +3,7 @@
 
 <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
     <title>Agile Sprint Timeline</title>
     <style>
         * {
@@ -14,52 +14,44 @@
 
         body {
             font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-            background: linear-gradient(135deg, #e0e7ff 0%, #dbeafe 100%);
+            background: #ffffff;
             min-height: 100vh;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            padding: 24px;
             color: #1e293b;
+            overflow-x: hidden;
         }
 
         .container {
-            max-width: 600px;
             width: 100%;
-            background: rgba(255, 255, 255, 0.95);
-            backdrop-filter: blur(12px);
-            border-radius: 24px;
-            padding: 48px 36px;
-            box-shadow: 0 16px 32px rgba(0, 0, 0, 0.1);
-            border: 1px solid rgba(255, 255, 255, 0.3);
+            padding: 16px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
         }
 
         .header {
             text-align: center;
-            margin-bottom: 40px;
+            margin-bottom: 24px;
         }
 
         .title {
-            font-size: 32px;
-            font-weight: 800;
+            font-size: 24px;
+            font-weight: 700;
             color: #1e293b;
-            margin-bottom: 8px;
-            letter-spacing: -0.02em;
+            margin-bottom: 6px;
         }
 
         .subtitle {
-            font-size: 16px;
+            font-size: 14px;
             color: #64748b;
             font-weight: 500;
-            letter-spacing: 0.02em;
         }
 
         /* Circular Timeline */
         .timeline-circle {
             position: relative;
-            width: 320px;
-            height: 320px;
-            margin: 0 auto 40px;
+            width: 240px;
+            height: 240px;
+            margin: 0 auto 24px;
         }
 
         .progress-ring {
@@ -69,30 +61,20 @@
             width: 100%;
             height: 100%;
             transform: rotate(-90deg);
-            overflow: visible;
         }
 
         .progress-background {
             fill: none;
             stroke: #e2e8f0;
-            stroke-width: 14;
+            stroke-width: 10;
         }
 
         .progress-bar {
             fill: none;
-            stroke: url(#progress-gradient);
-            stroke-width: 14;
+            stroke: #3b82f6;
+            stroke-width: 10;
             stroke-linecap: round;
-            transition: stroke-dashoffset 1s ease-in-out;
-        }
-
-        /* Gradient for Progress Bar */
-        .progress-gradient {
-            stop-color: #3b82f6;
-        }
-
-        .progress-gradient-stop {
-            stop-color: #10b981;
+            transition: stroke-dashoffset 0.8s ease;
         }
 
         /* Center Info */
@@ -101,118 +83,114 @@
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%);
-            background: rgba(255, 255, 255, 0.95);
+            background: #ffffff;
             border-radius: 50%;
-            width: 160px;
-            height: 160px;
-            box-shadow: 0 12px 24px rgba(59, 130, 246, 0.2);
+            width: 120px;
+            height: 120px;
+            box-shadow: 0 8px 16px rgba(59, 130, 246, 0.15);
             display: flex;
             flex-direction: column;
             align-items: center;
             justify-content: center;
             text-align: center;
-            padding: 16px;
+            padding: 12px;
             user-select: none;
-            border: 1px solid rgba(255, 255, 255, 0.3);
         }
 
         .next-milestone-label {
-            font-size: 12px;
+            font-size: 10px;
             font-weight: 600;
             color: #94a3b8;
             text-transform: uppercase;
-            letter-spacing: 0.6px;
-            margin-bottom: 8px;
+            letter-spacing: 0.5px;
+            margin-bottom: 4px;
         }
 
         .countdown-display {
             font-family: 'IBM Plex Mono', monospace;
-            font-weight: 700;
-            font-size: 24px;
+            font-weight: 600;
+            font-size: 18px;
             color: #1e293b;
-            margin-bottom: 8px;
-            letter-spacing: -0.02em;
+            margin-bottom: 4px;
         }
 
         .current-phase-name {
-            font-size: 14px;
+            font-size: 11px;
             font-weight: 600;
             color: #2563eb;
             text-transform: uppercase;
-            letter-spacing: 0.8px;
+            letter-spacing: 0.5px;
         }
 
         /* Milestone Dots */
         .milestone-dot {
             position: absolute;
-            width: 32px;
-            height: 32px;
-            background: rgba(255, 255, 255, 0.95);
-            border: 3px solid #cbd5e1;
+            width: 24px;
+            height: 24px;
+            background: #ffffff;
+            border: 2px solid #cbd5e1;
             border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-            font-size: 14px;
-            font-weight: 700;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+            font-size: 12px;
+            font-weight: 600;
             color: #64748b;
             cursor: pointer;
-            transition: all 0.4s ease;
+            transition: all 0.3s ease;
             user-select: none;
             z-index: 10;
         }
 
         .milestone-dot:hover {
             transform: scale(1.2);
-            box-shadow: 0 6px 16px rgba(0, 0, 0, 0.15);
         }
 
         .milestone-dot.completed {
             background: #10b981;
             border-color: #10b981;
-            color: #fff;
-            box-shadow: 0 8px 16px rgba(16, 185, 129, 0.5);
+            color: #ffffff;
+            box-shadow: 0 4px 12px rgba(16, 185, 129, 0.4);
         }
 
         .milestone-dot.active {
             background: #2563eb;
             border-color: #2563eb;
-            color: #fff;
-            transform: scale(1.4);
+            color: #ffffff;
+            transform: scale(1.3);
             animation: pulse-dot 2s infinite ease-in-out;
-            box-shadow: 0 10px 20px rgba(37, 99, 235, 0.6);
+            box-shadow: 0 6px 14px rgba(37, 99, 235, 0.5);
         }
 
         @keyframes pulse-dot {
 
             0%,
             100% {
-                box-shadow: 0 10px 20px rgba(37, 99, 235, 0.6), 0 0 0 0 rgba(37, 99, 235, 0.2);
+                box-shadow: 0 6px 14px rgba(37, 99, 235, 0.5);
             }
 
             50% {
-                box-shadow: 0 10px 20px rgba(37, 99, 235, 0.6), 0 0 0 14px rgba(37, 99, 235, 0);
+                box-shadow: 0 6px 14px rgba(37, 99, 235, 0.5), 0 0 0 10px rgba(37, 99, 235, 0);
             }
         }
 
-        /* Tooltip */
         .milestone-dot .tooltip {
             visibility: hidden;
-            width: 180px;
+            width: 140px;
             background: #1e293b;
-            color: #fff;
+            color: #ffffff;
             text-align: center;
-            border-radius: 8px;
-            padding: 12px;
+            border-radius: 6px;
+            padding: 8px;
             position: absolute;
             z-index: 100;
             bottom: 120%;
             left: 50%;
             transform: translateX(-50%);
-            font-size: 12px;
+            font-size: 11px;
             font-weight: 500;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.15);
             opacity: 0;
             transition: opacity 0.3s ease, visibility 0.3s ease;
         }
@@ -226,68 +204,69 @@
         .milestone-cards {
             display: flex;
             flex-direction: column;
-            gap: 16px;
+            gap: 12px;
+            width: 100%;
+            max-width: 360px;
         }
 
         .milestone-card {
             display: flex;
             align-items: center;
-            gap: 20px;
-            padding: 24px;
-            border-radius: 16px;
-            background: rgba(255, 255, 255, 0.95);
-            border: 2px solid transparent;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+            gap: 16px;
+            padding: 16px;
+            border-radius: 12px;
+            background: #ffffff;
+            border: 1px solid #e2e8f0;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
             cursor: pointer;
-            transition: all 0.4s ease;
+            transition: all 0.3s ease;
             user-select: none;
         }
 
         .milestone-card:hover {
-            box-shadow: 0 10px 24px rgba(0, 0, 0, 0.1);
-            transform: translateY(-4px);
+            box-shadow: 0 6px 16px rgba(0, 0, 0, 0.1);
+            transform: translateY(-2px);
         }
 
         .milestone-card.completed {
-            background: rgba(209, 250, 229, 0.8);
+            background: #ecfdf5;
             border-color: #10b981;
-            box-shadow: 0 8px 20px rgba(16, 185, 129, 0.3);
+            box-shadow: 0 4px 12px rgba(16, 185, 129, 0.2);
         }
 
         .milestone-card.active {
-            background: rgba(219, 234, 254, 0.8);
+            background: #eff6ff;
             border-color: #2563eb;
-            box-shadow: 0 8px 20px rgba(37, 99, 235, 0.3);
-            transform: scale(1.02);
+            box-shadow: 0 4px 12px rgba(37, 99, 235, 0.2);
         }
 
         .card-icon {
-            width: 48px;
-            height: 48px;
-            border-radius: 12px;
+            width: 40px;
+            height: 40px;
+            border-radius: 10px;
             background: #f1f5f9;
             color: #64748b;
             border: 2px solid #cbd5e1;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 24px;
+            font-size: 20px;
             flex-shrink: 0;
-            transition: all 0.4s ease;
+            transition: all 0.3s ease;
         }
 
         .milestone-card.completed .card-icon {
             background: #10b981;
             border-color: #10b981;
-            color: #fff;
-            box-shadow: 0 6px 16px rgba(16, 185, 129, 0.5);
+            color: #ffffff;
+            box-shadow: 0 3px 10px rgba(16, 185, 129, 0.4);
         }
 
         .milestone-card.active .card-icon {
             background: #2563eb;
             border-color: #2563eb;
-            color: #fff;
-            box-shadow: 0 6px 16px rgba(37, 99, 235, 0.5);
+            color: #ffffff;
+            box-shadow: 0 3px 10px rgba(37, 99, 235, 0.4);
         }
 
         .card-content {
@@ -295,76 +274,86 @@
         }
 
         .card-day {
-            font-size: 18px;
-            font-weight: 700;
+            font-size: 16px;
+            font-weight: 600;
             color: #1e293b;
-            margin-bottom: 6px;
+            margin-bottom: 4px;
         }
 
         .card-task {
-            font-size: 14px;
+            font-size: 13px;
             color: #475569;
-            margin-bottom: 8px;
-            line-height: 1.4;
+            margin-bottom: 6px;
+            line-height: 1.3;
         }
 
         .card-time {
             font-family: 'IBM Plex Mono', monospace;
-            font-size: 13px;
+            font-size: 12px;
             color: #64748b;
             background: #e0e7ff;
-            padding: 6px 12px;
-            border-radius: 8px;
+            padding: 4px 8px;
+            border-radius: 6px;
             display: inline-block;
             user-select: text;
-            letter-spacing: 0.03em;
         }
 
         /* Status Bar */
         .status-bar {
-            margin-top: 40px;
-            padding: 20px 0;
+            margin-top: 24px;
+            padding: 12px 0;
             text-align: center;
-            font-size: 14px;
+            font-size: 12px;
             color: #64748b;
             font-weight: 500;
-            letter-spacing: 0.04em;
-            border-top: 1px solid #cbd5e1;
-            user-select: none;
-            background: rgba(255, 255, 255, 0.7);
-            border-radius: 12px;
+            width: 100%;
+            max-width: 360px;
+            border-top: 1px solid #e2e8f0;
         }
 
         /* Responsive */
-        @media (max-width: 480px) {
-            .container {
-                padding: 32px 20px;
-            }
-
+        @media (max-width: 360px) {
             .timeline-circle {
-                width: 280px;
-                height: 280px;
+                width: 200px;
+                height: 200px;
             }
 
             .center-info {
-                width: 140px;
-                height: 140px;
+                width: 100px;
+                height: 100px;
+                padding: 8px;
             }
 
             .countdown-display {
-                font-size: 20px;
-            }
-
-            .card-day {
                 font-size: 16px;
             }
 
-            .card-task {
-                font-size: 13px;
+            .current-phase-name {
+                font-size: 10px;
+            }
+
+            .milestone-dot {
+                width: 20px;
+                height: 20px;
+                font-size: 10px;
             }
 
             .milestone-card {
-                padding: 20px;
+                padding: 12px;
+            }
+
+            .card-icon {
+                width: 36px;
+                height: 36px;
+                font-size: 18px;
+            }
+
+            .card-day {
+                font-size: 14px;
+            }
+
+            .card-task {
+                font-size: 12px;
             }
         }
     </style>
@@ -374,35 +363,27 @@
     <div class="container">
         <div class="header">
             <h1 class="title">Agile Sprint Timeline</h1>
+            <p class="subtitle">Track your sprint progress</p>
         </div>
 
         <div class="timeline-circle" aria-label="Sprint progress timeline" role="img">
-            <svg class="progress-ring" viewBox="0 0 320 320" aria-hidden="true" focusable="false">
-                <defs>
-                    <linearGradient id="progress-gradient" x1="0%" y1="0%" x2="100%" y2="100%">
-                        <stop offset="0%" class="progress-gradient" />
-                        <stop offset="100%" class="progress-gradient-stop" />
-                    </linearGradient>
-                </defs>
-                <circle class="progress-background" cx="160" cy="160" r="140" />
-                <circle class="progress-bar" cx="160" cy="160" r="140" id="progress-circle" />
+            <svg class="progress-ring" viewBox="0 0 240 240" aria-hidden="true" focusable="false">
+                <circle class="progress-background" cx="120" cy="120" r="105" />
+                <circle class="progress-bar" cx="120" cy="120" r="105" id="progress-circle" />
             </svg>
 
             <!-- Milestone dots -->
-            <div class="milestone-dot" id="dot-start" style="top: 30px; left: 50%; transform: translateX(-50%);"
-                aria-label="Sprint Start milestone">
-                1
-                <span class="tooltip">Sprint Start: Planning & Kickoff Meeting</span>
+            <div class="milestone-dot" id="dot-start" style="top: 20px; left: 50%; transform: translateX(-50%)"
+                aria-label="Sprint Start milestone">1
+                <span class="tooltip">Sprint Start: Planning & Kickoff</span>
             </div>
-            <div class="milestone-dot" id="dot-review" style="top: 50%; right: 30px; transform: translateY(-50%);"
-                aria-label="Initial Review milestone">
-                2
-                <span class="tooltip">Initial Review: Submit Initial Work</span>
+            <div class="milestone-dot" id="dot-review" style="top: 50%; right: 20px; transform: translateY(-50%)"
+                aria-label="Initial Review milestone">2
+                <span class="tooltip">Initial Review: Submit Work</span>
             </div>
-            <div class="milestone-dot" id="dot-final" style="bottom: 30px; left: 30px;"
-                aria-label="Final Submission milestone">
-                3
-                <span class="tooltip">Final Submission: Complete & Deploy</span>
+            <div class="milestone-dot" id="dot-final" style="bottom: 20px; left: 20px;"
+                aria-label="Final Submission milestone">3
+                <span class="tooltip">Final Submission: Deploy</span>
             </div>
 
             <div class="center-info">
@@ -417,14 +398,14 @@
                 aria-label="Sprint Start: Planning and Kickoff Meeting">
                 <div class="card-icon" aria-hidden="true">
                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-width="2"
-                        stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24" width="24" height="24">
+                        stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24" width="20" height="20">
                         <circle cx="12" cy="12" r="10" />
                         <polyline points="12 6 12 12 16 14" />
                     </svg>
                 </div>
                 <div class="card-content">
-                    <div class="card-day">Wednesday - Sprint Start</div>
-                    <div class="card-task">Planning & Kickoff Meeting</div>
+                    <div class="card-day">Wed - Sprint Start</div>
+                    <div class="card-task">Planning & Kickoff</div>
                     <div class="card-time" id="time-start">Loading...</div>
                 </div>
             </article>
@@ -433,13 +414,13 @@
                 aria-label="Initial Review: Submit Initial Work">
                 <div class="card-icon" aria-hidden="true">
                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-width="2"
-                        stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24" width="24" height="24">
+                        stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24" width="20" height="20">
                         <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
                         <polyline points="14 2 14 8 20 8" />
                     </svg>
                 </div>
                 <div class="card-content">
-                    <div class="card-day">Sunday - Initial Review</div>
+                    <div class="card-day">Sun - Initial Review</div>
                     <div class="card-task">Submit Initial Work</div>
                     <div class="card-time" id="time-review">Loading...</div>
                 </div>
@@ -449,14 +430,14 @@
                 aria-label="Final Submission: Complete and Deploy">
                 <div class="card-icon" aria-hidden="true">
                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-width="2"
-                        stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24" width="24" height="24">
+                        stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24" width="20" height="20">
                         <circle cx="12" cy="12" r="10" />
                         <line x1="12" y1="8" x2="12" y2="12" />
                         <line x1="12" y1="16" x2="12" y2="16" />
                     </svg>
                 </div>
                 <div class="card-content">
-                    <div class="card-day">Tuesday - Final Submission</div>
+                    <div class="card-day">Tue - Final Submission</div>
                     <div class="card-task">Complete & Deploy</div>
                     <div class="card-time" id="time-final">Loading...</div>
                 </div>
@@ -477,7 +458,7 @@
                     dayOfWeek: 3, // Wednesday
                     hour: 9,
                     minute: 0,
-                    description: 'Planning & Kickoff Meeting'
+                    description: 'Planning & Kickoff'
                 },
                 {
                     id: 'review',
@@ -500,61 +481,59 @@
 
         class SprintTimeline {
             constructor() {
-                this.currentTime = new Date();
-                this.progressCircle = document.getElementById('progress-circle');
-                this.radius = 140;
+                this.radius = 105;
                 this.circumference = 2 * Math.PI * this.radius;
+                this.progressCircle = document.getElementById('progress-circle');
                 this.progressCircle.style.strokeDasharray = this.circumference;
                 this.progressCircle.style.strokeDashoffset = this.circumference;
 
-                this.updateTimeline();
-                setInterval(() => {
-                    this.currentTime = new Date();
-                    this.updateTimeline();
-                }, 1000);
+                this.updateTimes();
+                this.animate = this.animate.bind(this);
+                requestAnimationFrame(this.animate);
             }
 
-            getNextMilestoneDate(milestone) {
-                const now = this.currentTime;
-                const target = new Date(now);
+            updateTimes() {
+                const now = new Date();
 
-                const currentDay = now.getDay();
+                this.milestones = SPRINT_CONFIG.milestones.map(milestone => {
+                    const nextDate = this.getNextMilestoneDate(milestone, now);
+                    return { ...milestone, nextDate };
+                });
+
+                // Sort milestones by nextDate ascending for progress calculation
+                this.milestones.sort((a, b) => a.nextDate - b.nextDate);
+
+                this.sprintStart = this.milestones.find(m => m.id === 'start').nextDate;
+                this.sprintEnd = this.milestones.find(m => m.id === 'final').nextDate;
+
+                this.totalSprintDuration = this.sprintEnd - this.sprintStart;
+            }
+
+            getNextMilestoneDate(milestone, fromDate) {
+                const target = new Date(fromDate);
+                const currentDay = target.getDay();
                 let daysUntil = (milestone.dayOfWeek - currentDay + 7) % 7;
 
+                // If milestone is today, check if time passed, else move to next week
                 if (daysUntil === 0) {
                     target.setHours(milestone.hour, milestone.minute, 0, 0);
-                    if (now >= target) daysUntil = 7;
+                    if (fromDate >= target) daysUntil = 7;
                 }
-                if (daysUntil > 0) target.setDate(now.getDate() + daysUntil);
 
+                target.setDate(target.getDate() + daysUntil);
                 target.setHours(milestone.hour, milestone.minute, 0, 0);
                 return target;
             }
 
-            getCurrentSprintState() {
-                const milestones = SPRINT_CONFIG.milestones.map(milestone => {
-                    const nextDate = this.getNextMilestoneDate(milestone);
-                    return {
-                        ...milestone,
-                        nextDate,
-                        timeUntil: nextDate - this.currentTime
-                    };
+            formatDateTime(date) {
+                return date.toLocaleDateString('en-US', {
+                    weekday: 'short',
+                    month: 'short',
+                    day: 'numeric',
+                    hour: '2-digit',
+                    minute: '2-digit',
+                    hour12: false
                 });
-
-                const nextMilestone = milestones.reduce((next, current) => {
-                    if (current.timeUntil > 0 && current.timeUntil < (next?.timeUntil ?? Infinity)) {
-                        return current;
-                    }
-                    return next;
-                }, null) || milestones[0];
-
-                const sprintStart = milestones.find(m => m.id === 'start');
-                const sprintEnd = milestones.find(m => m.id === 'final');
-                const totalSprintTime = sprintEnd.nextDate - sprintStart.nextDate;
-                const elapsedTime = this.currentTime - sprintStart.nextDate + (7 * 24 * 60 * 60 * 1000);
-                const progress = Math.min(Math.max(elapsedTime / totalSprintTime, 0), 1);
-
-                return { milestones, nextMilestone, progress: progress * 100 };
             }
 
             formatTimeRemaining(ms) {
@@ -572,24 +551,13 @@
                 return `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
             }
 
-            formatDateTime(date) {
-                return date.toLocaleDateString('en-US', {
-                    weekday: 'short',
-                    month: 'short',
-                    day: 'numeric',
-                    hour: '2-digit',
-                    minute: '2-digit',
-                    hour12: false
-                });
-            }
-
-            updateProgressRing(progress) {
-                const offset = this.circumference - (progress / 100) * this.circumference;
+            updateProgress(progressPercent) {
+                const offset = this.circumference - (progressPercent / 100) * this.circumference;
                 this.progressCircle.style.strokeDashoffset = offset;
             }
 
-            updateMilestoneStates(state) {
-                state.milestones.forEach(milestone => {
+            updateMilestoneStates(now) {
+                this.milestones.forEach(milestone => {
                     const dot = document.getElementById(`dot-${milestone.id}`);
                     const card = document.getElementById(`card-${milestone.id}`);
                     const timeEl = document.getElementById(`time-${milestone.id}`);
@@ -599,31 +567,65 @@
 
                     timeEl.textContent = this.formatDateTime(milestone.nextDate);
 
-                    if (milestone.id === state.nextMilestone.id) {
-                        dot.classList.add('active');
-                        card.classList.add('active');
-                    } else if (milestone.timeUntil < 0 && Math.abs(milestone.timeUntil) < 7 * 24 * 60 * 60 * 1000) {
-                        dot.classList.add('completed');
-                        card.classList.add('completed');
+                    if (now < milestone.nextDate) {
+                        if (!this.nextMilestone || milestone.nextDate < this.nextMilestone.nextDate) {
+                            this.nextMilestone = milestone;
+                        }
+                    } else {
+                        // Mark completed if time passed but within 7 days
+                        if (now - milestone.nextDate < 7 * 24 * 60 * 60 * 1000) {
+                            dot.classList.add('completed');
+                            card.classList.add('completed');
+                        }
                     }
                 });
+
+                // Highlight the next milestone
+                if (this.nextMilestone) {
+                    const nextDot = document.getElementById(`dot-${this.nextMilestone.id}`);
+                    const nextCard = document.getElementById(`card-${this.nextMilestone.id}`);
+                    if (nextDot && nextCard) {
+                        nextDot.classList.add('active');
+                        nextCard.classList.add('active');
+                    }
+                }
             }
 
-            updateCenterDisplay(state) {
-                document.getElementById('countdown').textContent = this.formatTimeRemaining(state.nextMilestone.timeUntil);
-                document.getElementById('phase-name').textContent = state.nextMilestone.name;
-                document.getElementById('status-message').textContent = `Sprint ${Math.round(state.progress)}% complete - Next: ${state.nextMilestone.name}`;
+            updateCenterDisplay(now) {
+                if (!this.nextMilestone) {
+                    document.getElementById('countdown').textContent = "--:--:--";
+                    document.getElementById('phase-name').textContent = "No upcoming milestones";
+                    document.getElementById('status-message').textContent = "Sprint completed!";
+                    return;
+                }
+                const timeUntil = this.nextMilestone.nextDate - now;
+                document.getElementById('countdown').textContent = this.formatTimeRemaining(timeUntil);
+                document.getElementById('phase-name').textContent = this.nextMilestone.name;
+                const progressPercent = this.getProgressPercent(now);
+                document.getElementById('status-message').textContent = `Sprint ${progressPercent.toFixed(1)}% complete - Next: ${this.nextMilestone.name}`;
             }
 
-            updateTimeline() {
-                const state = this.getCurrentSprintState();
-                this.updateProgressRing(state.progress);
-                this.updateMilestoneStates(state);
-                this.updateCenterDisplay(state);
+            getProgressPercent(now) {
+                if (now <= this.sprintStart) return 0;
+                if (now >= this.sprintEnd) return 100;
+                return ((now - this.sprintStart) / this.totalSprintDuration) * 100;
+            }
+
+            animate() {
+                const now = new Date();
+                this.updateTimes();
+                const progressPercent = this.getProgressPercent(now);
+                this.updateProgress(progressPercent);
+                this.updateMilestoneStates(now);
+                this.updateCenterDisplay(now);
+
+                requestAnimationFrame(this.animate);
             }
         }
 
-        document.addEventListener('DOMContentLoaded', () => new SprintTimeline());
+        document.addEventListener('DOMContentLoaded', () => {
+            new SprintTimeline();
+        });
     </script>
 </body>
 
