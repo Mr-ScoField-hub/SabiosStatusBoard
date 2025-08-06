@@ -747,18 +747,18 @@
             }, 2500);
         }
 
-        // Get next Friday at 23:59
-        function getNextFridayAt2359() {
+        // Get next Sunday at 23:59
+        function getNextSundayAt2359() {
             const now = new Date();
-            const day = now.getDay();
-            const diff = (5 - day + 7) % 7 || 7; // Ensure it picks next Friday
+            const day = now.getDay(); // Sunday = 0
+            const diff = (7 - day) % 7 || 7; // Ensure it picks next Sunday (not today)
             const target = new Date(now);
             target.setDate(now.getDate() + diff);
             target.setHours(23, 59, 0, 0);
             return target;
         }
 
-        const sprintEnd = getNextFridayAt2359();
+        const sprintEnd = getNextSundayAt2359();
         const elements = {
             status: document.getElementById("countdownStatus"),
             days: document.getElementById("days"),
@@ -838,6 +838,7 @@
             lastTouchEnd = now;
         }, false);
     </script>
+
 </body>
 
 </html>
