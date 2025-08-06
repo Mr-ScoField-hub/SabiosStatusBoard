@@ -61,11 +61,10 @@
             height: 100%;
             border-radius: 50%;
             transform: rotate(-90deg);
-            background: conic-gradient(#3b82f6 0deg,
-                    #3b82f6 var(--progress-angle, 0deg),
-                    transparent var(--progress-angle, 0deg));
-            mask: radial-gradient(circle at center, transparent 128px, black 136px);
-            transition: background 0.5s ease;
+            background: conic-gradient(#3b82f6 0deg, transparent 0deg);
+            mask-image: radial-gradient(circle at center, transparent 50%, black 51%);
+            -webkit-mask-image: radial-gradient(circle at center, transparent 50%, black 51%);
+            transition: background 0.8s ease;
         }
 
         .milestone {
@@ -114,20 +113,20 @@
             }
         }
 
-        /* Position milestones around circle */
         .milestone.wed {
             top: 25px;
             left: 50%;
         }
 
         .milestone.sun {
-            bottom: 25px;
-            left: 25px;
+            top: 50%;
+            right: 25px;
+            transform: translate(50%, -50%);
         }
 
         .milestone.tue {
             bottom: 25px;
-            right: 25px;
+            left: 25px;
         }
 
         .milestone-labels {
@@ -254,9 +253,9 @@
             <div class="circle-bg"></div>
             <div class="circle-progress" id="progress"></div>
 
-            <div class="milestone wed" id="milestone-wed">WED<br>Start</div>
-            <div class="milestone sun" id="milestone-sun">SUN<br>Submit</div>
-            <div class="milestone tue" id="milestone-tue">TUE<br>Final</div>
+            <div class="milestone wed" id="milestone-wed">WED<br />Start</div>
+            <div class="milestone sun" id="milestone-sun">SUN<br />Submit</div>
+            <div class="milestone tue" id="milestone-tue">TUE<br />Final</div>
 
             <div class="sprint-center">
                 <div class="sprint-label">Next milestone</div>
@@ -294,50 +293,11 @@
     </div>
 
     <script>
-        // Sprint cycle: Wed → Sun → Tue (repeating)
         const MILESTONES = [
-            { id: 'wed', name: 'Sprint Start', day: 3, angle: 0 },     // Wednesday, top of circle
-            { id: 'sun', name: 'Initial Submit', day: 0, angle: 120 }, // Sunday, bottom left
-            { id: 'tue', name: 'Final Submit', day: 2, angle: 240 }    // Tuesday, bottom right
+            { id: 'wed', name: 'Sprint Start', day: 3, angle: 0 },
+            { id: 'sun', name: 'Initial Submit', day: 0, angle: 90 },
+            { id: 'tue', name: 'Final Submit', day: 2, angle: 225 }
         ];
-
-        function getNextMilestone(currentDay) {
-            // Find the next milestone after today
-            let nextIndex = 0;
-            let daysToNext = 7; // fallback
-
-            for (let i = 0; i < MILESTONES.length; i++) {
-                const milestone = MILESTONES[i];
-                let days = milestone.day - currentDay;
-                if (days <= 0) days += 7; // Next week if already passed
-
-                if (days < daysToNext) {
-                    daysToNext = days;
-                    nextIndex = i;
-                }
-            }
-
-            return { milestone: MILESTONES[nextIndex], daysToNext };
-        }
-
-        function getPreviousMilestone(currentDay) {
-            // Find the most recent milestone that has passed
-            let prevIndex = 0;
-            let daysSince = 7; // fallback
-
-            for (let i = 0; i < MILESTONES.length; i++) {
-                const milestone = MILESTONES[i];
-                let days = currentDay - milestone.day;
-                if (days < 0) days += 7; // Previous week if not yet reached
-
-                if (days < daysSince) {
-                    daysSince = days;
-                    prevIndex = i;
-                }
-            }
-
-            return { milestone: MILESTONES[prevIndex], daysSince };
-        }
 
         function formatTime(totalSeconds) {
             const days = Math.floor(totalSeconds / 86400);
@@ -346,9 +306,13 @@
             const seconds = totalSeconds % 60;
 
             if (days > 0) {
-                return `${days}d ${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+                return `${days}d ${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:${seconds
+                    .toString()
+                    .padStart(2, '0')}`;
             }
-            return `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+            return `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:${seconds
+                .toString()
+                .padStart(2, '0')}`;
         }
 
         function formatDate(date) {
@@ -365,65 +329,86 @@
             const now = new Date();
             const currentDay = now.getDay();
             let daysUntil = (dayOfWeek - currentDay + 7) % 7;
-            if (daysUntil === 0) daysUntil = 7; // Next week if it's today
-
+            if (daysUntil === 0) daysUntil = 7;
             const nextDate = new Date(now);
             nextDate.setDate(now.getDate() + daysUntil);
-            nextDate.setHours(9, 0, 0, 0); // 9 AM
+            nextDate.setHours(9, 0, 0, 0);
             return nextDate;
+        }
+
+        function getPreviousMilestone(currentDay) {
+            let daysSince = 0;
+            let milestone = null;
+            const sorted = [...MILESTONES].sort((a, b) => b.day - a.day);
+            for (let m of sorted) {
+                let delta = (currentDay - m.day + 7) % 7;
+                if (milestone === null || delta < daysSince) {
+                    daysSince = delta;
+                    milestone = m;
+                }
+            }
+            return { milestone, daysSince };
+        }
+
+        function getNextMilestone(currentDay) {
+            let daysToNext = 7;
+            let milestone = null;
+            for (let m of MILESTONES) {
+                let delta = (m.day - currentDay + 7) % 7;
+                if (delta < daysToNext && delta > 0) {
+                    daysToNext = delta;
+                    milestone = m;
+                }
+            }
+            if (!milestone) {
+                milestone = MILESTONES[0];
+                daysToNext = 7;
+            }
+            return { milestone, daysToNext };
         }
 
         function update() {
             const now = new Date();
             const currentDay = now.getDay();
 
-            // Get current and next milestones
             const { milestone: nextMilestone, daysToNext } = getNextMilestone(currentDay);
             const { milestone: prevMilestone, daysSince } = getPreviousMilestone(currentDay);
 
-            // Calculate progress between previous and next milestone
-            const totalDays = (daysToNext + daysSince);
+            const totalDays = daysToNext + daysSince;
             const progress = daysSince / totalDays;
             const progressAngle = progress * 360;
 
-            // Update progress circle
-            document.getElementById('progress').style.setProperty('--progress-angle', `${progressAngle}deg`);
+            const progressEl = document.getElementById('progress');
+            progressEl.style.setProperty('--progress-angle', `${progressAngle}deg`);
+            progressEl.style.background = `conic-gradient(#3b82f6 ${progressAngle}deg, transparent 0deg)`;
 
-            // Calculate time to next milestone
             const nextDate = getNextDate(nextMilestone.day);
             const timeToNext = Math.max(0, Math.floor((nextDate - now) / 1000));
 
-            // Update countdown
             document.getElementById('countdown').textContent = formatTime(timeToNext);
             document.getElementById('current-phase').textContent = nextMilestone.name;
 
-            // Update milestone states
             MILESTONES.forEach(milestone => {
                 const milestoneEl = document.getElementById(`milestone-${milestone.id}`);
                 const labelEl = document.getElementById(`label-${milestone.id}`);
                 const timeEl = document.getElementById(`time-${milestone.id}`);
 
-                // Clear all states
                 milestoneEl.classList.remove('completed', 'active');
                 labelEl.classList.remove('completed', 'active');
 
-                // Update time display
                 const milestoneDate = getNextDate(milestone.day);
                 timeEl.textContent = formatDate(milestoneDate);
 
                 if (milestone.id === nextMilestone.id) {
-                    // Next milestone
                     milestoneEl.classList.add('active');
                     labelEl.classList.add('active');
                 } else if (milestone.id === prevMilestone.id && daysSince > 0) {
-                    // Previous milestone (completed)
                     milestoneEl.classList.add('completed');
                     labelEl.classList.add('completed');
                 }
             });
         }
 
-        // Update immediately and then every second
         update();
         setInterval(update, 1000);
     </script>

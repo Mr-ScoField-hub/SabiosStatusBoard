@@ -5,190 +5,439 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Sabios System Map</title>
-    <link href="https://fonts.googleapis.com/css2?family=SF+Pro+Display:wght@400;500;600;700&display=swap"
-        rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <style>
         * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
             -webkit-font-smoothing: antialiased;
             -moz-osx-font-smoothing: grayscale;
+            -webkit-tap-highlight-color: transparent;
         }
 
         body {
-            margin: 0;
-            padding: 0;
-            font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', system-ui, sans-serif;
-            background: linear-gradient(180deg, #f7f7f7 0%, #ffffff 100%);
-            min-height: 100vh;
-            display: flex;
-            flex-direction: column;
-            color: #1d1d1f;
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
+            background: #fafafa;
+            color: #1a1a1a;
+            line-height: 1.6;
+            overflow-x: hidden;
+            touch-action: manipulation;
         }
 
+        /* Loader Styles */
+        .loader-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            z-index: 9999;
+            opacity: 1;
+            transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .loader-overlay.hidden {
+            opacity: 0;
+            pointer-events: none;
+            transform: scale(1.05);
+        }
+
+        .loader-logo {
+            width: 120px;
+            height: 120px;
+            margin-bottom: 40px;
+            border-radius: 20px;
+            overflow: hidden;
+            animation: logoFloat 3s ease-in-out infinite;
+        }
+
+        .loader-logo img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            background: white;
+            padding: 16px;
+        }
+
+        .loader-progress {
+            width: 200px;
+            height: 3px;
+            background: #f0f0f0;
+            border-radius: 2px;
+            overflow: hidden;
+            margin-bottom: 24px;
+        }
+
+        .loader-progress-bar {
+            height: 100%;
+            background: #ff7214;
+            border-radius: 2px;
+            animation: loadProgress 2.5s ease-out forwards;
+            transform: translateX(-100%);
+        }
+
+        .loader-text {
+            color: #6b7280;
+            font-size: 16px;
+            font-weight: 500;
+            opacity: 0;
+            animation: fadeInText 0.6s ease forwards 1s;
+        }
+
+        @keyframes logoFloat {
+
+            0%,
+            100% {
+                transform: translateY(0px) scale(1);
+            }
+
+            50% {
+                transform: translateY(-12px) scale(1.05);
+            }
+        }
+
+        @keyframes loadProgress {
+            0% {
+                transform: translateX(-100%);
+            }
+
+            100% {
+                transform: translateX(0%);
+            }
+        }
+
+        @keyframes fadeInText {
+            to {
+                opacity: 1;
+            }
+        }
+
+        /* Main Content */
+        .main-app {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+            min-height: 100vh;
+        }
+
+        .main-app.loaded {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Header */
         .header {
-            background: rgba(255, 255, 255, 0.8);
-            backdrop-filter: saturate(180%) blur(20px);
-            -webkit-backdrop-filter: saturate(180%) blur(20px);
-            border-bottom: 0.5px solid rgba(0, 0, 0, 0.05);
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid #e5e7eb;
             position: sticky;
             top: 0;
             z-index: 100;
             padding: 20px 0;
         }
 
-        .container {
-            max-width: 375px;
+        .header-content {
+            max-width: 100%;
             margin: 0 auto;
             padding: 0 20px;
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .uj-logo-header {
+            width: 52px;
+            height: 52px;
+            border-radius: 12px;
+            overflow: hidden;
+            flex-shrink: 0;
+            background: white;
+            animation: slideDown 0.8s ease forwards 0.3s;
+            opacity: 0;
+            transform: translateY(-20px);
+        }
+
+        .uj-logo-header img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            padding: 6px;
+        }
+
+        .header-text {
+            flex: 1;
+            animation: slideDown 0.8s ease forwards 0.5s;
+            opacity: 0;
+            transform: translateY(-20px);
         }
 
         h1 {
-            font-size: 34px;
+            font-size: 28px;
             font-weight: 700;
-            color: #1d1d1f;
+            color: #111827;
             margin: 0;
-            text-align: center;
-            letter-spacing: -0.5px;
+            letter-spacing: -0.02em;
+            line-height: 1.2;
         }
 
+        .subtitle {
+            font-size: 15px;
+            font-weight: 500;
+            color: #6b7280;
+            margin: 2px 0 0 0;
+            letter-spacing: -0.01em;
+        }
+
+        /* Main Content */
         .main-content {
-            flex: 1;
-            padding: 32px 0;
+            padding: 32px 20px 60px;
         }
 
-        .countdown-card {
-            background: linear-gradient(135deg, #8a2e88 0%, #0d3163 100%);
+        /* Sprint Card */
+        .sprint-card {
+            background: white;
             border-radius: 20px;
-            padding: 24px;
-            margin: 0 20px 32px;
-            box-shadow: 0 8px 30px rgba(0, 122, 255, 0.25);
+            padding: 28px 24px;
+            margin-bottom: 32px;
+            box-shadow: 0 4px 32px rgba(0, 0, 0, 0.04);
+            border: 1px solid #f1f5f9;
             position: relative;
             overflow: hidden;
+            animation: slideUp 0.8s ease forwards 0.7s;
+            opacity: 0;
+            transform: translateY(40px);
         }
 
-        .countdown-card::before {
+        .sprint-card::before {
             content: '';
             position: absolute;
             top: 0;
             left: 0;
             right: 0;
-            bottom: 0;
-            background: linear-gradient(135deg, rgba(255, 255, 255, 0.1) 0%, rgba(255, 255, 255, 0) 100%);
-            pointer-events: none;
+            height: 4px;
+            background: #ff7214;
         }
 
-        .countdown-label {
-            font-size: 13px;
-            font-weight: 500;
-            color: rgba(255, 255, 255, 0.8);
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
+        .sprint-header {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 24px;
+        }
+
+        .sprint-icon {
+            width: 44px;
+            height: 44px;
+            background: #ff7214;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+        }
+
+        .sprint-info h2 {
+            font-size: 18px;
+            font-weight: 600;
+            color: #111827;
+            margin: 0;
+        }
+
+        .sprint-info p {
+            font-size: 14px;
+            color: #6b7280;
+            margin: 2px 0 0 0;
+        }
+
+        .countdown-status {
+            text-align: center;
+            margin-bottom: 24px;
+        }
+
+        .countdown-title {
+            font-size: 22px;
+            font-weight: 700;
+            color: #111827;
             margin-bottom: 8px;
         }
 
-        .countdown-time {
-            font-size: 24px;
-            font-weight: 700;
-            color: white;
-            margin: 0;
-            letter-spacing: -0.5px;
-            font-variant-numeric: tabular-nums;
-            line-height: 1.2;
-        }
-
-        .countdown-units {
+        .countdown-grid {
             display: grid;
             grid-template-columns: repeat(4, 1fr);
-            gap: 16px;
-            margin-top: 16px;
+            gap: 12px;
         }
 
-        .countdown-unit {
+        .countdown-item {
+            background: #f8fafc;
+            border-radius: 14px;
+            padding: 18px 8px;
             text-align: center;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .countdown-item:active {
+            transform: scale(0.95);
+            background: #f1f5f9;
         }
 
         .countdown-number {
-            display: block;
-            font-size: 32px;
+            font-size: 26px;
             font-weight: 700;
-            color: white;
+            color: #ff7214;
+            display: block;
             line-height: 1;
-            margin-bottom: 4px;
+            margin-bottom: 6px;
+            font-variant-numeric: tabular-nums;
         }
 
-        .countdown-unit-label {
+        .countdown-label {
             font-size: 11px;
-            font-weight: 500;
-            color: rgba(255, 255, 255, 0.7);
+            font-weight: 600;
+            color: #6b7280;
             text-transform: uppercase;
-            letter-spacing: 0.5px;
+            letter-spacing: 0.05em;
         }
 
-        .navigation-list {
-            padding: 0 20px;
+        /* Navigation */
+        .nav-section {
+            margin-bottom: 32px;
+        }
+
+        .nav-title {
+            font-size: 20px;
+            font-weight: 700;
+            color: #111827;
+            margin-bottom: 16px;
+            padding: 0 4px;
         }
 
         .nav-item {
             background: white;
             border-radius: 16px;
             margin-bottom: 12px;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
-            transition: all 0.2s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+            border: 1px solid #f1f5f9;
+            transition: all 0.2s ease;
             cursor: pointer;
-            position: relative;
-            overflow: hidden;
+            animation: slideInRight 0.6s ease forwards;
+            opacity: 0;
+            transform: translateX(40px);
+            touch-action: manipulation;
         }
 
-        .nav-link {
-            display: block;
-            padding: 20px 24px;
-            text-decoration: none;
-            color: #1d1d1f;
-            font-size: 17px;
-            font-weight: 500;
-            position: relative;
-            z-index: 2;
+        .nav-item:nth-child(2) {
+            animation-delay: 0.9s;
         }
 
-        .nav-item::after {
-            content: '';
-            position: absolute;
-            top: 50%;
-            right: 24px;
-            transform: translateY(-50%);
-            width: 8px;
-            height: 8px;
-            border-right: 2px solid #c7c7cc;
-            border-bottom: 2px solid #c7c7cc;
-            transform: translateY(-50%) rotate(-45deg);
-            transition: transform 0.2s ease;
+        .nav-item:nth-child(3) {
+            animation-delay: 1.0s;
         }
 
-        .nav-item:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
-        }
-
-        .nav-item:hover::after {
-            transform: translateY(-50%) rotate(-45deg) translateX(2px);
+        .nav-item:nth-child(4) {
+            animation-delay: 1.1s;
         }
 
         .nav-item:active {
-            transform: translateY(0);
-            transition: transform 0.1s ease;
+            transform: scale(0.98);
+            background: #f9fafb;
         }
 
-        .completed-badge {
-            background: linear-gradient(135deg, #34C759 0%, #28A745 100%);
-            border-radius: 16px;
-            padding: 20px 24px;
-            margin: 0 20px;
+        .nav-link {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            padding: 20px;
+            text-decoration: none;
+            color: inherit;
+            position: relative;
+        }
+
+        .nav-icon {
+            width: 44px;
+            height: 44px;
+            background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
+            border-radius: 12px;
             display: flex;
             align-items: center;
             justify-content: center;
-            box-shadow: 0 8px 30px rgba(52, 199, 89, 0.25);
+            flex-shrink: 0;
+            transition: all 0.2s ease;
+        }
+
+        .nav-item:active .nav-icon {
+            background: #ff7214;
+            transform: scale(1.05);
+        }
+
+        .nav-item:active .nav-icon svg {
+            stroke: white;
+        }
+
+        .nav-content {
+            flex: 1;
+        }
+
+        .nav-title-text {
+            font-size: 16px;
+            font-weight: 600;
+            color: #111827;
+            margin-bottom: 2px;
+        }
+
+        .nav-subtitle {
+            font-size: 13px;
+            color: #6b7280;
+        }
+
+        .nav-arrow {
+            width: 20px;
+            height: 20px;
+            color: #cbd5e1;
+            transition: all 0.2s ease;
+        }
+
+        .nav-item:active .nav-arrow {
+            color: #ff7214;
+            transform: translateX(2px);
+        }
+
+        /* Status Badge */
+        .status-badge {
+            position: absolute;
+            top: 16px;
+            right: 16px;
+            width: 10px;
+            height: 10px;
+            background: #10b981;
+            border-radius: 50%;
+            border: 2px solid white;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .nav-item.completed .status-badge {
+            opacity: 1;
+        }
+
+        /* Completed Badge */
+        .completed-badge {
+            background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+            border-radius: 16px;
+            padding: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            box-shadow: 0 8px 32px rgba(16, 185, 129, 0.3);
             opacity: 0;
             transform: translateY(20px);
-            transition: all 0.3s ease;
+            transition: all 0.5s ease;
         }
 
         .completed-badge.show {
@@ -198,187 +447,331 @@
 
         .completed-text {
             color: white;
-            font-size: 17px;
+            font-size: 16px;
             font-weight: 600;
-            margin-left: 8px;
         }
 
-        .status-indicator {
-            position: absolute;
-            top: 20px;
-            right: 20px;
-            width: 8px;
-            height: 8px;
-            background: #34C759;
-            border-radius: 50%;
-            opacity: 0;
-            transition: opacity 0.3s ease;
+        /* Animations */
+        @keyframes slideDown {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
         }
 
-        .nav-item.completed .status-indicator {
-            opacity: 1;
+        @keyframes slideUp {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
         }
 
-        /* Mobile optimizations */
-        @media (max-width: 414px) {
-            .container {
-                max-width: none;
+        @keyframes slideInRight {
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        /* Mobile Optimizations */
+        @media (max-width: 480px) {
+            .main-content {
+                padding: 28px 16px 48px;
+            }
+
+            .header-content {
                 padding: 0 16px;
             }
 
             h1 {
-                font-size: 28px;
-            }
-
-            .countdown-card {
-                margin: 0 16px 24px;
-                padding: 20px;
-            }
-
-            .countdown-number {
-                font-size: 28px;
-            }
-
-            .countdown-units {
-                gap: 12px;
-            }
-
-            .navigation-list {
-                padding: 0 16px;
-            }
-
-            .nav-link {
-                padding: 18px 20px;
-                font-size: 16px;
-            }
-
-            .main-content {
-                padding: 24px 0;
-            }
-        }
-
-        @media (max-width: 375px) {
-            .countdown-number {
                 font-size: 24px;
             }
 
-            .countdown-units {
+            .sprint-card {
+                padding: 24px 20px;
+                margin-bottom: 28px;
+            }
+
+            .countdown-grid {
                 gap: 8px;
             }
 
-            .countdown-unit-label {
-                font-size: 10px;
-            }
-        }
-
-        /* iPhone SE and smaller screens */
-        @media (max-width: 320px) {
-            h1 {
-                font-size: 24px;
-            }
-
-            .countdown-card {
-                padding: 16px;
+            .countdown-item {
+                padding: 16px 6px;
             }
 
             .countdown-number {
+                font-size: 22px;
+            }
+
+            .nav-link {
+                padding: 18px 16px;
+            }
+
+            .loader-logo {
+                width: 100px;
+                height: 100px;
+            }
+
+            .loader-progress {
+                width: 160px;
+            }
+        }
+
+        @media (max-width: 360px) {
+            .countdown-number {
                 font-size: 20px;
+            }
+
+            .countdown-item {
+                padding: 14px 4px;
+            }
+
+            .nav-title-text {
+                font-size: 15px;
+            }
+
+            .nav-subtitle {
+                font-size: 12px;
             }
         }
 
         /* Dark mode support */
         @media (prefers-color-scheme: dark) {
             body {
-                background: linear-gradient(180deg, #000000 0%, #1c1c1e 100%);
-                color: #ffffff;
+                background: #0f172a;
+                color: #f8fafc;
+            }
+
+            .loader-overlay {
+                background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
             }
 
             .header {
-                background: rgba(28, 28, 30, 0.8);
-                border-bottom-color: rgba(255, 255, 255, 0.1);
+                background: rgba(15, 23, 42, 0.95);
+                border-bottom-color: #334155;
             }
 
             h1 {
-                color: #ffffff;
+                color: #f8fafc;
+            }
+
+            .subtitle {
+                color: #94a3b8;
+            }
+
+            .sprint-card {
+                background: #1e293b;
+                border-color: #334155;
+            }
+
+            .sprint-info h2 {
+                color: #f8fafc;
+            }
+
+            .sprint-info p {
+                color: #94a3b8;
+            }
+
+            .countdown-title {
+                color: #f8fafc;
+            }
+
+            .countdown-item {
+                background: #0f172a;
+            }
+
+            .countdown-item:active {
+                background: #1e293b;
+            }
+
+            .nav-title {
+                color: #f8fafc;
             }
 
             .nav-item {
-                background: #1c1c1e;
+                background: #1e293b;
+                border-color: #334155;
             }
 
-            .nav-link {
-                color: #ffffff;
+            .nav-item:active {
+                background: #334155;
             }
 
-            .nav-item::after {
-                border-color: #48484a;
+            .nav-title-text {
+                color: #f8fafc;
             }
-        }
 
-        /* Smooth transitions for system theme changes */
-        * {
-            transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
+            .nav-subtitle {
+                color: #94a3b8;
+            }
         }
     </style>
 </head>
 
 <body>
-    <header class="header">
-        <div class="container">
-            <h1> The Sabios</h1>
-            <p>Sprint Architecture</p>
-        </div>
-    </header>
-
-    <main class="main-content">
-        <div class="countdown-card">
-            <div class="countdown-label">Sprint 1 - 1st iteration</div>
-            <div class="countdown-time" id="countdownStatus">Loading...</div>
-            <div class="countdown-units" id="countdownUnits">
-                <div class="countdown-unit">
-                    <span class="countdown-number" id="days">00</span>
-                    <span class="countdown-unit-label">Days</span>
-                </div>
-                <div class="countdown-unit">
-                    <span class="countdown-number" id="hours">00</span>
-                    <span class="countdown-unit-label">Hours</span>
-                </div>
-                <div class="countdown-unit">
-                    <span class="countdown-number" id="minutes">00</span>
-                    <span class="countdown-unit-label">Minutes</span>
-                </div>
-                <div class="countdown-unit">
-                    <span class="countdown-number" id="seconds">00</span>
-                    <span class="countdown-unit-label">Seconds</span>
-                </div>
-            </div>
+    <!-- Loader Overlay -->
+    <div class="loader-overlay" id="loaderOverlay">
+        <div class="loader-logo">
+            <img src="https://site.rapdasa.org/wp-content/uploads/2016/12/UJ-logo-1.jpg" alt="UJ Logo" />
         </div>
 
-        <nav class="navigation-list">
-            <div class="nav-item">
-                <a href="./View/Main.html" class="nav-link">Main Sprint Map</a>
-                <div class="status-indicator"></div>
-            </div>
-
-            <div class="nav-item">
-                <a href="./View/table.html" class="nav-link">Agile Sprint Circle</a>
-                <div class="status-indicator"></div>
-            </div>
-
-            <div class="nav-item">
-                <a href="./View/weekly-objective.html" class="nav-link">Weekly Objective</a>
-                <div class="status-indicator"></div>
-            </div>
-        </nav>
-
-
-        <div class="completed-badge" id="completedBadge">
-            <span style="font-size: 20px;">✓</span>
-            <span class="completed-text">Sprint 1 Completed</span>
+        <div class="loader-progress">
+            <div class="loader-progress-bar"></div>
         </div>
-    </main>
+
+        <div class="loader-text">Loading Sabios System...</div>
+    </div>
+
+    <!-- Main Application -->
+    <div class="main-app" id="mainApp">
+        <header class="header">
+            <div class="header-content">
+                <div class="uj-logo-header">
+                    <img src="https://www.uj.ac.za/wp-content/uploads/2024/12/20th-anniversary-count-uj-logo.png"
+                        alt="UJ Logo" />
+                </div>
+
+                <div class="header-text">
+                    <h1>The Sabios</h1>
+                    <p class="subtitle">Sprint Architecture System</p>
+                </div>
+            </div>
+        </header>
+
+        <main class="main-content">
+            <!-- Sprint Card -->
+            <div class="sprint-card">
+                <div class="sprint-header">
+                    <div class="sprint-icon">
+                        <img src="https://site.rapdasa.org/wp-content/uploads/2016/12/UJ-logo-1.jpg" height="30" />
+                    </div>
+                    <div class="sprint-info">
+                        <h2>Sprint 1 - First Iteration</h2>
+                        <p>Active Development Sprint</p>
+                    </div>
+                </div>
+
+                <div class="countdown-status">
+                    <div class="countdown-title" id="countdownStatus">Time Remaining</div>
+                </div>
+
+                <div class="countdown-grid" id="countdownUnits">
+                    <div class="countdown-item">
+                        <span class="countdown-number" id="days">00</span>
+                        <span class="countdown-label">Days</span>
+                    </div>
+                    <div class="countdown-item">
+                        <span class="countdown-number" id="hours">00</span>
+                        <span class="countdown-label">Hours</span>
+                    </div>
+                    <div class="countdown-item">
+                        <span class="countdown-number" id="minutes">00</span>
+                        <span class="countdown-label">Minutes</span>
+                    </div>
+                    <div class="countdown-item">
+                        <span class="countdown-number" id="seconds">00</span>
+                        <span class="countdown-label">Seconds</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Navigation Section -->
+            <div class="nav-section">
+                <div class="nav-title">Navigation</div>
+
+                <div class="nav-item">
+                    <a href="./View/Main.html" class="nav-link">
+                        <div class="nav-icon">
+                            <svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24"
+                                stroke-width="2">
+                                <path stroke-linecap="round" stroke-linejoin="round"
+                                    d="M9 20l-5.447-2.724A1 1 0 013 16.382V5.618a1 1 0 011.447-.894L9 7m0 13l6-3m-6 3V7m6 10l4.553 2.276A1 1 0 0021 18.382V7.618a1 1 0 00-.553-.894L15 4m0 13V4m0 0L9 7" />
+                            </svg>
+                        </div>
+                        <div class="nav-content">
+                            <div class="nav-title-text">Main Sprint Map</div>
+                            <div class="nav-subtitle">Project overview and roadmap</div>
+                        </div>
+                        <svg class="nav-arrow" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7">
+                            </path>
+                        </svg>
+                    </a>
+                    <div class="status-badge"></div>
+                </div>
+
+                <div class="nav-item">
+                    <a href="./View/table.html" class="nav-link">
+                        <div class="nav-icon">
+                            <svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24"
+                                stroke-width="2">
+                                <path stroke-linecap="round" stroke-linejoin="round"
+                                    d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M13 10V3L4 14h7v7l9-11h-7z" />
+                            </svg>
+                        </div>
+                        <div class="nav-content">
+                            <div class="nav-title-text">Agile Sprint Circle</div>
+                            <div class="nav-subtitle">Sprint planning and execution</div>
+                        </div>
+                        <svg class="nav-arrow" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7">
+                            </path>
+                        </svg>
+                    </a>
+                    <div class="status-badge"></div>
+                </div>
+
+                <div class="nav-item">
+                    <a href="./View/weekly-objective.html" class="nav-link">
+                        <div class="nav-icon">
+                            <svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24"
+                                stroke-width="2">
+                                <path stroke-linecap="round" stroke-linejoin="round"
+                                    d="M9 12l2 2 4-4M7.835 4.697a3.42 3.42 0 001.946-.806 3.42 3.42 0 014.438 0 3.42 3.42 0 001.946.806 3.42 3.42 0 013.138 3.138 3.42 3.42 0 00.806 1.946 3.42 3.42 0 010 4.438 3.42 3.42 0 00-.806 1.946 3.42 3.42 0 01-3.138 3.138 3.42 3.42 0 00-1.946.806 3.42 3.42 0 01-4.438 0 3.42 3.42 0 00-1.946-.806 3.42 3.42 0 01-3.138-3.138 3.42 3.42 0 00-.806-1.946 3.42 3.42 0 010-4.438 3.42 3.42 0 00.806-1.946 3.42 3.42 0 013.138-3.138z" />
+                            </svg>
+                        </div>
+                        <div class="nav-content">
+                            <div class="nav-title-text">Weekly Objective</div>
+                            <div class="nav-subtitle">Current goals and targets</div>
+                        </div>
+                        <svg class="nav-arrow" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7">
+                            </path>
+                        </svg>
+                    </a>
+                    <div class="status-badge"></div>
+                </div>
+            </div>
+
+            <!-- Completion Badge -->
+            <div class="completed-badge" id="completedBadge">
+                <svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+                </svg>
+                <div class="completed-text">Sprint 1 Completed!</div>
+            </div>
+        </main>
+    </div>
 
     <script>
+        // Initialize app with loader
+        function initializeApp() {
+            const loaderOverlay = document.getElementById('loaderOverlay');
+            const mainApp = document.getElementById('mainApp');
+
+            setTimeout(() => {
+                loaderOverlay.classList.add('hidden');
+                mainApp.classList.add('loaded');
+
+                // Start countdown after loading
+                updateCountdown();
+                setInterval(updateCountdown, 1000);
+            }, 3000);
+        }
+
+        // Get next Friday at 23:59
         function getNextFridayAt2359() {
             const now = new Date();
             const day = now.getDay();
@@ -390,22 +783,24 @@
         }
 
         const sprintEnd = getNextFridayAt2359();
-        const countdownStatusEl = document.getElementById("countdownStatus");
-        const completedBadge = document.getElementById("completedBadge");
-        const daysEl = document.getElementById("days");
-        const hoursEl = document.getElementById("hours");
-        const minutesEl = document.getElementById("minutes");
-        const secondsEl = document.getElementById("seconds");
-        const countdownUnitsEl = document.getElementById("countdownUnits");
+        const elements = {
+            status: document.getElementById("countdownStatus"),
+            days: document.getElementById("days"),
+            hours: document.getElementById("hours"),
+            minutes: document.getElementById("minutes"),
+            seconds: document.getElementById("seconds"),
+            units: document.getElementById("countdownUnits"),
+            badge: document.getElementById("completedBadge")
+        };
 
         function updateCountdown() {
             const now = new Date().getTime();
             const distance = sprintEnd - now;
 
             if (distance <= 0) {
-                countdownStatusEl.textContent = "Sprint Completed!";
-                countdownUnitsEl.style.display = "none";
-                completedBadge.classList.add("show");
+                elements.status.textContent = "Sprint Completed!";
+                elements.units.style.display = "none";
+                elements.badge.classList.add("show");
                 return;
             }
 
@@ -414,44 +809,61 @@
             const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
             const seconds = Math.floor((distance % (1000 * 60)) / 1000);
 
-            countdownStatusEl.textContent = "Time Remaining";
-
-            daysEl.textContent = days.toString().padStart(2, '0');
-            hoursEl.textContent = hours.toString().padStart(2, '0');
-            minutesEl.textContent = minutes.toString().padStart(2, '0');
-            secondsEl.textContent = seconds.toString().padStart(2, '0');
+            elements.status.textContent = "Time Remaining";
+            elements.days.textContent = days.toString().padStart(2, '0');
+            elements.hours.textContent = hours.toString().padStart(2, '0');
+            elements.minutes.textContent = minutes.toString().padStart(2, '0');
+            elements.seconds.textContent = seconds.toString().padStart(2, '0');
         }
 
-        function navigateTo(hash) {
-            if (navigator.vibrate) {
-                navigator.vibrate(10);
+        // Mobile-optimized touch interactions
+        document.addEventListener('DOMContentLoaded', function () {
+            // Add haptic feedback for supported devices
+            function hapticFeedback() {
+                if (navigator.vibrate) {
+                    navigator.vibrate(10);
+                }
             }
 
-            console.log(`Navigating to: ${hash}`);
-            const section = document.querySelector(hash);
-            if (section) {
-                section.scrollIntoView({ behavior: 'smooth' });
-            } else {
-                console.warn(`Section ${hash} not found.`);
-            }
-        }
+            // Navigation items touch feedback
+            document.querySelectorAll('.nav-item').forEach(item => {
+                item.addEventListener('touchstart', function (e) {
+                    hapticFeedback();
+                }, { passive: true });
 
-        // ✅ Timer starts when page loads
-        updateCountdown();
-        setInterval(updateCountdown, 1000);
-
-        // Touch animation
-        document.querySelectorAll('.nav-item').forEach(item => {
-            item.addEventListener('touchstart', function () {
-                this.style.transform = 'scale(0.98)';
+                // Prevent double-tap zoom
+                item.addEventListener('touchend', function (e) {
+                    e.preventDefault();
+                    // Handle navigation
+                    const link = this.querySelector('a');
+                    if (link) {
+                        setTimeout(() => {
+                            window.location.href = link.href;
+                        }, 100);
+                    }
+                });
             });
 
-            item.addEventListener('touchend', function () {
-                this.style.transform = '';
+            // Countdown items touch feedback
+            document.querySelectorAll('.countdown-item').forEach(item => {
+                item.addEventListener('touchstart', function () {
+                    hapticFeedback();
+                }, { passive: true });
             });
+
+            initializeApp();
         });
-    </script>
 
+        // Prevent zoom on double tap
+        let lastTouchEnd = 0;
+        document.addEventListener('touchend', function (event) {
+            const now = (new Date()).getTime();
+            if (now - lastTouchEnd <= 300) {
+                event.preventDefault();
+            }
+            lastTouchEnd = now;
+        }, false);
+    </script>
 </body>
 
 </html>
