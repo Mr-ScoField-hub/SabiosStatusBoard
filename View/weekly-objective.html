@@ -3,148 +3,235 @@
 
 <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
     <title>Sprint 1 Achievements</title>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
     <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
         body {
-            font-family: 'Poppins', sans-serif;
-            background: #f0f4f8;
-            padding: 20px;
-            color: #111827;
+            font-family: 'Inter', sans-serif;
+            background: #ffffff;
+            min-height: 100vh;
+            color: #1e293b;
+            padding: 16px;
+            overflow-x: hidden;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 360px;
+            margin: 0 auto;
         }
 
         h1 {
             text-align: center;
             font-size: 24px;
+            font-weight: 700;
+            color: #1e293b;
             margin-bottom: 24px;
+        }
+
+        .summary {
+            text-align: center;
+            font-size: 14px;
+            color: #64748b;
+            margin-bottom: 24px;
+            font-weight: 500;
         }
 
         .goal {
-            background: white;
-            border-radius: 16px;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
-            margin-bottom: 24px;
-            padding: 16px 20px;
+            background: #ffffff;
+            border-radius: 12px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+            margin-bottom: 16px;
+            padding: 16px;
+            border: 1px solid #e2e8f0;
+            transition: all 0.3s ease;
         }
 
         .goal h2 {
-            font-size: 18px;
+            font-size: 16px;
+            font-weight: 600;
+            color: #1e293b;
             margin-bottom: 12px;
         }
 
         .subtask {
             display: flex;
             justify-content: space-between;
-            padding: 8px 0;
+            align-items: center;
+            padding: 10px 0;
             border-bottom: 1px solid #e5e7eb;
+            transition: background 0.2s ease;
         }
 
         .subtask:last-child {
             border-bottom: none;
         }
 
+        .subtask:hover {
+            background: #f3f4f6;
+        }
+
         .label {
-            font-weight: 500;
+            font-size: 14px;
+            font-weight: 700;
+            color: #1e293b;
+            flex: 1;
+        }
+
+        .label.mashele {
+            color: #db2777;
         }
 
         .status {
-            padding: 4px 10px;
+            padding: 5px 12px;
             border-radius: 12px;
-            font-size: 13px;
+            font-size: 12px;
             font-weight: 600;
-        }
-
-        .done {
-            background: #d1fae5;
-            color: #065f46;
+            cursor: pointer;
+            transition: all 0.2s ease;
         }
 
         .pending {
-            background: #fee2e2;
-            color: #991b1b;
+            background: #fed7d7;
+            color: #7f1d1d;
+        }
+
+        /* Responsive */
+        @media (max-width: 360px) {
+            .container {
+                max-width: 320px;
+            }
+
+            h1 {
+                font-size: 20px;
+            }
+
+            .summary {
+                font-size: 13px;
+            }
+
+            .goal h2 {
+                font-size: 14px;
+            }
+
+            .subtask {
+                padding: 8px 0;
+            }
+
+            .label {
+                font-size: 13px;
+            }
+
+            .status {
+                font-size: 11px;
+                padding: 4px 10px;
+            }
         }
     </style>
 </head>
 
 <body>
-    <h1>Sprint 1 Achievements</h1>
+    <div class="container">
+        <h1>Sprint 1 Achievements</h1>
+        <div class="summary" id="summary">0 of 14 tasks completed (0%)</div>
 
-    <div class="goal">
-        <h2>1. Authentication Flow with Biometric/App Lock</h2>
-        <div class="subtask">
-            <span class="label">Frontend UI – Ms Mashele</span>
-            <span class="status done">Done</span>
+        <div class="goal">
+            <h2>1. Authentication Flow with Biometric/App Lock</h2>
+            <div class="subtask">
+                <span class="label mashele">Frontend UI – Ms Mashele</span>
+                <span class="status pending">Pending</span>
+            </div>
+            <div class="subtask">
+                <span class="label mashele">Biometric integration – Ms Mashele</span>
+                <span class="status pending">Pending</span>
+            </div>
+            <div class="subtask">
+                <span class="label">API: Login/Logout – Mr Qwabe</span>
+                <span class="status pending">Pending</span>
+            </div>
+            <div class="subtask">
+                <span class="label">Database (Realm Sync) – Mr Mazibuko</span>
+                <span class="status pending">Pending</span>
+            </div>
         </div>
-        <div class="subtask">
-            <span class="label">Biometric integration – Ms Mashele</span>
-            <span class="status pending">Pending</span>
+
+        <div class="goal">
+            <h2>2. Emergency Contact Selection & Storage</h2>
+            <div class="subtask">
+                <span class="label mashele">Contact Picker UI – Ms Mashele</span>
+                <span class="status pending">Pending</span>
+            </div>
+            <div class="subtask">
+                <span class="label">Save to Realm DB – Mr Mazibuko</span>
+                <span class="status pending">Pending</span>
+            </div>
         </div>
-        <div class="subtask">
-            <span class="label">API: Login/Logout – Mr Qwabe</span>
-            <span class="status pending">Pending</span>
+
+        <div class="goal">
+            <h2>3. Wake-Word Setup and Test</h2>
+            <div class="subtask">
+                <span class="label">Voice UX Design – Ms Motsamai</span>
+                <span class="status pending">Pending</span>
+            </div>
+            <div class="subtask">
+                <span class="label">Wake-word Detection API – Mr Stakio</span>
+                <span class="status pending">Pending</span>
+            </div>
+            <div class="subtask">
+                <span class="label mashele">Record/Test UI – Ms Mashele</span>
+                <span class="status pending">Pending</span>
+            </div>
         </div>
-        <div class="subtask">
-            <span class="label">Database (Realm Sync) – Mr Mazibuko</span>
-            <span class="status done">Done</span>
+
+        <div class="goal">
+            <h2>4. SOS Activation (AI + Location)</h2>
+            <div class="subtask">
+                <span class="label">n8n Integration – Mr ScoField</span>
+                <span class="status pending">Pending</span>
+            </div>
+            <div class="subtask">
+                <span class="label">Live Location Trigger – Mr Ngubane</span>
+                <span class="status pending">Pending</span>
+            </div>
+            <div class="subtask">
+                <span class="label">Event API + Logging – Mr Stakio</span>
+                <span class="status pending">Pending</span>
+            </div>
+        </div>
+
+        <div class="goal">
+            <h2>5. Official Landing Page Published</h2>
+            <div class="subtask">
+                <span class="label">Design + Content – Ms Mphelo</span>
+                <span class="status pending">Pending</span>
+            </div>
+            <div class="subtask">
+                <span class="label">Hosted Page (Netlify or Vercel)</span>
+                <span class="status pending">Pending</span>
+            </div>
         </div>
     </div>
 
-    <div class="goal">
-        <h2>2. Emergency Contact Selection & Storage</h2>
-        <div class="subtask">
-            <span class="label">Contact Picker UI – Ms Mashele</span>
-            <span class="status pending">Pending</span>
-        </div>
-        <div class="subtask">
-            <span class="label">Save to Realm DB – Mr Mazibuko</span>
-            <span class="status pending">Pending</span>
-        </div>
-    </div>
+    <script>
+        // Update summary dynamically
+        function updateSummary() {
+            const subtasks = document.querySelectorAll('.subtask .status');
+            const completed = Array.from(subtasks).filter(s => s.classList.contains('done')).length;
+            const total = subtasks.length;
+            const percentage = Math.round((completed / total) * 100);
+            document.getElementById('summary').textContent = `${completed} of ${total} tasks completed (${percentage}%)`;
+        }
 
-    <div class="goal">
-        <h2>3. Wake-Word Setup and Test</h2>
-        <div class="subtask">
-            <span class="label">Voice UX Design – Ms Motsamai</span>
-            <span class="status pending">Pending</span>
-        </div>
-        <div class="subtask">
-            <span class="label">Wake-word Detection API – Mr Stakio</span>
-            <span class="status pending">Pending</span>
-        </div>
-        <div class="subtask">
-            <span class="label">Record/Test UI – Ms Mashele</span>
-            <span class="status pending">Pending</span>
-        </div>
-    </div>
-
-    <div class="goal">
-        <h2>4. SOS Activation (AI + Location)</h2>
-        <div class="subtask">
-            <span class="label">n8n Integration – Mr ScoField</span>
-            <span class="status pending">Pending</span>
-        </div>
-        <div class="subtask">
-            <span class="label">Live Location Trigger – Mr Ngubane</span>
-            <span class="status pending">Pending</span>
-        </div>
-        <div class="subtask">
-            <span class="label">Event API + Logging – Mr Stakio</span>
-            <span class="status pending">Pending</span>
-        </div>
-    </div>
-
-    <div class="goal">
-        <h2>5. Official Landing Page Published</h2>
-        <div class="subtask">
-            <span class="label">Design + Content – Ms Mphelo</span>
-            <span class="status done">Done</span>
-        </div>
-        <div class="subtask">
-            <span class="label">Hosted Page (Netlify or Vercel)</span>
-            <span class="status pending">Pending</span>
-        </div>
-    </div>
+        // Initialize summary
+        updateSummary();
+    </script>
 </body>
 
 </html>

@@ -3,9 +3,9 @@
 
 <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
     <title>Sabios System Map</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <style>
         * {
             margin: 0;
@@ -17,9 +17,9 @@
         }
 
         body {
-            font-family: 'Inter', -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
-            background: #fafafa;
-            color: #1a1a1a;
+            font-family: 'Inter', sans-serif;
+            background: #ffffff;
+            color: #1e293b;
             line-height: 1.6;
             overflow-x: hidden;
             touch-action: manipulation;
@@ -32,73 +32,73 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background: linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%);
+            background: #ffffff;
             display: flex;
             flex-direction: column;
             align-items: center;
             justify-content: center;
             z-index: 9999;
             opacity: 1;
-            transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+            transition: opacity 0.8s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
         .loader-overlay.hidden {
             opacity: 0;
             pointer-events: none;
-            transform: scale(1.05);
         }
 
         .loader-logo {
-            width: 120px;
-            height: 120px;
-            margin-bottom: 40px;
-            border-radius: 20px;
+            width: 100px;
+            height: 100px;
+            border-radius: 16px;
             overflow: hidden;
-            animation: logoFloat 3s ease-in-out infinite;
+            margin-bottom: 32px;
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+            animation: logoPulse 2s ease-in-out infinite;
         }
 
         .loader-logo img {
             width: 100%;
             height: 100%;
             object-fit: contain;
-            background: white;
-            padding: 16px;
+            background: #ffffff;
+            padding: 12px;
         }
 
         .loader-progress {
-            width: 200px;
-            height: 3px;
-            background: #f0f0f0;
-            border-radius: 2px;
+            width: 180px;
+            height: 4px;
+            background: #f1f5f9;
+            border-radius: 4px;
             overflow: hidden;
-            margin-bottom: 24px;
+            margin-bottom: 20px;
         }
 
         .loader-progress-bar {
             height: 100%;
-            background: #ff7214;
-            border-radius: 2px;
-            animation: loadProgress 2.5s ease-out forwards;
+            background: linear-gradient(90deg, #ff7214, #f97316);
+            border-radius: 4px;
+            animation: loadProgress 2s ease-out forwards;
             transform: translateX(-100%);
         }
 
         .loader-text {
-            color: #6b7280;
-            font-size: 16px;
+            color: #64748b;
+            font-size: 14px;
             font-weight: 500;
             opacity: 0;
-            animation: fadeInText 0.6s ease forwards 1s;
+            animation: fadeInText 0.5s ease forwards 0.8s;
         }
 
-        @keyframes logoFloat {
+        @keyframes logoPulse {
 
             0%,
             100% {
-                transform: translateY(0px) scale(1);
+                transform: scale(1);
             }
 
             50% {
-                transform: translateY(-12px) scale(1.05);
+                transform: scale(1.05);
             }
         }
 
@@ -121,8 +121,8 @@
         /* Main Content */
         .main-app {
             opacity: 0;
-            transform: translateY(30px);
-            transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+            transform: translateY(20px);
+            transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1);
             min-height: 100vh;
         }
 
@@ -133,34 +133,33 @@
 
         /* Header */
         .header {
-            background: rgba(255, 255, 255, 0.95);
-            backdrop-filter: blur(20px);
+            background: #ffffff;
             border-bottom: 1px solid #e5e7eb;
             position: sticky;
             top: 0;
             z-index: 100;
-            padding: 20px 0;
+            padding: 16px 0;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
         }
 
         .header-content {
-            max-width: 100%;
+            max-width: 360px;
             margin: 0 auto;
-            padding: 0 20px;
+            padding: 0 16px;
             display: flex;
             align-items: center;
-            gap: 16px;
+            gap: 12px;
         }
 
         .uj-logo-header {
-            width: 52px;
-            height: 52px;
-            border-radius: 12px;
+            width: 48px;
+            height: 48px;
+            border-radius: 10px;
             overflow: hidden;
             flex-shrink: 0;
-            background: white;
-            animation: slideDown 0.8s ease forwards 0.3s;
-            opacity: 0;
-            transform: translateY(-20px);
+            background: #ffffff;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+            animation: slideDown 0.6s ease forwards;
         }
 
         .uj-logo-header img {
@@ -172,46 +171,44 @@
 
         .header-text {
             flex: 1;
-            animation: slideDown 0.8s ease forwards 0.5s;
+            animation: slideDown 0.6s ease forwards 0.2s;
             opacity: 0;
-            transform: translateY(-20px);
+            transform: translateY(-15px);
         }
 
         h1 {
-            font-size: 28px;
+            font-size: 24px;
             font-weight: 700;
-            color: #111827;
+            color: #1e293b;
             margin: 0;
             letter-spacing: -0.02em;
-            line-height: 1.2;
         }
 
         .subtitle {
-            font-size: 15px;
+            font-size: 14px;
             font-weight: 500;
-            color: #6b7280;
+            color: #64748b;
             margin: 2px 0 0 0;
-            letter-spacing: -0.01em;
         }
 
         /* Main Content */
         .main-content {
-            padding: 32px 20px 60px;
+            padding: 24px 16px 48px;
+            max-width: 360px;
+            margin: 0 auto;
         }
 
         /* Sprint Card */
         .sprint-card {
-            background: white;
-            border-radius: 20px;
-            padding: 28px 24px;
-            margin-bottom: 32px;
-            box-shadow: 0 4px 32px rgba(0, 0, 0, 0.04);
-            border: 1px solid #f1f5f9;
-            position: relative;
-            overflow: hidden;
-            animation: slideUp 0.8s ease forwards 0.7s;
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 16px;
+            padding: 24px;
+            margin-bottom: 24px;
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            animation: slideUp 0.6s ease forwards 0.4s;
             opacity: 0;
-            transform: translateY(40px);
+            transform: translateY(30px);
         }
 
         .sprint-card::before {
@@ -220,65 +217,65 @@
             top: 0;
             left: 0;
             right: 0;
-            height: 4px;
-            background: #ff7214;
+            height: 3px;
+            background: linear-gradient(90deg, #ff7214, #f97316);
         }
 
         .sprint-header {
             display: flex;
             align-items: center;
             gap: 12px;
-            margin-bottom: 24px;
+            margin-bottom: 20px;
         }
 
         .sprint-icon {
-            width: 44px;
-            height: 44px;
-            background: #ff7214;
-            border-radius: 12px;
+            width: 40px;
+            height: 40px;
+            background: linear-gradient(135deg, #ff7214, #f97316);
+            border-radius: 10px;
             display: flex;
             align-items: center;
             justify-content: center;
-            color: white;
+            color: #ffffff;
         }
 
         .sprint-info h2 {
-            font-size: 18px;
+            font-size: 16px;
             font-weight: 600;
-            color: #111827;
+            color: #1e293b;
             margin: 0;
         }
 
         .sprint-info p {
-            font-size: 14px;
-            color: #6b7280;
+            font-size: 13px;
+            color: #64748b;
             margin: 2px 0 0 0;
         }
 
         .countdown-status {
             text-align: center;
-            margin-bottom: 24px;
+            margin-bottom: 20px;
         }
 
         .countdown-title {
-            font-size: 22px;
-            font-weight: 700;
-            color: #111827;
+            font-size: 18px;
+            font-weight: 600;
+            color: #1e293b;
             margin-bottom: 8px;
         }
 
         .countdown-grid {
             display: grid;
             grid-template-columns: repeat(4, 1fr);
-            gap: 12px;
+            gap: 8px;
         }
 
         .countdown-item {
             background: #f8fafc;
-            border-radius: 14px;
-            padding: 18px 8px;
+            border-radius: 12px;
+            padding: 16px 6px;
             text-align: center;
-            transition: all 0.3s ease;
+            transition: all 0.2s ease;
             cursor: pointer;
         }
 
@@ -288,59 +285,58 @@
         }
 
         .countdown-number {
-            font-size: 26px;
+            font-size: 24px;
             font-weight: 700;
             color: #ff7214;
             display: block;
             line-height: 1;
-            margin-bottom: 6px;
+            margin-bottom: 4px;
             font-variant-numeric: tabular-nums;
         }
 
         .countdown-label {
-            font-size: 11px;
+            font-size: 10px;
             font-weight: 600;
-            color: #6b7280;
+            color: #64748b;
             text-transform: uppercase;
             letter-spacing: 0.05em;
         }
 
         /* Navigation */
         .nav-section {
-            margin-bottom: 32px;
+            margin-bottom: 24px;
         }
 
         .nav-title {
-            font-size: 20px;
-            font-weight: 700;
-            color: #111827;
-            margin-bottom: 16px;
+            font-size: 18px;
+            font-weight: 600;
+            color: #1e293b;
+            margin-bottom: 12px;
             padding: 0 4px;
         }
 
         .nav-item {
-            background: white;
-            border-radius: 16px;
+            background: #ffffff;
+            border-radius: 12px;
             margin-bottom: 12px;
-            border: 1px solid #f1f5f9;
+            border: 1px solid #e2e8f0;
             transition: all 0.2s ease;
             cursor: pointer;
-            animation: slideInRight 0.6s ease forwards;
+            animation: slideInRight 0.5s ease forwards;
             opacity: 0;
-            transform: translateX(40px);
-            touch-action: manipulation;
+            transform: translateX(30px);
         }
 
         .nav-item:nth-child(2) {
-            animation-delay: 0.9s;
+            animation-delay: 0.6s;
         }
 
         .nav-item:nth-child(3) {
-            animation-delay: 1.0s;
+            animation-delay: 0.7s;
         }
 
         .nav-item:nth-child(4) {
-            animation-delay: 1.1s;
+            animation-delay: 0.8s;
         }
 
         .nav-item:active {
@@ -351,18 +347,18 @@
         .nav-link {
             display: flex;
             align-items: center;
-            gap: 16px;
-            padding: 20px;
+            gap: 12px;
+            padding: 16px;
             text-decoration: none;
             color: inherit;
             position: relative;
         }
 
         .nav-icon {
-            width: 44px;
-            height: 44px;
-            background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
-            border-radius: 12px;
+            width: 40px;
+            height: 40px;
+            background: linear-gradient(135deg, #f8fafc, #f1f5f9);
+            border-radius: 10px;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -371,12 +367,12 @@
         }
 
         .nav-item:active .nav-icon {
-            background: #ff7214;
+            background: linear-gradient(135deg, #ff7214, #f97316);
             transform: scale(1.05);
         }
 
         .nav-item:active .nav-icon svg {
-            stroke: white;
+            stroke: #ffffff;
         }
 
         .nav-content {
@@ -384,20 +380,20 @@
         }
 
         .nav-title-text {
-            font-size: 16px;
+            font-size: 15px;
             font-weight: 600;
-            color: #111827;
+            color: #1e293b;
             margin-bottom: 2px;
         }
 
         .nav-subtitle {
-            font-size: 13px;
-            color: #6b7280;
+            font-size: 12px;
+            color: #64748b;
         }
 
         .nav-arrow {
-            width: 20px;
-            height: 20px;
+            width: 18px;
+            height: 18px;
             color: #cbd5e1;
             transition: all 0.2s ease;
         }
@@ -410,13 +406,13 @@
         /* Status Badge */
         .status-badge {
             position: absolute;
-            top: 16px;
-            right: 16px;
-            width: 10px;
-            height: 10px;
+            top: 12px;
+            right: 12px;
+            width: 8px;
+            height: 8px;
             background: #10b981;
             border-radius: 50%;
-            border: 2px solid white;
+            border: 2px solid #ffffff;
             opacity: 0;
             transition: opacity 0.3s ease;
         }
@@ -427,17 +423,17 @@
 
         /* Completed Badge */
         .completed-badge {
-            background: linear-gradient(135deg, #10b981 0%, #059669 100%);
-            border-radius: 16px;
-            padding: 20px;
+            background: linear-gradient(135deg, #10b981, #059669);
+            border-radius: 12px;
+            padding: 16px;
             display: flex;
             align-items: center;
             justify-content: center;
-            gap: 12px;
-            box-shadow: 0 8px 32px rgba(16, 185, 129, 0.3);
+            gap: 10px;
+            box-shadow: 0 4px 16px rgba(16, 185, 129, 0.3);
             opacity: 0;
             transform: translateY(20px);
-            transition: all 0.5s ease;
+            transition: all 0.4s ease;
         }
 
         .completed-badge.show {
@@ -446,8 +442,8 @@
         }
 
         .completed-text {
-            color: white;
-            font-size: 16px;
+            color: #ffffff;
+            font-size: 14px;
             font-weight: 600;
         }
 
@@ -474,69 +470,42 @@
         }
 
         /* Mobile Optimizations */
-        @media (max-width: 480px) {
+        @media (max-width: 360px) {
             .main-content {
-                padding: 28px 16px 48px;
-            }
-
-            .header-content {
-                padding: 0 16px;
+                padding: 20px 12px 40px;
             }
 
             h1 {
-                font-size: 24px;
+                font-size: 22px;
             }
 
             .sprint-card {
-                padding: 24px 20px;
-                margin-bottom: 28px;
-            }
-
-            .countdown-grid {
-                gap: 8px;
-            }
-
-            .countdown-item {
-                padding: 16px 6px;
+                padding: 20px;
+                margin-bottom: 20px;
             }
 
             .countdown-number {
                 font-size: 22px;
             }
 
-            .nav-link {
-                padding: 18px 16px;
-            }
-
-            .loader-logo {
-                width: 100px;
-                height: 100px;
-            }
-
-            .loader-progress {
-                width: 160px;
-            }
-        }
-
-        @media (max-width: 360px) {
-            .countdown-number {
-                font-size: 20px;
-            }
-
             .countdown-item {
                 padding: 14px 4px;
             }
 
+            .nav-link {
+                padding: 14px;
+            }
+
             .nav-title-text {
-                font-size: 15px;
+                font-size: 14px;
             }
 
             .nav-subtitle {
-                font-size: 12px;
+                font-size: 11px;
             }
         }
 
-        /* Dark mode support */
+        /* Dark Mode Support */
         @media (prefers-color-scheme: dark) {
             body {
                 background: #0f172a;
@@ -544,11 +513,19 @@
             }
 
             .loader-overlay {
-                background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
+                background: #0f172a;
+            }
+
+            .loader-progress {
+                background: #1e293b;
+            }
+
+            .loader-text {
+                color: #94a3b8;
             }
 
             .header {
-                background: rgba(15, 23, 42, 0.95);
+                background: #1e293b;
                 border-bottom-color: #334155;
             }
 
@@ -578,11 +555,15 @@
             }
 
             .countdown-item {
-                background: #0f172a;
+                background: #1e293b;
             }
 
             .countdown-item:active {
-                background: #1e293b;
+                background: #334155;
+            }
+
+            .countdown-label {
+                color: #94a3b8;
             }
 
             .nav-title {
@@ -605,6 +586,14 @@
             .nav-subtitle {
                 color: #94a3b8;
             }
+
+            .nav-icon {
+                background: linear-gradient(135deg, #1e293b, #334155);
+            }
+
+            .status-badge {
+                border-color: #1e293b;
+            }
         }
     </style>
 </head>
@@ -615,11 +604,9 @@
         <div class="loader-logo">
             <img src="https://site.rapdasa.org/wp-content/uploads/2016/12/UJ-logo-1.jpg" alt="UJ Logo" />
         </div>
-
         <div class="loader-progress">
             <div class="loader-progress-bar"></div>
         </div>
-
         <div class="loader-text">Loading Sabios System...</div>
     </div>
 
@@ -631,7 +618,6 @@
                     <img src="https://www.uj.ac.za/wp-content/uploads/2024/12/20th-anniversary-count-uj-logo.png"
                         alt="UJ Logo" />
                 </div>
-
                 <div class="header-text">
                     <h1>The Sabios</h1>
                     <p class="subtitle">Sprint Architecture System</p>
@@ -644,18 +630,16 @@
             <div class="sprint-card">
                 <div class="sprint-header">
                     <div class="sprint-icon">
-                        <img src="https://site.rapdasa.org/wp-content/uploads/2016/12/UJ-logo-1.jpg" height="30" />
+                        <img src="https://site.rapdasa.org/wp-content/uploads/2016/12/UJ-logo-1.jpg" height="28" />
                     </div>
                     <div class="sprint-info">
                         <h2>Sprint 1 - First Iteration</h2>
                         <p>Active Development Sprint</p>
                     </div>
                 </div>
-
                 <div class="countdown-status">
                     <div class="countdown-title" id="countdownStatus">Time Remaining</div>
                 </div>
-
                 <div class="countdown-grid" id="countdownUnits">
                     <div class="countdown-item">
                         <span class="countdown-number" id="days">00</span>
@@ -679,7 +663,6 @@
             <!-- Navigation Section -->
             <div class="nav-section">
                 <div class="nav-title">Navigation</div>
-
                 <div class="nav-item">
                     <a href="./View/Main.html" class="nav-link">
                         <div class="nav-icon">
@@ -694,13 +677,11 @@
                             <div class="nav-subtitle">Project overview and roadmap</div>
                         </div>
                         <svg class="nav-arrow" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7">
-                            </path>
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
                         </svg>
                     </a>
                     <div class="status-badge"></div>
                 </div>
-
                 <div class="nav-item">
                     <a href="./View/table.html" class="nav-link">
                         <div class="nav-icon">
@@ -716,13 +697,11 @@
                             <div class="nav-subtitle">Sprint planning and execution</div>
                         </div>
                         <svg class="nav-arrow" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7">
-                            </path>
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
                         </svg>
                     </a>
                     <div class="status-badge"></div>
                 </div>
-
                 <div class="nav-item">
                     <a href="./View/weekly-objective.html" class="nav-link">
                         <div class="nav-icon">
@@ -737,8 +716,7 @@
                             <div class="nav-subtitle">Current goals and targets</div>
                         </div>
                         <svg class="nav-arrow" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7">
-                            </path>
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
                         </svg>
                     </a>
                     <div class="status-badge"></div>
@@ -747,7 +725,7 @@
 
             <!-- Completion Badge -->
             <div class="completed-badge" id="completedBadge">
-                <svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <svg width="18" height="18" fill="none" stroke="#ffffff" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
                 </svg>
                 <div class="completed-text">Sprint 1 Completed!</div>
@@ -764,18 +742,16 @@
             setTimeout(() => {
                 loaderOverlay.classList.add('hidden');
                 mainApp.classList.add('loaded');
-
-                // Start countdown after loading
                 updateCountdown();
                 setInterval(updateCountdown, 1000);
-            }, 3000);
+            }, 2500);
         }
 
         // Get next Friday at 23:59
         function getNextFridayAt2359() {
             const now = new Date();
             const day = now.getDay();
-            const diff = (5 - day + 7) % 7;
+            const diff = (5 - day + 7) % 7 || 7; // Ensure it picks next Friday
             const target = new Date(now);
             target.setDate(now.getDate() + diff);
             target.setHours(23, 59, 0, 0);
@@ -827,14 +803,12 @@
 
             // Navigation items touch feedback
             document.querySelectorAll('.nav-item').forEach(item => {
-                item.addEventListener('touchstart', function (e) {
+                item.addEventListener('touchstart', function () {
                     hapticFeedback();
                 }, { passive: true });
 
-                // Prevent double-tap zoom
                 item.addEventListener('touchend', function (e) {
                     e.preventDefault();
-                    // Handle navigation
                     const link = this.querySelector('a');
                     if (link) {
                         setTimeout(() => {
