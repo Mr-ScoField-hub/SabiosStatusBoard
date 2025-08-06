@@ -3,9 +3,26 @@
 
 <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
-    <title>Agile Sprint Timeline</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <title>Agile Sprint Dashboard</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet" />
     <style>
+        :root {
+            --primary: #9333ea;
+            --primary-dark: #7e22ce;
+            --accent: #f59e0b;
+            --success: #10b981;
+            --gray-bg: #f9fafb;
+            --gray-dark: #1f2937;
+            --white: #ffffff;
+            --shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            --shadow-hover: 0 6px 14px rgba(0, 0, 0, 0.15);
+            --past: #888;
+            --past-bg: #f3f3f3;
+            --future: #000;
+            --future-bg: #e6f4ff;
+        }
+
         * {
             margin: 0;
             padding: 0;
@@ -13,619 +30,455 @@
         }
 
         body {
-            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-            background: #ffffff;
-            min-height: 100vh;
-            color: #1e293b;
-            overflow-x: hidden;
+            font-family: 'Inter', sans-serif;
+            background: var(--gray-bg);
+            color: var(--gray-dark);
+            line-height: 1.6;
+            overscroll-behavior: none;
+        }
+
+        .loader {
+            position: fixed;
+            inset: 0;
+            background: var(--white);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+            transition: opacity 0.4s ease-out;
+        }
+
+        .loader.hidden {
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        .spinner {
+            width: 48px;
+            height: 48px;
+            border: 5px solid #e5e7eb;
+            border-top-color: var(--primary);
+            border-radius: 50%;
+            animation: spin 0.9s ease-in-out infinite;
+        }
+
+        @keyframes spin {
+            to {
+                transform: rotate(360deg);
+            }
         }
 
         .container {
-            width: 100%;
-            padding: 16px;
+            max-width: 100%;
+            margin: 0 auto;
+            padding: 1rem;
             display: flex;
             flex-direction: column;
-            align-items: center;
+            gap: 1rem;
+            min-height: 100vh;
         }
 
         .header {
+            background: var(--white);
+            padding: 1.25rem;
+            border-radius: 0.75rem;
             text-align: center;
-            margin-bottom: 24px;
+            box-shadow: var(--shadow);
+            animation: slideIn 0.4s ease-out;
         }
 
-        .title {
-            font-size: 24px;
+        .header h1 {
+            font-size: 1.5rem;
             font-weight: 700;
-            color: #1e293b;
-            margin-bottom: 6px;
+            color: var(--primary-dark);
         }
 
-        .subtitle {
-            font-size: 14px;
-            color: #64748b;
+        .header p {
+            font-size: 0.875rem;
+            color: #6b7280;
+            margin-top: 0.25rem;
+        }
+
+        .card {
+            background: var(--white);
+            border-radius: 0.75rem;
+            padding: 1.25rem;
+            box-shadow: var(--shadow);
+            transition: transform 0.2s ease;
+            margin: 0 0.5rem;
+            min-height: 100px;
+        }
+
+        .card:active {
+            transform: scale(0.98);
+        }
+
+        .card h2 {
+            font-size: 1.125rem;
+            font-weight: 600;
+            color: var(--gray-dark);
+            margin-bottom: 0.75rem;
+        }
+
+        .info-group {
+            display: grid;
+            gap: 0.5rem;
+        }
+
+        .info-label {
+            font-size: 0.75rem;
             font-weight: 500;
+            color: #9ca3af;
+            text-transform: uppercase;
         }
 
-        /* Circular Timeline */
-        .timeline-circle {
-            position: relative;
-            width: 240px;
-            height: 240px;
-            margin: 0 auto 24px;
+        .info-value {
+            font-size: 0.875rem;
+            font-weight: 500;
+            color: var(--gray-dark);
         }
 
-        .progress-ring {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            transform: rotate(-90deg);
-        }
-
-        .progress-background {
-            fill: none;
-            stroke: #e2e8f0;
-            stroke-width: 10;
+        .progress-container {
+            margin-top: 1rem;
         }
 
         .progress-bar {
-            fill: none;
-            stroke: #3b82f6;
-            stroke-width: 10;
-            stroke-linecap: round;
-            transition: stroke-dashoffset 0.8s ease;
+            height: 10px;
+            background: #e5e7eb;
+            border-radius: 5px;
+            overflow: hidden;
         }
 
-        /* Center Info */
-        .center-info {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            background: #ffffff;
-            border-radius: 50%;
-            width: 120px;
-            height: 120px;
-            box-shadow: 0 8px 16px rgba(59, 130, 246, 0.15);
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            text-align: center;
-            padding: 12px;
-            user-select: none;
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, var(--primary) 0%, var(--accent) 100%);
+            border-radius: 5px;
+            transition: width 0.5s ease-in-out;
         }
 
-        .next-milestone-label {
-            font-size: 10px;
-            font-weight: 600;
-            color: #94a3b8;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-            margin-bottom: 4px;
-        }
-
-        .countdown-display {
-            font-family: 'IBM Plex Mono', monospace;
-            font-weight: 600;
-            font-size: 18px;
-            color: #1e293b;
-            margin-bottom: 4px;
-        }
-
-        .current-phase-name {
-            font-size: 11px;
-            font-weight: 600;
-            color: #2563eb;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-        }
-
-        /* Milestone Dots */
-        .milestone-dot {
-            position: absolute;
-            width: 24px;
-            height: 24px;
-            background: #ffffff;
-            border: 2px solid #cbd5e1;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-            font-size: 12px;
-            font-weight: 600;
-            color: #64748b;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            user-select: none;
-            z-index: 10;
-        }
-
-        .milestone-dot:hover {
-            transform: scale(1.2);
-        }
-
-        .milestone-dot.completed {
-            background: #10b981;
-            border-color: #10b981;
-            color: #ffffff;
-            box-shadow: 0 4px 12px rgba(16, 185, 129, 0.4);
-        }
-
-        .milestone-dot.active {
-            background: #2563eb;
-            border-color: #2563eb;
-            color: #ffffff;
-            transform: scale(1.3);
-            animation: pulse-dot 2s infinite ease-in-out;
-            box-shadow: 0 6px 14px rgba(37, 99, 235, 0.5);
-        }
-
-        @keyframes pulse-dot {
-
-            0%,
-            100% {
-                box-shadow: 0 6px 14px rgba(37, 99, 235, 0.5);
-            }
-
-            50% {
-                box-shadow: 0 6px 14px rgba(37, 99, 235, 0.5), 0 0 0 10px rgba(37, 99, 235, 0);
-            }
-        }
-
-        .milestone-dot .tooltip {
-            visibility: hidden;
-            width: 140px;
-            background: #1e293b;
-            color: #ffffff;
-            text-align: center;
-            border-radius: 6px;
-            padding: 8px;
-            position: absolute;
-            z-index: 100;
-            bottom: 120%;
-            left: 50%;
-            transform: translateX(-50%);
-            font-size: 11px;
+        .progress-text {
+            font-size: 0.75rem;
             font-weight: 500;
-            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.15);
-            opacity: 0;
-            transition: opacity 0.3s ease, visibility 0.3s ease;
+            color: #6b7280;
+            text-align: right;
+            margin-top: 0.5rem;
         }
 
-        .milestone-dot:hover .tooltip {
-            visibility: visible;
-            opacity: 1;
-        }
-
-        /* Milestone Cards */
-        .milestone-cards {
-            display: flex;
-            flex-direction: column;
-            gap: 12px;
-            width: 100%;
-            max-width: 360px;
-        }
-
-        .milestone-card {
-            display: flex;
-            align-items: center;
-            gap: 16px;
-            padding: 16px;
-            border-radius: 12px;
-            background: #ffffff;
-            border: 1px solid #e2e8f0;
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
-            cursor: pointer;
-            transition: all 0.3s ease;
-            user-select: none;
-        }
-
-        .milestone-card:hover {
-            box-shadow: 0 6px 16px rgba(0, 0, 0, 0.1);
-            transform: translateY(-2px);
-        }
-
-        .milestone-card.completed {
+        .task-item {
             background: #ecfdf5;
-            border-color: #10b981;
-            box-shadow: 0 4px 12px rgba(16, 185, 129, 0.2);
+            padding: 0.75rem 1rem;
+            margin-bottom: 0.5rem;
+            border-radius: 0.5rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 0.875rem;
+            color: var(--success);
+            min-height: 50px;
+            transition: background 0.2s ease;
         }
 
-        .milestone-card.active {
-            background: #eff6ff;
-            border-color: #2563eb;
-            box-shadow: 0 4px 12px rgba(37, 99, 235, 0.2);
+        .task-item:active {
+            background: #d1fae5;
         }
 
-        .card-icon {
-            width: 40px;
-            height: 40px;
-            border-radius: 10px;
-            background: #f1f5f9;
-            color: #64748b;
-            border: 2px solid #cbd5e1;
+        .week-group {
+            border: 1px solid #ddd;
+            margin-bottom: 1rem;
+            border-radius: 6px;
+            overflow: hidden;
+        }
+
+        .week-header {
+            background: #1584fa;
+            color: white;
+            padding: 10px;
+            font-weight: bold;
+            cursor: pointer;
+            min-height: 50px;
             display: flex;
             align-items: center;
-            justify-content: center;
-            font-size: 20px;
-            flex-shrink: 0;
-            transition: all 0.3s ease;
         }
 
-        .milestone-card.completed .card-icon {
-            background: #10b981;
-            border-color: #10b981;
-            color: #ffffff;
-            box-shadow: 0 3px 10px rgba(16, 185, 129, 0.4);
+        .event-list {
+            list-style: none;
+            padding: 10px;
+            margin: 0;
         }
 
-        .milestone-card.active .card-icon {
-            background: #2563eb;
-            border-color: #2563eb;
-            color: #ffffff;
-            box-shadow: 0 3px 10px rgba(37, 99, 235, 0.4);
-        }
-
-        .card-content {
-            flex: 1;
-        }
-
-        .card-day {
-            font-size: 16px;
-            font-weight: 600;
-            color: #1e293b;
+        .event {
+            padding: 6px 10px;
             margin-bottom: 4px;
+            border-left: 5px solid;
+            min-height: 50px;
+            display: flex;
+            align-items: center;
         }
 
-        .card-task {
-            font-size: 13px;
-            color: #475569;
-            margin-bottom: 6px;
-            line-height: 1.3;
+        .event.past {
+            color: var(--past);
+            background: var(--past-bg);
+            border-color: #ccc;
         }
 
-        .card-time {
-            font-family: 'IBM Plex Mono', monospace;
-            font-size: 12px;
-            color: #64748b;
-            background: #e0e7ff;
-            padding: 4px 8px;
-            border-radius: 6px;
-            display: inline-block;
-            user-select: text;
+        .event.future {
+            color: var(--future);
+            background: var(--future-bg);
+            border-color: #1584fa;
         }
 
-        /* Status Bar */
-        .status-bar {
-            margin-top: 24px;
-            padding: 12px 0;
-            text-align: center;
-            font-size: 12px;
-            color: #64748b;
-            font-weight: 500;
-            width: 100%;
-            max-width: 360px;
-            border-top: 1px solid #e2e8f0;
+        .no-event {
+            padding: 10px;
+            color: #666;
+            font-style: italic;
         }
 
-        /* Responsive */
-        @media (max-width: 360px) {
-            .timeline-circle {
-                width: 200px;
-                height: 200px;
+        .hidden {
+            display: none;
+        }
+
+        .filters {
+            display: flex;
+            gap: 0.5rem;
+            margin-bottom: 1rem;
+            flex-wrap: wrap;
+        }
+
+        .filters button {
+            padding: 0.5rem 1rem;
+            border: none;
+            border-radius: 0.5rem;
+            background: var(--primary);
+            color: white;
+            font-size: 0.875rem;
+            cursor: pointer;
+            min-height: 40px;
+        }
+
+        .filters button:active {
+            background: var(--primary-dark);
+        }
+
+        @keyframes slideIn {
+            from {
+                transform: translateY(-15px);
+                opacity: 0;
             }
 
-            .center-info {
-                width: 100px;
-                height: 100px;
-                padding: 8px;
+            to {
+                transform: translateY(0);
+                opacity: 1;
             }
+        }
 
-            .countdown-display {
-                font-size: 16px;
-            }
-
-            .current-phase-name {
-                font-size: 10px;
-            }
-
-            .milestone-dot {
-                width: 20px;
-                height: 20px;
-                font-size: 10px;
-            }
-
-            .milestone-card {
-                padding: 12px;
-            }
-
-            .card-icon {
-                width: 36px;
-                height: 36px;
-                font-size: 18px;
-            }
-
-            .card-day {
-                font-size: 14px;
-            }
-
-            .card-task {
-                font-size: 12px;
+        @media (min-width: 480px) {
+            .container {
+                max-width: 480px;
             }
         }
     </style>
 </head>
 
 <body>
-    <div class="container">
-        <div class="header">
-            <h1 class="title">Agile Sprint Timeline</h1>
-            <p class="subtitle">Track your sprint progress</p>
-        </div>
-
-        <div class="timeline-circle" aria-label="Sprint progress timeline" role="img">
-            <svg class="progress-ring" viewBox="0 0 240 240" aria-hidden="true" focusable="false">
-                <circle class="progress-background" cx="120" cy="120" r="105" />
-                <circle class="progress-bar" cx="120" cy="120" r="105" id="progress-circle" />
-            </svg>
-
-            <!-- Milestone dots -->
-            <div class="milestone-dot" id="dot-start" style="top: 20px; left: 50%; transform: translateX(-50%)"
-                aria-label="Sprint Start milestone">1
-                <span class="tooltip">Sprint Start: Planning & Kickoff</span>
-            </div>
-            <div class="milestone-dot" id="dot-review" style="top: 50%; right: 20px; transform: translateY(-50%)"
-                aria-label="Initial Review milestone">2
-                <span class="tooltip">Initial Review: Submit Work</span>
-            </div>
-            <div class="milestone-dot" id="dot-final" style="bottom: 20px; left: 20px;"
-                aria-label="Final Submission milestone">3
-                <span class="tooltip">Final Submission: Deploy</span>
-            </div>
-
-            <div class="center-info">
-                <div class="next-milestone-label">Next Milestone</div>
-                <div class="countdown-display" id="countdown">--:--:--</div>
-                <div class="current-phase-name" id="phase-name">Loading...</div>
-            </div>
-        </div>
-
-        <div class="milestone-cards" role="list">
-            <article class="milestone-card" id="card-start" role="listitem" tabindex="0"
-                aria-label="Sprint Start: Planning and Kickoff Meeting">
-                <div class="card-icon" aria-hidden="true">
-                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-width="2"
-                        stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24" width="20" height="20">
-                        <circle cx="12" cy="12" r="10" />
-                        <polyline points="12 6 12 12 16 14" />
-                    </svg>
-                </div>
-                <div class="card-content">
-                    <div class="card-day">Wed - Sprint Start</div>
-                    <div class="card-task">Planning & Kickoff</div>
-                    <div class="card-time" id="time-start">Loading...</div>
-                </div>
-            </article>
-
-            <article class="milestone-card" id="card-review" role="listitem" tabindex="0"
-                aria-label="Initial Review: Submit Initial Work">
-                <div class="card-icon" aria-hidden="true">
-                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-width="2"
-                        stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24" width="20" height="20">
-                        <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
-                        <polyline points="14 2 14 8 20 8" />
-                    </svg>
-                </div>
-                <div class="card-content">
-                    <div class="card-day">Sun - Initial Review</div>
-                    <div class="card-task">Submit Initial Work</div>
-                    <div class="card-time" id="time-review">Loading...</div>
-                </div>
-            </article>
-
-            <article class="milestone-card" id="card-final" role="listitem" tabindex="0"
-                aria-label="Final Submission: Complete and Deploy">
-                <div class="card-icon" aria-hidden="true">
-                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-width="2"
-                        stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24" width="20" height="20">
-                        <circle cx="12" cy="12" r="10" />
-                        <line x1="12" y1="8" x2="12" y2="12" />
-                        <line x1="12" y1="16" x2="12" y2="16" />
-                    </svg>
-                </div>
-                <div class="card-content">
-                    <div class="card-day">Tue - Final Submission</div>
-                    <div class="card-task">Complete & Deploy</div>
-                    <div class="card-time" id="time-final">Loading...</div>
-                </div>
-            </article>
-        </div>
-
-        <div class="status-bar" aria-live="polite" aria-atomic="true" role="status">
-            <div class="status-text" id="status-message">Sprint timeline tracking active</div>
-        </div>
+    <div class="loader" id="loader">
+        <div class="spinner"></div>
     </div>
+
+    <main class="container" id="content" style="display:none;">
+        <section class="card">
+            <h2>Sprint Overview</h2>
+            <div class="info-group">
+                <div class="info-label">Sprint Name</div>
+                <div class="info-value">Sprint 1</div>
+                <div class="info-label">Duration</div>
+                <div class="info-value">6 Aug - 12 Aug 2025</div>
+                <div class="info-label">Definition of Done</div>
+                <div class="info-value">Code reviewed, tested, and deployed</div>
+            </div>
+
+            <div class="progress-container">
+                <div class="progress-bar">
+                    <div class="progress-fill" id="progress-fill" style="width: 0%;"></div>
+                </div>
+                <div class="progress-text" id="progress-text">0% Complete</div>
+            </div>
+        </section>
+
+        <section class="card">
+            <h2>Completed Tasks</h2>
+            <div id="task-list"></div>
+        </section>
+
+        <section class="card">
+            <h2>Today's Events</h2>
+            <div id="today-events"></div>
+        </section>
+    </main>
 
     <script>
         const SPRINT_CONFIG = {
-            milestones: [
-                {
-                    id: 'start',
-                    name: 'Sprint Start',
-                    dayOfWeek: 3, // Wednesday
-                    hour: 9,
-                    minute: 0,
-                    description: 'Planning & Kickoff'
-                },
-                {
-                    id: 'review',
-                    name: 'Initial Review',
-                    dayOfWeek: 0, // Sunday
-                    hour: 18,
-                    minute: 0,
-                    description: 'Submit Initial Work'
-                },
-                {
-                    id: 'final',
-                    name: 'Final Submission',
-                    dayOfWeek: 2, // Tuesday
-                    hour: 23,
-                    minute: 59,
-                    description: 'Complete & Deploy'
-                }
+            sprint: {
+                name: 'Sprint 1',
+                start: new Date('2025-08-06T09:00:00+02:00'),
+                end: new Date('2025-08-12T23:59:00+02:00'),
+                definitionOfDone: 'Code reviewed, tested, and deployed to production'
+            },
+            tasks: [
+                { name: 'Frontend UI', assigned: 'Ms Mashele', status: 'Pending' },
+                { name: 'Fall detection Trigger', assigned: 'Mr Ngubane', status: 'Completed' },
+                { name: 'Wake-word Detection API', assigned: 'Mr Stakio', status: 'Pending' }
             ]
         };
 
-        class SprintTimeline {
-            constructor() {
-                this.radius = 105;
-                this.circumference = 2 * Math.PI * this.radius;
-                this.progressCircle = document.getElementById('progress-circle');
-                this.progressCircle.style.strokeDasharray = this.circumference;
-                this.progressCircle.style.strokeDashoffset = this.circumference;
+        function generateWeeklyEvents(startDate, endDate) {
+            const events = [];
+            let current = new Date(startDate);
+            current.setHours(0, 0, 0, 0);
 
-                this.updateTimes();
-                this.animate = this.animate.bind(this);
-                requestAnimationFrame(this.animate);
-            }
+            while (current <= endDate) {
+                const sunday = new Date(current);
+                sunday.setDate(sunday.getDate() - sunday.getDay());
+                const weekStart = new Date(sunday);
+                const weekEnd = new Date(sunday);
+                weekEnd.setDate(weekStart.getDate() + 6);
 
-            updateTimes() {
-                const now = new Date();
+                const weekGroup = {
+                    weekLabel: `Week of ${weekStart.toLocaleDateString('en-US', { month: 'short', day: 'numeric' })} – ${weekEnd.toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}`,
+                    events: [],
+                };
 
-                this.milestones = SPRINT_CONFIG.milestones.map(milestone => {
-                    const nextDate = this.getNextMilestoneDate(milestone, now);
-                    return { ...milestone, nextDate };
-                });
+                const now = new Date('2025-08-06T15:37:00+02:00'); // Current time: 03:37 PM SAST
 
-                // Sort milestones by nextDate ascending for progress calculation
-                this.milestones.sort((a, b) => a.nextDate - b.nextDate);
-
-                this.sprintStart = this.milestones.find(m => m.id === 'start').nextDate;
-                this.sprintEnd = this.milestones.find(m => m.id === 'final').nextDate;
-
-                this.totalSprintDuration = this.sprintEnd - this.sprintStart;
-            }
-
-            getNextMilestoneDate(milestone, fromDate) {
-                const target = new Date(fromDate);
-                const currentDay = target.getDay();
-                let daysUntil = (milestone.dayOfWeek - currentDay + 7) % 7;
-
-                // If milestone is today, check if time passed, else move to next week
-                if (daysUntil === 0) {
-                    target.setHours(milestone.hour, milestone.minute, 0, 0);
-                    if (fromDate >= target) daysUntil = 7;
+                // Sunday – Submission & Review (23:59)
+                const review = new Date(sunday);
+                review.setHours(23, 59, 0, 0);
+                if (review >= startDate && review <= endDate) {
+                    weekGroup.events.push({ name: 'Submission & Review', date: review, past: review < now });
                 }
 
-                target.setDate(target.getDate() + daysUntil);
-                target.setHours(milestone.hour, milestone.minute, 0, 0);
-                return target;
+                // Tuesday – Deployment & Completion (15:00)
+                const deploy = new Date(sunday);
+                deploy.setDate(deploy.getDate() + 2);
+                deploy.setHours(15, 0, 0, 0);
+                if (deploy >= startDate && deploy <= endDate) {
+                    weekGroup.events.push({ name: 'Deployment & Completion', date: deploy, past: deploy < now });
+                }
+
+                // Wednesday – Sprint Meeting (14:30)
+                const meeting = new Date(sunday);
+                meeting.setDate(meeting.getDate() + 3);
+                meeting.setHours(14, 30, 0, 0);
+                if (meeting >= startDate && meeting <= endDate) {
+                    weekGroup.events.push({ name: 'Sprint Meeting', date: meeting, past: meeting < now });
+                }
+
+                events.push(weekGroup);
+                current.setDate(current.getDate() + 7);
+            }
+
+            return events;
+        }
+
+        function renderTodayEvents(events) {
+            const todayEventsDiv = document.getElementById('today-events');
+            const now = new Date('2025-08-06T15:37:00+02:00'); // Current time: 03:37 PM SAST
+            const today = new Date(now);
+            today.setHours(0, 0, 0, 0);
+
+            const todayEvents = [];
+            events.forEach(week => {
+                week.events.forEach(event => {
+                    const eventDate = new Date(event.date);
+                    eventDate.setHours(0, 0, 0, 0);
+                    if (eventDate.getTime() === today.getTime()) {
+                        todayEvents.push({ ...event, past: event.date < now });
+                    }
+                });
+            });
+
+            if (todayEvents.length === 0) {
+                todayEventsDiv.innerHTML = '<div class="no-event">No event today</div>';
+            } else {
+                todayEventsDiv.innerHTML = todayEvents.map(event => `
+          <div class="event ${event.past ? 'past' : 'future'}">
+            <span>${event.name}</span>
+            <span class="event-time">${event.date.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit', hour12: false })}</span>
+          </div>
+        `).join('');
+            }
+        }
+
+        class SprintDashboard {
+            constructor() {
+                this.loader = document.getElementById('loader');
+                this.content = document.getElementById('content');
+                this.progressFill = document.getElementById('progress-fill');
+                this.progressText = document.getElementById('progress-text');
+                this.taskList = document.getElementById('task-list');
+                this.init();
             }
 
             formatDateTime(date) {
-                return date.toLocaleDateString('en-US', {
+                return date.toLocaleString('en-US', {
                     weekday: 'short',
                     month: 'short',
                     day: 'numeric',
                     hour: '2-digit',
                     minute: '2-digit',
                     hour12: false
-                });
-            }
-
-            formatTimeRemaining(ms) {
-                if (ms <= 0) return "00:00:00";
-
-                const totalSeconds = Math.floor(ms / 1000);
-                const days = Math.floor(totalSeconds / 86400);
-                const hours = Math.floor((totalSeconds % 86400) / 3600);
-                const minutes = Math.floor((totalSeconds % 3600) / 60);
-                const seconds = totalSeconds % 60;
-
-                if (days > 0) {
-                    return `${days}d ${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
-                }
-                return `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
-            }
-
-            updateProgress(progressPercent) {
-                const offset = this.circumference - (progressPercent / 100) * this.circumference;
-                this.progressCircle.style.strokeDashoffset = offset;
-            }
-
-            updateMilestoneStates(now) {
-                this.milestones.forEach(milestone => {
-                    const dot = document.getElementById(`dot-${milestone.id}`);
-                    const card = document.getElementById(`card-${milestone.id}`);
-                    const timeEl = document.getElementById(`time-${milestone.id}`);
-
-                    dot.classList.remove('completed', 'active');
-                    card.classList.remove('completed', 'active');
-
-                    timeEl.textContent = this.formatDateTime(milestone.nextDate);
-
-                    if (now < milestone.nextDate) {
-                        if (!this.nextMilestone || milestone.nextDate < this.nextMilestone.nextDate) {
-                            this.nextMilestone = milestone;
-                        }
-                    } else {
-                        // Mark completed if time passed but within 7 days
-                        if (now - milestone.nextDate < 7 * 24 * 60 * 60 * 1000) {
-                            dot.classList.add('completed');
-                            card.classList.add('completed');
-                        }
-                    }
-                });
-
-                // Highlight the next milestone
-                if (this.nextMilestone) {
-                    const nextDot = document.getElementById(`dot-${this.nextMilestone.id}`);
-                    const nextCard = document.getElementById(`card-${this.nextMilestone.id}`);
-                    if (nextDot && nextCard) {
-                        nextDot.classList.add('active');
-                        nextCard.classList.add('active');
-                    }
-                }
-            }
-
-            updateCenterDisplay(now) {
-                if (!this.nextMilestone) {
-                    document.getElementById('countdown').textContent = "--:--:--";
-                    document.getElementById('phase-name').textContent = "No upcoming milestones";
-                    document.getElementById('status-message').textContent = "Sprint completed!";
-                    return;
-                }
-                const timeUntil = this.nextMilestone.nextDate - now;
-                document.getElementById('countdown').textContent = this.formatTimeRemaining(timeUntil);
-                document.getElementById('phase-name').textContent = this.nextMilestone.name;
-                const progressPercent = this.getProgressPercent(now);
-                document.getElementById('status-message').textContent = `Sprint ${progressPercent.toFixed(1)}% complete - Next: ${this.nextMilestone.name}`;
+                }).replace('24:', '00:');
             }
 
             getProgressPercent(now) {
-                if (now <= this.sprintStart) return 0;
-                if (now >= this.sprintEnd) return 100;
-                return ((now - this.sprintStart) / this.totalSprintDuration) * 100;
+                const { start, end } = SPRINT_CONFIG.sprint;
+                if (now <= start) return 0;
+                if (now >= end) return 100;
+                const totalMs = end - start;
+                const elapsedMs = now - start;
+                return (elapsedMs / totalMs) * 100;
             }
 
-            animate() {
-                const now = new Date();
-                this.updateTimes();
-                const progressPercent = this.getProgressPercent(now);
-                this.updateProgress(progressPercent);
-                this.updateMilestoneStates(now);
-                this.updateCenterDisplay(now);
+            getTaskProgress() {
+                const completedTasks = SPRINT_CONFIG.tasks.filter(t => t.status === 'Completed');
+                const total = completedTasks.length;
+                const completed = total;
+                return { completed, total, percentage: total > 0 ? 100 : 0 };
+            }
 
-                requestAnimationFrame(this.animate);
+            renderTasks() {
+                const completedTasks = SPRINT_CONFIG.tasks.filter(t => t.status === 'Completed');
+                this.taskList.innerHTML = completedTasks.length > 0
+                    ? completedTasks.map(task => `
+              <div class="task-item">
+                <span>${task.name}</span>
+                <span class="task-assigned">${task.assigned}</span>
+              </div>
+            `).join('')
+                    : '<div class="task-item">No completed tasks</div>';
+            }
+
+            init() {
+                setTimeout(() => {
+                    this.loader.classList.add('hidden');
+                    this.content.style.display = 'block';
+                    this.renderTasks();
+                    renderTodayEvents(generateWeeklyEvents(SPRINT_CONFIG.sprint.start, SPRINT_CONFIG.sprint.end));
+                    requestAnimationFrame(() => this.updateProgress());
+                }, 500);
+            }
+
+            updateProgress() {
+                const now = new Date('2025-08-06T15:37:00+02:00'); // Current time: 03:37 PM SAST
+                const { completed, total, percentage } = this.getTaskProgress();
+                const timeProgress = this.getProgressPercent(now);
+                const displayPercent = Math.min(percentage, timeProgress);
+                this.progressFill.style.width = `${displayPercent.toFixed(1)}%`;
+                this.progressText.textContent = `${completed} of ${total} tasks completed (${displayPercent.toFixed(1)}%)`;
+                requestAnimationFrame(() => this.updateProgress());
             }
         }
 
-        document.addEventListener('DOMContentLoaded', () => {
-            new SprintTimeline();
-        });
+        document.addEventListener('DOMContentLoaded', () => new SprintDashboard());
     </script>
 </body>
 

@@ -122,7 +122,7 @@
             border-radius: 12px;
             font-size: 12px;
             font-weight: 600;
-            cursor: pointer;
+            cursor: default;
             transition: all 0.2s ease;
         }
 
@@ -131,7 +131,11 @@
             color: #7f1d1d;
         }
 
-        /* Responsive */
+        .completed {
+            background: #d1fae5;
+            color: #065f46;
+        }
+
         @media (max-width: 360px) {
             .container {
                 max-width: 320px;
@@ -168,10 +172,7 @@
 <body>
     <div class="container">
         <h1>Sprint 1 Achievements</h1>
-        <div class="summary" id="summary">0 of 14 tasks completed (0%)</div>
-        <div class="progress-bar">
-            <div class="progress-bar-fill" id="progress-fill"></div>
-        </div>
+        <div class="summary" id="summary">Loading summary...</div>
 
         <!-- GOAL 1 -->
         <div class="goal">
@@ -229,7 +230,7 @@
             </div>
             <div class="subtask">
                 <span class="label ngubane">Fall detection Trigger – <strong>Mr Ngubane</strong></span>
-                <span class="status pending">Pending</span>
+                <span class="status completed">Completed</span>
             </div>
         </div>
 
@@ -248,16 +249,14 @@
     </div>
 
     <script>
-        // Update summary dynamically
         function updateSummary() {
             const subtasks = document.querySelectorAll('.subtask .status');
-            const completed = Array.from(subtasks).filter(s => s.classList.contains('done')).length;
+            const completed = Array.from(subtasks).filter(s => s.classList.contains('completed')).length;
             const total = subtasks.length;
             const percentage = Math.round((completed / total) * 100);
             document.getElementById('summary').textContent = `${completed} of ${total} tasks completed (${percentage}%)`;
         }
 
-        // Initialize summary
         updateSummary();
     </script>
 </body>
