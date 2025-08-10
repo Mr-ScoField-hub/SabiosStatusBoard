@@ -170,16 +170,13 @@
             margin-bottom: 0.5rem;
             border-radius: 0.5rem;
             display: flex;
-            justify-content: space-between;
+            justify-content: flex-start;
             align-items: center;
             font-size: 0.875rem;
             color: var(--success);
-            min-height: 50px;
-            transition: background 0.2s ease;
-        }
-
-        .task-item:active {
-            background: #d1fae5;
+            min-height: 40px;
+            gap: 1rem;
+            font-weight: 600;
         }
 
         .week-group {
@@ -213,6 +210,7 @@
             min-height: 50px;
             display: flex;
             align-items: center;
+            justify-content: space-between;
         }
 
         .event.past {
@@ -235,28 +233,6 @@
 
         .hidden {
             display: none;
-        }
-
-        .filters {
-            display: flex;
-            gap: 0.5rem;
-            margin-bottom: 1rem;
-            flex-wrap: wrap;
-        }
-
-        .filters button {
-            padding: 0.5rem 1rem;
-            border: none;
-            border-radius: 0.5rem;
-            background: var(--primary);
-            color: white;
-            font-size: 0.875rem;
-            cursor: pointer;
-            min-height: 40px;
-        }
-
-        .filters button:active {
-            background: var(--primary-dark);
         }
 
         @keyframes slideIn {
@@ -285,15 +261,16 @@
     </div>
 
     <main class="container" id="content" style="display:none;">
+
         <section class="card">
             <h2>Sprint Overview</h2>
             <div class="info-group">
                 <div class="info-label">Sprint Name</div>
-                <div class="info-value">Sprint 1</div>
+                <div class="info-value" id="sprint-name"></div>
                 <div class="info-label">Duration</div>
-                <div class="info-value">6 Aug - 12 Aug 2025</div>
+                <div class="info-value" id="sprint-duration"></div>
                 <div class="info-label">Definition of Done</div>
-                <div class="info-value">Code reviewed, tested, and deployed</div>
+                <div class="info-value" id="definition-of-done"></div>
             </div>
 
             <div class="progress-container">
@@ -303,16 +280,15 @@
                 <div class="progress-text" id="progress-text">0% Complete</div>
             </div>
         </section>
-
         <section class="card">
-            <h2>Completed Tasks</h2>
-            <div id="task-list"></div>
+            <h2>Today's Event</h2>
+            <div id="today-event"></div>
+        </section>
+        <section class="card">
+            <h2>People Who Completed Sprint 1</h2>
+            <div id="completed-people-list"></div>
         </section>
 
-        <section class="card">
-            <h2>Today's Events</h2>
-            <div id="today-events"></div>
-        </section>
     </main>
 
     <script>
@@ -323,90 +299,20 @@
                 end: new Date('2025-08-12T23:59:00+02:00'),
                 definitionOfDone: 'Code reviewed, tested, and deployed to production'
             },
+            totalTasks: 12,
             tasks: [
-                { name: 'Frontend UI', assigned: 'Ms Mashele', status: 'Pending' },
+                { name: 'Frontend UI', assigned: 'Ms Mashele', status: 'Completed' },
                 { name: 'Fall detection Trigger', assigned: 'Mr Ngubane', status: 'Completed' },
-                { name: 'Wake-word Detection API', assigned: 'Mr Stakio', status: 'Pending' }
+                { name: 'Wake-word Detection API', assigned: 'Mr Stakio', status: 'Pending' },
+                { name: 'Research on Hosting App', assigned: 'Ms Mphelo', status: 'Completed' },
+                { name: 'Change Main Website Content and UX', assigned: 'Ms Mphelo', status: 'Completed' },
+                { name: 'Build Posts API with full CRUD', assigned: 'Mr Qwabe', status: 'Pending' },
+                { name: 'Location Agent Integration', assigned: 'Mr ScoField', status: 'Completed' },
+                { name: 'Build Complete Skeleton for Aya', assigned: 'Mr ScoField', status: 'Completed' },
+                { name: 'Design UI Components', assigned: 'Ms Nkosi', status: 'Completed' },
+                { name: 'UML Design', assigned: 'Ms Mazibuko', status: 'Completed' },
             ]
         };
-
-        function generateWeeklyEvents(startDate, endDate) {
-            const events = [];
-            let current = new Date(startDate);
-            current.setHours(0, 0, 0, 0);
-
-            while (current <= endDate) {
-                const sunday = new Date(current);
-                sunday.setDate(sunday.getDate() - sunday.getDay());
-                const weekStart = new Date(sunday);
-                const weekEnd = new Date(sunday);
-                weekEnd.setDate(weekStart.getDate() + 6);
-
-                const weekGroup = {
-                    weekLabel: `Week of ${weekStart.toLocaleDateString('en-US', { month: 'short', day: 'numeric' })} – ${weekEnd.toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}`,
-                    events: [],
-                };
-
-                const now = new Date('2025-08-06T15:37:00+02:00'); // Current time: 03:37 PM SAST
-
-                // Sunday – Submission & Review (23:59)
-                const review = new Date(sunday);
-                review.setHours(23, 59, 0, 0);
-                if (review >= startDate && review <= endDate) {
-                    weekGroup.events.push({ name: 'Submission & Review', date: review, past: review < now });
-                }
-
-                // Tuesday – Deployment & Completion (15:00)
-                const deploy = new Date(sunday);
-                deploy.setDate(deploy.getDate() + 2);
-                deploy.setHours(15, 0, 0, 0);
-                if (deploy >= startDate && deploy <= endDate) {
-                    weekGroup.events.push({ name: 'Deployment & Completion', date: deploy, past: deploy < now });
-                }
-
-                // Wednesday – Sprint Meeting (14:30)
-                const meeting = new Date(sunday);
-                meeting.setDate(meeting.getDate() + 3);
-                meeting.setHours(14, 30, 0, 0);
-                if (meeting >= startDate && meeting <= endDate) {
-                    weekGroup.events.push({ name: 'Sprint Meeting', date: meeting, past: meeting < now });
-                }
-
-                events.push(weekGroup);
-                current.setDate(current.getDate() + 7);
-            }
-
-            return events;
-        }
-
-        function renderTodayEvents(events) {
-            const todayEventsDiv = document.getElementById('today-events');
-            const now = new Date('2025-08-06T15:37:00+02:00'); // Current time: 03:37 PM SAST
-            const today = new Date(now);
-            today.setHours(0, 0, 0, 0);
-
-            const todayEvents = [];
-            events.forEach(week => {
-                week.events.forEach(event => {
-                    const eventDate = new Date(event.date);
-                    eventDate.setHours(0, 0, 0, 0);
-                    if (eventDate.getTime() === today.getTime()) {
-                        todayEvents.push({ ...event, past: event.date < now });
-                    }
-                });
-            });
-
-            if (todayEvents.length === 0) {
-                todayEventsDiv.innerHTML = '<div class="no-event">No event today</div>';
-            } else {
-                todayEventsDiv.innerHTML = todayEvents.map(event => `
-          <div class="event ${event.past ? 'past' : 'future'}">
-            <span>${event.name}</span>
-            <span class="event-time">${event.date.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit', hour12: false })}</span>
-          </div>
-        `).join('');
-            }
-        }
 
         class SprintDashboard {
             constructor() {
@@ -414,19 +320,16 @@
                 this.content = document.getElementById('content');
                 this.progressFill = document.getElementById('progress-fill');
                 this.progressText = document.getElementById('progress-text');
-                this.taskList = document.getElementById('task-list');
+                this.sprintName = document.getElementById('sprint-name');
+                this.sprintDuration = document.getElementById('sprint-duration');
+                this.definitionOfDone = document.getElementById('definition-of-done');
+                this.completedPeopleList = document.getElementById('completed-people-list');
+                this.todayEvent = document.getElementById('today-event');
                 this.init();
             }
 
-            formatDateTime(date) {
-                return date.toLocaleString('en-US', {
-                    weekday: 'short',
-                    month: 'short',
-                    day: 'numeric',
-                    hour: '2-digit',
-                    minute: '2-digit',
-                    hour12: false
-                }).replace('24:', '00:');
+            formatDateRange(start, end) {
+                return `${start.toLocaleDateString('en-US', { month: 'short', day: 'numeric' })} - ${end.toLocaleDateString('en-US', { month: 'short', day: 'numeric' })} ${end.getFullYear()}`;
             }
 
             getProgressPercent(now) {
@@ -439,41 +342,66 @@
             }
 
             getTaskProgress() {
-                const completedTasks = SPRINT_CONFIG.tasks.filter(t => t.status === 'Completed');
-                const total = completedTasks.length;
-                const completed = total;
-                return { completed, total, percentage: total > 0 ? 100 : 0 };
+                const total = SPRINT_CONFIG.totalTasks;
+                const completed = SPRINT_CONFIG.tasks.filter(t => t.status.toLowerCase() === 'completed').length;
+                const percentage = total === 0 ? 0 : (completed / total) * 100;
+                return { completed, total, percentage };
             }
 
-            renderTasks() {
-                const completedTasks = SPRINT_CONFIG.tasks.filter(t => t.status === 'Completed');
-                this.taskList.innerHTML = completedTasks.length > 0
-                    ? completedTasks.map(task => `
-              <div class="task-item">
-                <span>${task.name}</span>
-                <span class="task-assigned">${task.assigned}</span>
-              </div>
-            `).join('')
-                    : '<div class="task-item">No completed tasks</div>';
+            renderCompletedPeople() {
+                const completedTasks = SPRINT_CONFIG.tasks.filter(t => t.status.toLowerCase() === 'completed');
+
+                const completionMap = {};
+                completedTasks.forEach(t => {
+                    if (completionMap[t.assigned]) {
+                        completionMap[t.assigned]++;
+                    } else {
+                        completionMap[t.assigned] = 1;
+                    }
+                });
+
+                const html = Object.entries(completionMap).map(([name, count]) => {
+                    return `<div class="task-item">${name} — ${count} task${count > 1 ? 's' : ''} completed</div>`;
+                }).join('');
+
+                this.completedPeopleList.innerHTML = html || '<div class="task-item">No one has completed tasks yet.</div>';
+            }
+
+            renderTodayEvent() {
+                const eventDate = new Date('2025-08-06T15:00:00+02:00');
+                this.todayEvent.innerHTML = `
+                    <div class="event future" style="border-color: var(--primary);">
+                        <span>Sprint Merging Day</span>
+                        <span class="event-time">${eventDate.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit', hour12: false })}</span>
+                    </div>
+                `;
             }
 
             init() {
                 setTimeout(() => {
                     this.loader.classList.add('hidden');
-                    this.content.style.display = 'block';
-                    this.renderTasks();
-                    renderTodayEvents(generateWeeklyEvents(SPRINT_CONFIG.sprint.start, SPRINT_CONFIG.sprint.end));
-                    requestAnimationFrame(() => this.updateProgress());
+                    this.content.style.display = 'flex';
+
+                    this.sprintName.textContent = SPRINT_CONFIG.sprint.name;
+                    this.sprintDuration.textContent = this.formatDateRange(SPRINT_CONFIG.sprint.start, SPRINT_CONFIG.sprint.end);
+                    this.definitionOfDone.textContent = SPRINT_CONFIG.sprint.definitionOfDone;
+
+                    this.renderCompletedPeople();
+                    this.renderTodayEvent();
+
+                    this.updateProgress();
                 }, 500);
             }
 
             updateProgress() {
-                const now = new Date('2025-08-06T15:37:00+02:00'); // Current time: 03:37 PM SAST
+                const now = new Date('2025-08-06T15:37:00+02:00');
                 const { completed, total, percentage } = this.getTaskProgress();
                 const timeProgress = this.getProgressPercent(now);
                 const displayPercent = Math.min(percentage, timeProgress);
+
                 this.progressFill.style.width = `${displayPercent.toFixed(1)}%`;
                 this.progressText.textContent = `${completed} of ${total} tasks completed (${displayPercent.toFixed(1)}%)`;
+
                 requestAnimationFrame(() => this.updateProgress());
             }
         }
