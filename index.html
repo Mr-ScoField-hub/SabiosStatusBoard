@@ -747,18 +747,41 @@
             }, 2500);
         }
 
-        // Get next Sunday at 23:59
-        function getNextSundayAt2359() {
+        // Calculate sprint end or display "coming" message
+        function getSprintStatus() {
             const now = new Date();
-            const day = now.getDay(); // Sunday = 0
-            const diff = (7 - day) % 7 || 7; // Ensure it picks next Sunday (not today)
-            const target = new Date(now);
-            target.setDate(now.getDate() + diff);
-            target.setHours(23, 59, 0, 0);
-            return target;
+            const day = now.getDay(); // Sunday = 0, Monday = 1, Tuesday = 2, etc.
+            const currentSprint = 1; // Replace with dynamic sprint number if needed
+
+            if (day === 1 || day === 2) {
+                // Monday or Tuesday: show "Sprint X coming"
+                return {
+                    mode: 'coming',
+                    message: `Sprint ${currentSprint + 1} coming`,
+                };
+            }
+
+            // Calculate sprint end (next Sunday at 23:59 SAST if not Sunday, current Sunday if today is Sunday)
+            let target;
+            if (day === 0) {
+                // Today is Sunday, target today at 23:59 SAST
+                target = new Date(now);
+                target.setHours(23, 59, 0, 0);
+            } else {
+                // Target next Sunday at 23:59 SAST
+                const diff = (7 - day) % 7; // Days until next Sunday
+                target = new Date(now);
+                target.setDate(now.getDate() + diff);
+                target.setHours(23, 59, 0, 0);
+            }
+
+            return {
+                mode: 'countdown',
+                sprintEnd: target,
+                sprintNumber: currentSprint,
+            };
         }
 
-        const sprintEnd = getNextSundayAt2359();
         const elements = {
             status: document.getElementById("countdownStatus"),
             days: document.getElementById("days"),
@@ -766,20 +789,32 @@
             minutes: document.getElementById("minutes"),
             seconds: document.getElementById("seconds"),
             units: document.getElementById("countdownUnits"),
-            badge: document.getElementById("completedBadge")
+            badge: document.getElementById("completedBadge"),
         };
 
         function updateCountdown() {
+            const status = getSprintStatus();
             const now = new Date().getTime();
-            const distance = sprintEnd - now;
+
+            if (status.mode === 'coming') {
+                // Display "Sprint X coming" on Monday/Tuesday
+                elements.status.textContent = status.message;
+                elements.units.style.display = "none";
+                elements.badge.classList.remove("show");
+                return;
+            }
+
+            const distance = status.sprintEnd - now;
 
             if (distance <= 0) {
-                elements.status.textContent = "Sprint Completed!";
+                // Sprint has ended
+                elements.status.textContent = `Sprint ${status.sprintNumber} Completed!`;
                 elements.units.style.display = "none";
                 elements.badge.classList.add("show");
                 return;
             }
 
+            // Update countdown
             const days = Math.floor(distance / (1000 * 60 * 60 * 24));
             const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
             const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
@@ -790,6 +825,8 @@
             elements.hours.textContent = hours.toString().padStart(2, '0');
             elements.minutes.textContent = minutes.toString().padStart(2, '0');
             elements.seconds.textContent = seconds.toString().padStart(2, '0');
+            elements.units.style.display = "grid";
+            elements.badge.classList.remove("show");
         }
 
         // Mobile-optimized touch interactions
