@@ -18,17 +18,12 @@
         }
 
         .container {
-            max-width: 460px;
+            max-width: 500px;
             width: 90%;
             background-color: #ffffff;
             border-radius: 16px;
             padding: 30px 25px;
             box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
-            transition: transform 0.2s ease;
-        }
-
-        .container:hover {
-            transform: translateY(-3px);
         }
 
         .header {
@@ -54,12 +49,28 @@
 
         .sprint-overview {
             font-size: 15px;
-            line-height: 1.7;
+            line-height: 1.6;
             color: #343a40;
             margin: 20px 0;
+        }
+
+        .task {
             background-color: #f1f3f5;
-            padding: 15px 18px;
-            border-radius: 10px;
+            border-left: 5px solid #ed0e64;
+            padding: 12px 15px;
+            border-radius: 8px;
+            margin-bottom: 12px;
+        }
+
+        .task h3 {
+            margin: 0 0 6px 0;
+            font-size: 16px;
+            color: #ed0e64;
+        }
+
+        .task p {
+            margin: 0;
+            font-size: 14px;
         }
 
         .download-btn {
@@ -86,10 +97,6 @@
             box-shadow: 0 6px 16px rgba(237, 14, 100, 0.4);
         }
 
-        .download-btn svg {
-            fill: #ffffff;
-        }
-
         .error-message {
             color: #d32f2f;
             font-size: 14px;
@@ -110,6 +117,14 @@
                 font-size: 14px;
             }
 
+            .task h3 {
+                font-size: 15px;
+            }
+
+            .task p {
+                font-size: 13px;
+            }
+
             .download-btn {
                 font-size: 14px;
                 padding: 10px 16px;
@@ -122,7 +137,6 @@
     <div class="container">
         <div class="header">
             <h1>
-                <!-- User Icon -->
                 <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" aria-label="User">
                     <path fill="#ed0e64"
                         d="M12 12c2.761 0 5-2.239 5-5s-2.239-5-5-5-5 2.239-5 5 2.239 5 5 5zm0 2c-3.33 0-10 1.67-10 5v3h20v-3c0-3.33-6.67-5-10-5z" />
@@ -132,29 +146,33 @@
             <p>Aya Sprint 2 Phase 1 Overview</p>
         </div>
 
-        <p class="sprint-overview" id="sprint-overview">Sprint overview will appear here.</p>
+        <div class="sprint-overview" id="sprint-overview">
+            <!-- Tasks will be populated here -->
+        </div>
 
-        <a id="download-link" href="#" download class="download-btn" aria-label="Download sprint overview document">
+        <a id="download-link" href="#" download class="download-btn" aria-label="Download sprint overview document"
+            style="display: flex; justify-content: center; margin: 20px auto 0;">
             <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" aria-label="Document">
-                <path
+                <path fill="#ffffff"
                     d="M6 2h9l5 5v15a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2zM15 3.5V8h4.5L15 3.5z" />
             </svg>
             Download DOCX
         </a>
+
 
         <div id="error-message" class="error-message" style="display: none;"></div>
     </div>
 
     <script>
         const sprintOverview = {
-            stakio: { name: "Mr. Stakio", overview: "Completed tasks in sprint 2, phase 1.", docx: "Sprints/sprint2_MrStakio.docx" },
-            qwabe: { name: "Mr. Qwabe", overview: "Led development of feature X.", docx: "Sprints/sprint2_MrQwabe.docx" },
-            mashele: { name: "Ms. Mashele", overview: "Resolved critical bugs.", docx: "Sprints/sprint2_MsMashele.docx" },
-            ngubane: { name: "Mr. Ngubane", overview: "Improved performance metrics.", docx: "Sprints/sprint2_MrNgubane.docx" },
-            mazibuko: { name: "Mr. Mazibuko", overview: "Designed UI components.", docx: "Sprints/sprint2_MrMazibuko.docx" },
-            motsamai: { name: "Ms. Motsamai", overview: "Conducted user testing.", docx: "Sprints/sprint2_MsMotsamai.docx" },
-            mphelo: { name: "Ms. Mphelo", overview: "Implemented backend APIs.", docx: "Sprints/sprint2_MsMphelo.docx" },
-            scofield: { name: "Mr. ScoField", overview: "Optimized database queries.", docx: "Sprints/sprint2_MrScoField.docx" }
+            stakio: { name: "Mr. Stakio", tasks: [{ task: "Collect SAPS crime data and clean it", output: "Clean dataset" }], docx: "Sprints/sprint2_MrStakio.docx" },
+            qwabe: { name: "Mr. Qwabe", tasks: [{ task: "Build token counter prototype (points increase with posts)", output: "Token counter working" }], docx: "Sprints/sprint2_MrQwabe.docx" },
+            mashele: { name: "Ms. Mashele", tasks: [{ task: "Design static digital card UI (sample user info only)", output: "Card mockup" }], docx: "Sprints/sprint2_MsMashele.docx" },
+            ngubane: { name: "Mr. Ngubane", tasks: [{ task: "Prototype route scoring from location or street pictures", output: "Route scoring demo" }], docx: "Sprints/sprint2_MrNgubane.docx" },
+            mazibuko: { name: "Mr. Mazibuko", tasks: [{ task: "Set up ChatGPT wrapper + simple voice conversation", output: "Talking demo" }], docx: "Sprints/sprint2_MrMazibuko.docx" },
+            motsamai: { name: "Ms. Motsamai", tasks: [{ task: "Make camera detect 1 action (e.g., crouch or raise hand)", output: "CV action demo" }], docx: "Sprints/sprint2_MsMotsamai.docx" },
+            mphelo: { name: "Ms. Mphelo", tasks: [{ task: "Draft storyline for decision-based safety game", output: "Story draft" }], docx: "Sprints/sprint2_MsMphelo.docx" },
+            scofield: { name: "Mr. ScoField", tasks: [{ task: "Build core emergency system: SOS, Wake Word (‘Dear Lord’), Fall Detection, Twilio WhatsApp alerts. Design smooth UX and integrate early features.", output: "Core emergency system integrated with main UX flow." }], docx: "Sprints/sprint2_MrScoField.docx" }
         };
 
         const params = new URLSearchParams(window.location.search);
@@ -166,10 +184,18 @@
         const errorMessageElement = document.getElementById('error-message');
 
         if (member && sprintOverview[member]) {
-            memberNameElement.textContent = sprintOverview[member].name;
-            sprintOverviewElement.textContent = sprintOverview[member].overview || "No sprint overview available.";
+            const memberData = sprintOverview[member];
+            memberNameElement.textContent = memberData.name;
 
-            const docxPath = sprintOverview[member].docx;
+            sprintOverviewElement.innerHTML = '';
+            memberData.tasks.forEach(t => {
+                const taskDiv = document.createElement('div');
+                taskDiv.className = 'task';
+                taskDiv.innerHTML = `<h3>Task:</h3><p>${t.task}</p><h3>Output:</h3><p>${t.output}</p>`;
+                sprintOverviewElement.appendChild(taskDiv);
+            });
+
+            const docxPath = memberData.docx;
             downloadLinkElement.href = docxPath;
             downloadLinkElement.download = docxPath.split('/').pop();
 
@@ -185,6 +211,7 @@
                     errorMessageElement.style.display = 'block';
                     console.error('Fetch error:', error);
                 });
+
         } else {
             memberNameElement.textContent = "Member Not Found";
             sprintOverviewElement.textContent = "Please select a valid member to view their sprint overview.";
