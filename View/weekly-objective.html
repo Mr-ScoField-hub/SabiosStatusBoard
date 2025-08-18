@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
-    <title>Sprint 1 Achievements</title>
+    <title>Sprint 2 Phase 1 Objectives</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
     <style>
         * {
@@ -171,115 +171,81 @@
 
 <body>
     <div class="container">
-        <h1>Sprint 1 Achievements</h1>
-        <div class="summary" id="summary">Loading summary...</div>
+        <h1>Sprint 2 Phase 1 Objectives</h1>
+        <div class="summary" id="summary">All tasks are pending</div>
 
         <!-- GOAL 1 -->
         <div class="goal">
-            <h2>1. Authentication Flow with Biometric/App Lock</h2>
+            <h2>1. Collect and Clean SAPS Crime Data</h2>
             <div class="subtask">
-                <span class="label mashele">UI/UX Design for Components – <strong>Ms Mashele</strong></span>
-                <span class="status completed">completed</span>
-            </div>
-            <div class="subtask">
-                <span class="label mashele">Dev Frontend <strong>Ms Mashele</strong></span>
-                <span class="status completed">Completed</span>
-            </div>
-            <div class="subtask">
-                <span class="label mashele">OnBoarding Screens – <strong>Ms Mashele</strong></span>
-                <span class="status completed">Completed</span>
-            </div>
-            <div class="subtask">
-                <span class="label qwabe">API: Login/Logout – <strong>Mr Qwabe</strong></span>
+                <span class="label stakio">Collect & Clean Data – <strong>Mr Stakio</strong></span>
                 <span class="status pending">Pending</span>
-            </div>
-            <div class="subtask">
-                <span class="label mazibuko">UML + Wireframes – <strong>Mr Mazibuko</strong></span>
-                <span class="status completed">Completed</span>
             </div>
         </div>
 
         <!-- GOAL 2 -->
-        <!-- <div class="goal">
-            <h2>2. Emergency Contact Selection & Storage</h2>
+        <div class="goal">
+            <h2>2. Token Counter Prototype</h2>
             <div class="subtask">
-                <span class="label">Contact Picker UI – <strong>Loading</strong></span>
+                <span class="label qwabe">Token Counter Dev – <strong>Mr Qwabe</strong></span>
                 <span class="status pending">Pending</span>
             </div>
-            <div class="subtask">
-                <span class="label">Save to Realm DB – <strong>Loading</strong></span>
-                <span class="status pending">Pending</span>
-            </div>
-        </div> -->
+        </div>
 
         <!-- GOAL 3 -->
         <div class="goal">
-            <h2>3. Wake-Word Setup and Test</h2>
+            <h2>3. Static Digital Card UI</h2>
             <div class="subtask">
-                <span class="label motsamai">Setting UI – <strong>Ms Motsamai</strong></span>
+                <span class="label mashele">Card Design – <strong>Ms Mashele</strong></span>
                 <span class="status pending">Pending</span>
-            </div>
-            <div class="subtask">
-                <span class="label stakio">Wake-word Detection API – <strong>Mr Stakio</strong></span>
-                <span class="status completed">Completed</span>
             </div>
         </div>
 
         <!-- GOAL 4 -->
         <div class="goal">
-            <h2>4. SOS Activation (AI + Location)</h2>
+            <h2>4. Route Scoring Prototype</h2>
             <div class="subtask">
-                <span class="label scofield">Location Agent Integration – <strong>Mr ScoField</strong></span>
-                <span class="status completed">Completed</span>
-            </div>
-            <div class="subtask">
-                <span class="label ngubane">Fall detection Trigger – <strong>Mr Ngubane</strong></span>
-                <span class="status completed">Completed</span>
+                <span class="label ngubane">Route Scoring – <strong>Mr Ngubane</strong></span>
+                <span class="status pending">Pending</span>
             </div>
         </div>
+
         <!-- GOAL 5 -->
         <div class="goal">
-            <h2>5. Official Landing Page Published</h2>
+            <h2>5. ChatGPT Wrapper + Voice Demo</h2>
             <div class="subtask">
-                <span class="label mphelo">Design + Content – <strong>Ms Mphelo</strong></span>
-                <span class="status completed">Completed</span>
-            </div>
-            <div class="subtask">
-                <span class="label mphelo">Research on Hosting App – <strong>Ms Mphelo</strong></span>
-                <span class="status completed">Completed</span>
+                <span class="label mazibuko">Setup ChatGPT + Voice – <strong>Mr Mazibuko</strong></span>
+                <span class="status pending">Pending</span>
             </div>
         </div>
 
         <!-- GOAL 6 -->
         <div class="goal">
-            <h2>6. Posts API Development</h2>
+            <h2>6. Camera Action Detection</h2>
             <div class="subtask">
-                <span class="label qwabe">Build Posts API with full CRUD – <strong>Mr Qwabe</strong></span>
+                <span class="label motsamai">Action Detection – <strong>Ms Motsamai</strong></span>
                 <span class="status pending">Pending</span>
             </div>
         </div>
+
         <!-- GOAL 7 -->
         <div class="goal">
-            <h2>7. Building Aya Skeleton</h2>
+            <h2>7. Safety Game Storyline</h2>
             <div class="subtask">
-                <span class="label scofield">Build Complete Skeleton for Aya – <strong>Mr ScoFiled</strong></span>
-                <span class="status completed">Completed</span>
+                <span class="label mphelo">Draft Storyline – <strong>Ms Mphelo</strong></span>
+                <span class="status pending">Pending</span>
             </div>
         </div>
 
+        <!-- GOAL 8 -->
+        <div class="goal">
+            <h2>8. Aya Core Emergency & UX Backbone</h2>
+            <div class="subtask">
+                <span class="label scofield">AI Agents & UX Flow – <strong>Mr ScoField</strong></span>
+                <span class="status pending">Pending</span>
+            </div>
+        </div>
     </div>
-
-    <script>
-        function updateSummary() {
-            const subtasks = document.querySelectorAll('.subtask .status');
-            const completed = Array.from(subtasks).filter(s => s.classList.contains('completed')).length;
-            const total = subtasks.length;
-            const percentage = Math.round((completed / total) * 100);
-            document.getElementById('summary').textContent = `${completed} of ${total} tasks completed (${percentage}%)`;
-        }
-
-        updateSummary();
-    </script>
 </body>
 
 </html>
