@@ -5,86 +5,105 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Member Sprint Overview</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         body {
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
-            background-color: #ffffff;
-            color: #1c1e21;
-            padding: 16px;
+            background: linear-gradient(135deg, #f8f9fa, #e9ecef);
+            margin: 0;
+            padding: 0;
             min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
         }
 
         .container {
-            max-width: 420px;
-            margin: 0 auto;
+            max-width: 460px;
+            width: 90%;
             background-color: #ffffff;
-            border-radius: 10px;
-            border: 1px solid #dddfe2;
-            padding: 20px;
-            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+            border-radius: 16px;
+            padding: 30px 25px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+            transition: transform 0.2s ease;
+        }
+
+        .container:hover {
+            transform: translateY(-3px);
         }
 
         .header {
             text-align: center;
-            margin-bottom: 20px;
+            margin-bottom: 25px;
         }
 
         .header h1 {
-            font-size: 22px;
+            font-size: 24px;
             font-weight: 700;
-            color: #1c1e21;
-            margin-bottom: 6px;
+            color: #ed0e64;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
         }
 
         .header p {
-            color: #65676b;
             font-size: 15px;
+            color: #6c757d;
+            margin-top: 5px;
         }
 
         .sprint-overview {
             font-size: 15px;
-            line-height: 1.5;
-            color: #1c1e21;
-            margin: 16px 0;
+            line-height: 1.7;
+            color: #343a40;
+            margin: 20px 0;
+            background-color: #f1f3f5;
+            padding: 15px 18px;
+            border-radius: 10px;
         }
 
         .download-btn {
-            display: flex;
+            display: inline-flex;
             align-items: center;
             justify-content: center;
-            gap: 8px;
-            padding: 10px 16px;
-            border-radius: 8px;
+            gap: 10px;
+            padding: 12px 20px;
+            border-radius: 12px;
             border: none;
-            background-color: #ed0e64;
+            background: linear-gradient(45deg, #ed0e64, #ff4d94);
             color: #ffffff;
-            cursor: pointer;
             font-weight: 600;
             font-size: 15px;
             text-decoration: none;
-            transition: background-color 0.2s ease;
+            cursor: pointer;
+            box-shadow: 0 4px 12px rgba(237, 14, 100, 0.3);
+            transition: all 0.2s ease;
         }
 
         .download-btn:hover {
-            background-color: #c30b50;
+            background: linear-gradient(45deg, #ff4d94, #ed0e64);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 16px rgba(237, 14, 100, 0.4);
         }
 
-        .download-btn:active {
-            background-color: #a00941;
+        .download-btn svg {
+            fill: #ffffff;
+        }
+
+        .error-message {
+            color: #d32f2f;
+            font-size: 14px;
+            text-align: center;
+            margin-top: 15px;
         }
 
         @media (max-width: 480px) {
             .container {
-                padding: 16px;
+                padding: 20px 18px;
             }
 
             .header h1 {
                 font-size: 20px;
-            }
-
-            .header p {
-                font-size: 14px;
             }
 
             .sprint-overview {
@@ -93,7 +112,7 @@
 
             .download-btn {
                 font-size: 14px;
-                padding: 9px 14px;
+                padding: 10px 16px;
             }
         }
     </style>
@@ -102,41 +121,76 @@
 <body>
     <div class="container">
         <div class="header">
-            <h1 id="member-name"><i class="fas fa-user"></i> Member Name</h1>
+            <h1>
+                <!-- User Icon -->
+                <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" aria-label="User">
+                    <path fill="#ed0e64"
+                        d="M12 12c2.761 0 5-2.239 5-5s-2.239-5-5-5-5 2.239-5 5 2.239 5 5 5zm0 2c-3.33 0-10 1.67-10 5v3h20v-3c0-3.33-6.67-5-10-5z" />
+                </svg>
+                <span id="member-name">Member Name</span>
+            </h1>
             <p>Aya Sprint 2 Phase 1 Overview</p>
         </div>
 
         <p class="sprint-overview" id="sprint-overview">Sprint overview will appear here.</p>
 
-        <a id="download-link" href="#" download class="download-btn">
-            <i class="fas fa-file-word"></i> Download DOCX
+        <a id="download-link" href="#" download class="download-btn" aria-label="Download sprint overview document">
+            <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" aria-label="Document">
+                <path
+                    d="M6 2h9l5 5v15a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2zM15 3.5V8h4.5L15 3.5z" />
+            </svg>
+            Download DOCX
         </a>
+
+        <div id="error-message" class="error-message" style="display: none;"></div>
     </div>
 
     <script>
         const sprintOverview = {
-            stakio: { name: "Mr. Stakio", overview: "...", docx: "View/SprintView/Sprints/sprint2_MrStakio.docx" },
-            qwabe: { name: "Mr. Qwabe", overview: "...", docx: "View/SprintView/Sprints/sprint2_MrQwabe.docx" },
-            mashele: { name: "Ms. Mashele", overview: "...", docx: "View/SprintView/Sprints/sprint2_MsMashele.docx" },
-            ngubane: { name: "Mr. Ngubane", overview: "...", docx: "View/SprintView/Sprints/sprint2_MrNgubane.docx" },
-            mazibuko: { name: "Mr. Mazibuko", overview: "...", docx: "View/SprintView/Sprints/sprint2_MrMazibuko.docx" },
-            motsamai: { name: "Ms. Motsamai", overview: "...", docx: "View/SprintView/Sprints/sprint2_MsMotsamai.docx" },
-            mphelo: { name: "Ms. Mphelo", overview: "...", docx: "View/SprintView/Sprints/sprint2_MsMphelo.docx" },
-            scofield: { name: "Mr. ScoField", overview: "...", docx: "View/SprintView/Sprints/sprint2_MrScoField.docx" }
+            stakio: { name: "Mr. Stakio", overview: "Completed tasks in sprint 2, phase 1.", docx: "Sprints/sprint2_MrStakio.docx" },
+            qwabe: { name: "Mr. Qwabe", overview: "Led development of feature X.", docx: "Sprints/sprint2_MrQwabe.docx" },
+            mashele: { name: "Ms. Mashele", overview: "Resolved critical bugs.", docx: "Sprints/sprint2_MsMashele.docx" },
+            ngubane: { name: "Mr. Ngubane", overview: "Improved performance metrics.", docx: "Sprints/sprint2_MrNgubane.docx" },
+            mazibuko: { name: "Mr. Mazibuko", overview: "Designed UI components.", docx: "Sprints/sprint2_MrMazibuko.docx" },
+            motsamai: { name: "Ms. Motsamai", overview: "Conducted user testing.", docx: "Sprints/sprint2_MsMotsamai.docx" },
+            mphelo: { name: "Ms. Mphelo", overview: "Implemented backend APIs.", docx: "Sprints/sprint2_MsMphelo.docx" },
+            scofield: { name: "Mr. ScoField", overview: "Optimized database queries.", docx: "Sprints/sprint2_MrScoField.docx" }
         };
 
-        // Get query param
         const params = new URLSearchParams(window.location.search);
-        const member = params.get('member');
+        const member = params.get('member')?.toLowerCase();
+
+        const memberNameElement = document.getElementById('member-name');
+        const sprintOverviewElement = document.getElementById('sprint-overview');
+        const downloadLinkElement = document.getElementById('download-link');
+        const errorMessageElement = document.getElementById('error-message');
 
         if (member && sprintOverview[member]) {
-            document.getElementById('member-name').innerText = sprintOverview[member].name;
-            document.getElementById('sprint-overview').innerText = sprintOverview[member].overview;
-            document.getElementById('download-link').href = sprintOverview[member].docx;
+            memberNameElement.textContent = sprintOverview[member].name;
+            sprintOverviewElement.textContent = sprintOverview[member].overview || "No sprint overview available.";
+
+            const docxPath = sprintOverview[member].docx;
+            downloadLinkElement.href = docxPath;
+            downloadLinkElement.download = docxPath.split('/').pop();
+
+            fetch(docxPath, { method: 'HEAD' })
+                .then(response => {
+                    if (!response.ok) {
+                        errorMessageElement.textContent = `Warning: Document "${docxPath}" may not be accessible.`;
+                        errorMessageElement.style.display = 'block';
+                    }
+                })
+                .catch(error => {
+                    errorMessageElement.textContent = `Warning: Unable to verify document "${docxPath}".`;
+                    errorMessageElement.style.display = 'block';
+                    console.error('Fetch error:', error);
+                });
         } else {
-            document.getElementById('member-name').innerText = "Member Not Found";
-            document.getElementById('sprint-overview').innerText = "No sprint overview available.";
-            document.getElementById('download-link').style.display = "none";
+            memberNameElement.textContent = "Member Not Found";
+            sprintOverviewElement.textContent = "Please select a valid member to view their sprint overview.";
+            downloadLinkElement.style.display = "none";
+            errorMessageElement.textContent = "Invalid or missing member parameter in URL.";
+            errorMessageElement.style.display = "block";
         }
     </script>
 </body>
