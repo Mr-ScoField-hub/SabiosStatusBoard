@@ -5,119 +5,299 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Aya Sprint 1 Phase 1 Members</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        * {
             margin: 0;
-            background-color: #f4f6f8;
-            color: #333;
+            padding: 0;
+            box-sizing: border-box;
         }
 
-        h1 {
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            background-color: #ffffff;
+            color: #1c1e21;
+            line-height: 1.34;
+            padding: 16px;
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 420px;
+            margin: 0 auto;
+        }
+
+        .header {
             text-align: center;
-            font-size: 26px;
-            margin: 20px 0;
-            color: #1f2937;
+            margin-bottom: 24px;
+            padding-top: 8px;
+        }
+
+        .header h1 {
+            font-size: 24px;
+            font-weight: 700;
+            color: #1c1e21;
+            margin-bottom: 4px;
+        }
+
+        .header p {
+            color: #65676b;
+            font-size: 15px;
+            font-weight: 400;
         }
 
         .search-container {
-            max-width: 500px;
-            margin: 0 auto 25px auto;
+            margin-bottom: 16px;
+            position: relative;
         }
 
-        .search-container input {
+        .search-input {
             width: 100%;
-            padding: 12px 15px;
-            border: 1px solid #ccc;
-            border-radius: 10px;
-            font-size: 16px;
+            padding: 12px 16px 12px 44px;
+            border: 1px solid #dddfe2;
+            border-radius: 20px;
+            font-size: 15px;
+            background-color: #f0f2f5;
             outline: none;
-            transition: all 0.3s ease;
+            transition: all 0.2s ease;
+            -webkit-appearance: none;
         }
 
-        .search-container input:focus {
+        .search-input:focus {
+            background-color: #ffffff;
             border-color: #ed0e64;
-            box-shadow: 0 0 5px rgba(79, 70, 229, 0.3);
+        }
+
+        .search-input::placeholder {
+            color: #65676b;
+        }
+
+        .search-icon {
+            position: absolute;
+            left: 16px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #ed0e64;
+            font-size: 16px;
         }
 
         .member-list {
-            width: 90%;
-            max-width: 600px;
-            margin: 0 auto 40px auto;
-            border-radius: 10px;
+            background-color: #ffffff;
+            border-radius: 8px;
+            border: 1px solid #dddfe2;
             overflow: hidden;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-            background-color: #fff;
         }
 
         .member {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 14px 20px;
-            border-bottom: 1px solid #eee;
-            transition: background 0.2s;
+            padding: 16px;
+            border-bottom: 1px solid #e4e6ea;
+            transition: background-color 0.2s ease;
+            min-height: 72px;
+        }
+
+        .member:last-child {
+            border-bottom: none;
         }
 
         .member:hover {
-            background-color: #f3f4f6;
+            background-color: #f9e6f0;
         }
 
-        .member span {
-            font-size: 17px;
-            font-weight: 500;
+        .member:active {
+            background-color: #f0d1e0;
         }
 
-        button {
-            padding: 7px 14px;
-            border-radius: 8px;
-            border: 1px solid #ed0e64;
+        .member-info {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            flex: 1;
+        }
+
+        .member-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background-color: #f0f0f0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #ed0e64;
+            font-weight: 600;
+            font-size: 16px;
+            flex-shrink: 0;
+        }
+
+        .view-btn {
+            padding: 6px 16px;
+            border-radius: 6px;
+            border: none;
             background-color: #ed0e64;
-            color: #fff;
+            color: #ffffff;
             cursor: pointer;
             font-size: 14px;
-            transition: all 0.2s ease;
+            font-weight: 600;
+            transition: background-color 0.2s ease;
+            min-width: 60px;
+            height: 32px;
         }
 
-        button:hover {
-            background-color: #6366f1;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        .view-btn:hover {
+            background-color: #c30b50;
         }
 
+        .view-btn:active {
+            background-color: #a00941;
+        }
+
+        .no-results {
+            text-align: center;
+            padding: 32px 16px;
+            color: #65676b;
+            font-size: 15px;
+            display: none;
+            background-color: #ffffff;
+            border-radius: 8px;
+            border: 1px solid #dddfe2;
+        }
+
+        /* Mobile-first responsive design */
         @media (max-width: 480px) {
-            h1 {
+            body {
+                padding: 12px;
+            }
+
+            .container {
+                max-width: 100%;
+            }
+
+            .header h1 {
                 font-size: 22px;
             }
 
-            .member span {
+            .search-input {
+                padding: 11px 14px 11px 40px;
+                font-size: 16px;
+                border-radius: 18px;
+            }
+
+            .search-icon {
+                left: 14px;
                 font-size: 15px;
             }
 
-            button {
-                padding: 6px 12px;
-                font-size: 12px;
+            .member {
+                padding: 14px;
+                min-height: 68px;
+            }
+
+            .member-avatar {
+                width: 36px;
+                height: 36px;
+                font-size: 14px;
+            }
+
+            .member-info {
+                gap: 10px;
+            }
+
+            .view-btn {
+                padding: 5px 12px;
+                font-size: 13px;
+                min-width: 54px;
+                height: 28px;
             }
         }
     </style>
 </head>
 
 <body>
+    <div class="container">
+        <div class="header">
+            <h1>Member Portal</h1>
+            <p>Aya Sprint 1 Phase 1</p>
+        </div>
 
-    <h1>Member Portal</h1>
+        <div class="search-container">
+            <div style="position: relative;">
+                <i class="fas fa-search search-icon"></i>
+                <input type="text" id="search" class="search-input" placeholder="Search members..."
+                    onkeyup="filterMembers()" autocomplete="off">
+            </div>
+        </div>
 
-    <div class="search-container">
-        <input type="text" id="search" placeholder="Search member..." onkeyup="filterMembers()">
-    </div>
+        <div class="member-list" id="memberList">
+            <div class="member" data-name="Mr. Stakio">
+                <div class="member-info">
+                    <div class="member-avatar"><i class="fas fa-user"></i></div>
+                    <span class="member-name">Mr. Stakio</span>
+                </div>
+                <button class="view-btn" onclick="viewMember('stakio')">View</button>
+            </div>
 
-    <div class="member-list" id="memberList">
-        <div class="member"><span>Mr. Stakio</span><button onclick="viewMember('stakio')">View</button></div>
-        <div class="member"><span>Mr. Qwabe</span><button onclick="viewMember('qwabe')">View</button></div>
-        <div class="member"><span>Ms. Mashele</span><button onclick="viewMember('mashele')">View</button></div>
-        <div class="member"><span>Mr. Ngubane</span><button onclick="viewMember('ngubane')">View</button></div>
-        <div class="member"><span>Mr. Mazibuko</span><button onclick="viewMember('mazibuko')">View</button></div>
-        <div class="member"><span>Ms. Motsamai</span><button onclick="viewMember('motsamai')">View</button></div>
-        <div class="member"><span>Ms. Mphelo</span><button onclick="viewMember('mphelo')">View</button></div>
-        <div class="member"><span>Mr. ScoField</span><button onclick="viewMember('scofield')">View</button></div>
+            <div class="member" data-name="Mr. Qwabe">
+                <div class="member-info">
+                    <div class="member-avatar"><i class="fas fa-user"></i></div>
+                    <span class="member-name">Mr. Qwabe</span>
+                </div>
+                <button class="view-btn" onclick="viewMember('qwabe')">View</button>
+            </div>
+
+            <div class="member" data-name="Ms. Mashele">
+                <div class="member-info">
+                    <div class="member-avatar"><i class="fas fa-user"></i></div>
+                    <span class="member-name">Ms. Mashele</span>
+                </div>
+                <button class="view-btn" onclick="viewMember('mashele')">View</button>
+            </div>
+
+            <div class="member" data-name="Mr. Ngubane">
+                <div class="member-info">
+                    <div class="member-avatar"><i class="fas fa-user"></i></div>
+                    <span class="member-name">Mr. Ngubane</span>
+                </div>
+                <button class="view-btn" onclick="viewMember('ngubane')">View</button>
+            </div>
+
+            <div class="member" data-name="Mr. Mazibuko">
+                <div class="member-info">
+                    <div class="member-avatar"><i class="fas fa-user"></i></div>
+                    <span class="member-name">Mr. Mazibuko</span>
+                </div>
+                <button class="view-btn" onclick="viewMember('mazibuko')">View</button>
+            </div>
+
+            <div class="member" data-name="Ms. Motsamai">
+                <div class="member-info">
+                    <div class="member-avatar"><i class="fas fa-user"></i></div>
+                    <span class="member-name">Ms. Motsamai</span>
+                </div>
+                <button class="view-btn" onclick="viewMember('motsamai')">View</button>
+            </div>
+
+            <div class="member" data-name="Ms. Mphelo">
+                <div class="member-info">
+                    <div class="member-avatar"><i class="fas fa-user"></i></div>
+                    <span class="member-name">Ms. Mphelo</span>
+                </div>
+                <button class="view-btn" onclick="viewMember('mphelo')">View</button>
+            </div>
+
+            <div class="member" data-name="Mr. ScoField">
+                <div class="member-info">
+                    <div class="member-avatar"><i class="fas fa-user"></i></div>
+                    <span class="member-name">Mr. ScoField</span>
+                </div>
+                <button class="view-btn" onclick="viewMember('scofield')">View</button>
+            </div>
+        </div>
+
+        <div class="no-results" id="noResults">
+            <p>No members found matching your search.</p>
+        </div>
     </div>
 
     <script>
@@ -128,11 +308,17 @@
         function filterMembers() {
             const input = document.getElementById('search').value.toUpperCase();
             const members = document.getElementById('memberList').getElementsByClassName('member');
+            const noResults = document.getElementById('noResults');
+            let visibleCount = 0;
 
             Array.from(members).forEach(member => {
-                const name = member.getElementsByTagName('span')[0].textContent;
-                member.style.display = name.toUpperCase().includes(input) ? "" : "none";
+                const name = member.getAttribute('data-name');
+                const isVisible = name.toUpperCase().includes(input);
+                member.style.display = isVisible ? "flex" : "none";
+                if (isVisible) visibleCount++;
             });
+
+            noResults.style.display = visibleCount === 0 && input.length > 0 ? "block" : "none";
         }
     </script>
 
