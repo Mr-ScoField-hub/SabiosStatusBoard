@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Member Sprint Overview</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        h1 {
+            text-align: center;
+        }
+
+        p {
+            margin: 10px 0;
+        }
+
+        button {
+            padding: 6px 12px;
+            border-radius: 4px;
+            border: none;
+            background-color: #007BFF;
+            color: white;
+            cursor: pointer;
+            margin-top: 10px;
+        }
+
+        button:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+
+<body>
+
+    <h1 id="member-name">Member Name</h1>
+    <p id="sprint-overview">Sprint overview will appear here.</p>
+    <a id="download-link" href="#" download><button>Download PDF</button></a>
+
+    <script>
+        const sprintOverview = {
+            stakio: {
+                name: "Mr. Stakio",
+                overview: "Collect SAPS crime data, clean it, create a baseline risk score, and provide a simple preview UI.",
+                pdf: "/sprints/Sprint1_Phase1_Stakio.pdf"
+            },
+            qwabe: {
+                name: "Mr. Qwabe",
+                overview: "Build a token system to reward community contributions with simple verification and storage.",
+                pdf: "/sprints/Sprint1_Phase1_Qwabe.pdf"
+            },
+            mashele: {
+                name: "Ms. Mashele",
+                overview: "Design a static digital card UI with placeholders for user info and preview screen.",
+                pdf: "/sprints/Sprint1_Phase1_Mashele.pdf"
+            },
+            ngubane: {
+                name: "Mr. Ngubane",
+                overview: "Prototype route scoring AI using photos or location, display best/bad routes in app.",
+                pdf: "/sprints/Sprint1_Phase1_Ngubane.pdf"
+            },
+            mazibuko: {
+                name: "Mr. Mazibuko",
+                overview: "Set up ChatGPT voice-enabled survivor reporting system and note-taking feedback.",
+                pdf: "/sprints/Sprint1_Phase1_Mazibuko.pdf"
+            },
+            motsamai: {
+                name: "Ms. Motsamai",
+                overview: "Design first step of gamified safety training with computer vision detecting one action.",
+                pdf: "/sprints/Sprint1_Phase1_Motsamai.pdf"
+            },
+            mphelo: {
+                name: "Ms. Mphelo",
+                overview: "Draft story-based game flow with good/bad decisions and simple React Native prototype.",
+                pdf: "/sprints/Sprint1_Phase1_Mphelo.pdf"
+            },
+            scofield: {
+                name: "Mr. ScoField",
+                overview: "Build core emergency system with SOS, wake word, fall detection, Twilio WhatsApp alerts, and ensure UX consistency.",
+                pdf: "/sprints/Sprint1_Phase1_ScoField.pdf"
+            }
+        };
+
+        // Get query param
+        const params = new URLSearchParams(window.location.search);
+        const member = params.get('member');
+
+        if (member && sprintOverview[member]) {
+            document.getElementById('member-name').innerText = sprintOverview[member].name;
+            document.getElementById('sprint-overview').innerText = sprintOverview[member].overview;
+            document.getElementById('download-link').href = sprintOverview[member].pdf;
+        } else {
+            document.getElementById('member-name').innerText = "Member Not Found";
+            document.getElementById('sprint-overview').innerText = "No sprint overview available.";
+            document.getElementById('download-link').style.display = "none";
+        }
+    </script>
+
+</body>
+
+</html>

@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Aya Sprint 1 Phase 1 Members</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            background-color: #f4f6f8;
+            color: #333;
+        }
+
+        h1 {
+            text-align: center;
+            font-size: 26px;
+            margin: 20px 0;
+            color: #1f2937;
+        }
+
+        .search-container {
+            max-width: 500px;
+            margin: 0 auto 25px auto;
+        }
+
+        .search-container input {
+            width: 100%;
+            padding: 12px 15px;
+            border: 1px solid #ccc;
+            border-radius: 10px;
+            font-size: 16px;
+            outline: none;
+            transition: all 0.3s ease;
+        }
+
+        .search-container input:focus {
+            border-color: #ed0e64;
+            box-shadow: 0 0 5px rgba(79, 70, 229, 0.3);
+        }
+
+        .member-list {
+            width: 90%;
+            max-width: 600px;
+            margin: 0 auto 40px auto;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            background-color: #fff;
+        }
+
+        .member {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 14px 20px;
+            border-bottom: 1px solid #eee;
+            transition: background 0.2s;
+        }
+
+        .member:hover {
+            background-color: #f3f4f6;
+        }
+
+        .member span {
+            font-size: 17px;
+            font-weight: 500;
+        }
+
+        button {
+            padding: 7px 14px;
+            border-radius: 8px;
+            border: 1px solid #ed0e64;
+            background-color: #ed0e64;
+            color: #fff;
+            cursor: pointer;
+            font-size: 14px;
+            transition: all 0.2s ease;
+        }
+
+        button:hover {
+            background-color: #6366f1;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        @media (max-width: 480px) {
+            h1 {
+                font-size: 22px;
+            }
+
+            .member span {
+                font-size: 15px;
+            }
+
+            button {
+                padding: 6px 12px;
+                font-size: 12px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <h1>Member Portal</h1>
+
+    <div class="search-container">
+        <input type="text" id="search" placeholder="Search member..." onkeyup="filterMembers()">
+    </div>
+
+    <div class="member-list" id="memberList">
+        <div class="member"><span>Mr. Stakio</span><button onclick="viewMember('stakio')">View</button></div>
+        <div class="member"><span>Mr. Qwabe</span><button onclick="viewMember('qwabe')">View</button></div>
+        <div class="member"><span>Ms. Mashele</span><button onclick="viewMember('mashele')">View</button></div>
+        <div class="member"><span>Mr. Ngubane</span><button onclick="viewMember('ngubane')">View</button></div>
+        <div class="member"><span>Mr. Mazibuko</span><button onclick="viewMember('mazibuko')">View</button></div>
+        <div class="member"><span>Ms. Motsamai</span><button onclick="viewMember('motsamai')">View</button></div>
+        <div class="member"><span>Ms. Mphelo</span><button onclick="viewMember('mphelo')">View</button></div>
+        <div class="member"><span>Mr. ScoField</span><button onclick="viewMember('scofield')">View</button></div>
+    </div>
+
+    <script>
+        function viewMember(member) {
+            window.location.href = 'view.html?member=' + member;
+        }
+
+        function filterMembers() {
+            const input = document.getElementById('search').value.toUpperCase();
+            const members = document.getElementById('memberList').getElementsByClassName('member');
+
+            Array.from(members).forEach(member => {
+                const name = member.getElementsByTagName('span')[0].textContent;
+                member.style.display = name.toUpperCase().includes(input) ? "" : "none";
+            });
+        }
+    </script>
+
+</body>
+
+</html>
