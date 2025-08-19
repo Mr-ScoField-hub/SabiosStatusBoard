@@ -764,15 +764,6 @@
                 };
             }
 
-            // Check if it's Monday or Tuesday (show "coming" message for next phase)
-            const day = now.getDay(); // Sunday = 0, Monday = 1, Tuesday = 2, etc.
-            if (day === 1 || day === 2) {
-                return {
-                    mode: 'coming',
-                    message: `Sprint ${currentSprint} Phase ${currentPhase + 1} coming`,
-                };
-            }
-
             // Return countdown mode
             return {
                 mode: 'countdown',
@@ -795,14 +786,6 @@
         function updateCountdown() {
             const status = getSprintStatus();
             const now = new Date().getTime();
-
-            if (status.mode === 'coming') {
-                // Display "Sprint X Phase Y coming" on Monday/Tuesday
-                elements.status.textContent = status.message;
-                elements.units.style.display = "none";
-                elements.badge.classList.remove("show");
-                return;
-            }
 
             if (status.mode === 'completed') {
                 // Sprint has ended
