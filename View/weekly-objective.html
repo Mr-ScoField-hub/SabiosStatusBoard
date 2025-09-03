@@ -3,9 +3,11 @@
 
 <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
-    <title>Sprint 2 Phase 1 Objectives</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Sprint 4 Weekly Goals</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
     <style>
         * {
             margin: 0;
@@ -15,25 +17,23 @@
 
         body {
             font-family: 'Inter', sans-serif;
-            background: #ffffff;
+            background: #f9fafb;
             min-height: 100vh;
             color: #1e293b;
             padding: 16px;
-            overflow-x: hidden;
         }
 
         .container {
             width: 100%;
-            max-width: 360px;
+            max-width: 420px;
             margin: 0 auto;
         }
 
         h1 {
             text-align: center;
-            font-size: 24px;
+            font-size: 26px;
             font-weight: 700;
-            color: #1e293b;
-            margin-bottom: 24px;
+            margin-bottom: 8px;
         }
 
         .summary {
@@ -41,23 +41,26 @@
             font-size: 14px;
             color: #64748b;
             margin-bottom: 24px;
-            font-weight: 500;
         }
 
-        .goal {
+        .goal-card {
             background: #ffffff;
-            border-radius: 12px;
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+            border-radius: 16px;
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.08);
             margin-bottom: 16px;
             padding: 16px;
-            border: 1px solid #e2e8f0;
-            transition: all 0.3s ease;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+            position: relative;
         }
 
-        .goal h2 {
+        .goal-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 12px 20px rgba(0, 0, 0, 0.12);
+        }
+
+        .goal-card h2 {
             font-size: 16px;
             font-weight: 600;
-            color: #1e293b;
             margin-bottom: 12px;
         }
 
@@ -65,65 +68,57 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 10px 0;
+            padding: 8px 0;
             border-bottom: 1px solid #e5e7eb;
-            transition: background 0.2s ease;
         }
 
         .subtask:last-child {
             border-bottom: none;
         }
 
-        .subtask:hover {
-            background: #f3f4f6;
-        }
-
         .label {
             font-size: 14px;
             font-weight: 700;
-            color: #1e293b;
-            flex: 1;
-        }
-
-        .label.mashele {
-            color: #db2777;
         }
 
         .label.mazibuko {
             color: #06f40e;
         }
 
-        .label.ngubane {
-            color: #0d00ff;
+        .label.motsamai {
+            color: #aa0cff;
         }
 
-        .label.scofield {
-            color: #ff8103;
+        .label.ngubane {
+            color: #0d00ff;
         }
 
         .label.stakio {
             color: #50cbd6;
         }
 
-        .label.motsamai {
-            color: #aa0cff;
+        .label.qwabe {
+            color: #dc2626;
+        }
+
+        .label.scofield {
+            color: #ff8103;
+        }
+
+        .label.mashele {
+            color: #db2777;
         }
 
         .label.mphelo {
             color: #ffc800;
         }
 
-        .label.qwabe {
-            color: #dc2626;
-        }
-
         .status {
-            padding: 5px 12px;
+            padding: 4px 12px;
             border-radius: 12px;
             font-size: 12px;
             font-weight: 600;
             cursor: default;
-            transition: all 0.2s ease;
         }
 
         .pending {
@@ -136,123 +131,135 @@
             color: #065f46;
         }
 
-        @media (max-width: 360px) {
-            .container {
-                max-width: 320px;
-            }
+        .action-buttons {
+            display: flex;
+            justify-content: flex-end;
+            gap: 10px;
+            margin-bottom: 12px;
+        }
 
-            h1 {
-                font-size: 20px;
-            }
+        .action-button {
+            background: #ffe0f0;
+            border: none;
+            border-radius: 50%;
+            width: 36px;
+            height: 36px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: transform 0.2s ease;
+        }
 
-            .summary {
-                font-size: 13px;
-            }
+        .action-button:hover {
+            transform: scale(1.1);
+        }
 
-            .goal h2 {
-                font-size: 14px;
-            }
-
-            .subtask {
-                padding: 8px 0;
-            }
-
-            .label {
-                font-size: 13px;
-            }
-
-            .status {
-                font-size: 11px;
-                padding: 4px 10px;
-            }
+        .action-button i {
+            color: #db2777;
+            font-size: 16px;
         }
     </style>
 </head>
 
 <body>
     <div class="container">
-        <h1>Sprint 2 Phase 1 Objectives</h1>
-        <div class="summary" id="summary">All tasks are pending</div>
+        <h1>Sprint 4 Weekly Goals</h1>
+        <div class="summary">Track progress and download weekly sprint guide</div>
 
-        <!-- GOAL 1 -->
-        <div class="goal">
-            <h2>1. SAPS Crime Data Collection & Cleaning</h2>
-            <div class="subtask">
-                <span class="label stakio">Collect & Clean Dataset – <strong>Mr Stakio</strong></span>
-                <span class="status pending">Pending</span>
-            </div>
+        <div class="action-buttons">
+            <button class="action-button" onclick="downloadPDF()" title="Download PDF">
+                <i class="fas fa-download"></i>
+            </button>
         </div>
 
-        <!-- GOAL 2 -->
-        <div class="goal">
-            <h2>2. Token Counter Prototype</h2>
-            <div class="subtask">
-                <span class="label qwabe">Build Token Counter (points with posts) – <strong>Mr Qwabe</strong></span>
-                <span class="status pending">Pending</span>
+        <!-- Goal Cards -->
+        <div id="goalsContainer">
+            <div class="goal-card">
+                <h2>1. Database & Offline Sync</h2>
+                <div class="subtask">
+                    <span class="label mazibuko">Offline-first DB & sync engine – <strong>Mr. Mazibuko</strong></span>
+                    <span class="status pending">Pending</span>
+                </div>
             </div>
-        </div>
-
-        <!-- GOAL 3 -->
-        <div class="goal">
-            <h2>3. Digital Card UI Design</h2>
-            <div class="subtask">
-                <span class="label mashele">Design Static Card UI (sample user info) – <strong>Ms
-                        Mashele</strong></span>
-                <span class="status pending">Pending</span>
+            <div class="goal-card">
+                <h2>2. Status Viewing UX</h2>
+                <div class="subtask">
+                    <span class="label motsamai">Instagram-like status feed – <strong>Ms. Motsamai</strong></span>
+                    <span class="status pending">Pending</span>
+                </div>
             </div>
-        </div>
-
-        <!-- GOAL 4 -->
-        <div class="goal">
-            <h2>4. Route Scoring Prototype</h2>
-            <div class="subtask">
-                <span class="label ngubane">Prototype Route Scoring from location/street pictures – <strong>Mr
-                        Ngubane</strong></span>
-                <span class="status pending">Pending</span>
+            <div class="goal-card">
+                <h2>3. GBV News API Integration</h2>
+                <div class="subtask">
+                    <span class="label ngubane">News feed + offline caching – <strong>Mr. Ngubane</strong></span>
+                    <span class="status pending">Pending</span>
+                </div>
             </div>
-        </div>
-
-        <!-- GOAL 5 -->
-        <div class="goal">
-            <h2>5. ChatGPT Wrapper & Voice Demo</h2>
-            <div class="subtask">
-                <span class="label mazibuko">Setup ChatGPT Wrapper + Simple Voice Conversation – <strong>Mr
-                        Mazibuko</strong></span>
-                <span class="status pending">Pending</span>
+            <div class="goal-card">
+                <h2>4. Backend & Hosting</h2>
+                <div class="subtask">
+                    <span class="label stakio">Node.js/Express server & endpoints – <strong>Mr. Stakio</strong></span>
+                    <span class="status pending">Pending</span>
+                </div>
             </div>
-        </div>
-
-        <!-- GOAL 6 -->
-        <div class="goal">
-            <h2>6. Camera Action Detection</h2>
-            <div class="subtask">
-                <span class="label motsamai">Detect 1 Action (crouch/raise hand) – <strong>Ms Motsamai</strong></span>
-                <span class="status pending">Pending</span>
+            <div class="goal-card">
+                <h2>5. Subscription Simulation</h2>
+                <div class="subtask">
+                    <span class="label qwabe">Mock PayPal subscription flow – <strong>Mr. Qwabe</strong></span>
+                    <span class="status pending">Pending</span>
+                </div>
             </div>
-        </div>
-
-        <!-- GOAL 7 -->
-        <div class="goal">
-            <h2>7. Safety Game Storyline</h2>
-            <div class="subtask">
-                <span class="label mphelo">Draft Storyline for Decision-based Safety Game – <strong>Ms
-                        Mphelo</strong></span>
-                <span class="status pending">Pending</span>
+            <div class="goal-card">
+                <h2>6. UX Enhancements & Features</h2>
+                <div class="subtask">
+                    <span class="label scofield">Passkey login, tutorials, NFC – <strong>Mr. ScoField</strong></span>
+                    <span class="status pending">Pending</span>
+                </div>
             </div>
-        </div>
-
-        <!-- GOAL 8 -->
-        <div class="goal">
-            <h2>8. Aya Core Emergency & UX Backbone</h2>
-            <div class="subtask">
-                <span class="label scofield">
-                    Build SOS Agent, Wake Word Agent (“Dear Lord”), Fall Detection Agent, Communication Agent & UX Flow
-                    – <strong>Mr ScoField</strong>
-                </span>
-                <span class="status pending">Pending</span>
+            <div class="goal-card">
+                <h2>7. Onboarding & Social Content</h2>
+                <div class="subtask">
+                    <span class="label mphelo">Onboarding + Aya Digital Card + Story feed – <strong>Aya Experience
+                            Team</strong></span>
+                    <span class="status pending">Pending</span>
+                </div>
             </div>
         </div>
     </div>
+
+    <script>
+        function downloadPDF() {
+            const { jsPDF } = window.jspdf;
+            const doc = new jsPDF('p', 'pt', 'a4');
+            const margin = 40;
+            let y = 40;
+            doc.setFont("helvetica", "bold");
+            doc.setFontSize(18);
+            doc.text("Sprint 4 Weekly Goals", margin, y);
+            y += 30;
+
+            const goals = document.querySelectorAll(".goal-card");
+            goals.forEach(goal => {
+                doc.setFontSize(14);
+                doc.setFont("helvetica", "bold");
+                const title = goal.querySelector("h2").innerText;
+                const lines = doc.splitTextToSize(title, 515);
+                lines.forEach(line => { doc.text(line, margin, y); y += 16; });
+
+                const subtask = goal.querySelector(".subtask .label").innerText;
+                doc.setFontSize(12);
+                doc.setFont("helvetica", "normal");
+                const sublines = doc.splitTextToSize(subtask, 500);
+                sublines.forEach(line => { doc.text(line, margin + 10, y); y += 14; });
+
+                y += 12;
+                if (y > 750) { doc.addPage(); y = 40; }
+            });
+
+            doc.save("Sprint4_WeeklyGoals.pdf");
+        }
+    </script>
 </body>
 
 </html>
