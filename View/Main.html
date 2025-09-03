@@ -1,33 +1,43 @@
 <!doctype html>
 <html>
+
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<meta http-equiv="X-UA-Compatible" content="ie=edge" />
-<title>Markmap</title>
-<style>
-* {
-  margin: 0;
-  padding: 0;
-}
-html {
-  font-family: ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji',
-    'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
-}
-#mindmap {
-  display: block;
-  width: 100vw;
-  height: 100vh;
-}
-.markmap-dark {
-  background: #27272a;
-  color: white;
-}
-</style>
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/markmap-toolbar@0.18.12/dist/style.css">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+  <title>Sabios Brain</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+    }
+
+    html {
+      font-family: ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji',
+        'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
+    }
+
+    #mindmap {
+      display: block;
+      width: 100vw;
+      height: 100vh;
+    }
+
+    .markmap-dark {
+      background: #27272a;
+      color: white;
+    }
+  </style>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/markmap-toolbar@0.18.12/dist/style.css">
 </head>
+
 <body>
-<svg id="mindmap"></svg>
-<script src="https://cdn.jsdelivr.net/npm/d3@7.9.0/dist/d3.min.js"></script><script src="https://cdn.jsdelivr.net/npm/markmap-view@0.18.12/dist/browser/index.js"></script><script src="https://cdn.jsdelivr.net/npm/markmap-toolbar@0.18.12/dist/index.js"></script><script>(()=>{setTimeout(()=>{const{markmap:S,mm:Q}=window,$=new S.Toolbar;$.attach(Q);const I=$.render();I.setAttribute("style","position:absolute;bottom:20px;right:20px"),document.body.append(I)})})()</script><script>((l,U,M,R)=>{const N=l();window.mm=N.Markmap.create("svg#mindmap",(U||N.deriveOptions)(R),M),window.matchMedia("(prefers-color-scheme: dark)").matches&&document.documentElement.classList.add("markmap-dark")})(()=>window.markmap,null,{"content":"Aya Sprint 2 &#x2013; Phase 1","children":[{"content":"Mr. Stakio","children":[{"content":"<strong>Task</strong>: Collect SAPS crime data and clean it","children":[],"payload":{"tag":"li","lines":"3,4"}},{"content":"<strong>Output</strong>: Clean dataset","children":[],"payload":{"tag":"li","lines":"4,6"}}],"payload":{"tag":"h2","lines":"2,3"}},{"content":"Mr. Qwabe","children":[{"content":"<strong>Task</strong>: Build token counter prototype (points increase with posts)","children":[],"payload":{"tag":"li","lines":"7,8"}},{"content":"<strong>Output</strong>: Token counter working","children":[],"payload":{"tag":"li","lines":"8,10"}}],"payload":{"tag":"h2","lines":"6,7"}},{"content":"Ms. Mashele","children":[{"content":"<strong>Task</strong>: Design static digital card UI (sample user info only)","children":[],"payload":{"tag":"li","lines":"11,12"}},{"content":"<strong>Output</strong>: Card mockup","children":[],"payload":{"tag":"li","lines":"12,14"}}],"payload":{"tag":"h2","lines":"10,11"}},{"content":"Mr. Ngubane","children":[{"content":"<strong>Task</strong>: Prototype route scoring from location or street pictures","children":[],"payload":{"tag":"li","lines":"15,16"}},{"content":"<strong>Output</strong>: Route scoring demo","children":[],"payload":{"tag":"li","lines":"16,18"}}],"payload":{"tag":"h2","lines":"14,15"}},{"content":"Mr. Mazibuko","children":[{"content":"<strong>Task</strong>: Set up ChatGPT wrapper + simple voice conversation","children":[],"payload":{"tag":"li","lines":"19,20"}},{"content":"<strong>Output</strong>: Talking demo","children":[],"payload":{"tag":"li","lines":"20,22"}}],"payload":{"tag":"h2","lines":"18,19"}},{"content":"Ms. Motsamai","children":[{"content":"<strong>Task</strong>: Make camera detect 1 action (e.g., crouch or raise hand)","children":[],"payload":{"tag":"li","lines":"23,24"}},{"content":"<strong>Output</strong>: CV action demo","children":[],"payload":{"tag":"li","lines":"24,26"}}],"payload":{"tag":"h2","lines":"22,23"}},{"content":"Ms. Mphelo","children":[{"content":"<strong>Task</strong>: Draft storyline for decision-based safety game","children":[],"payload":{"tag":"li","lines":"27,28"}},{"content":"<strong>Output</strong>: Story draft","children":[],"payload":{"tag":"li","lines":"28,30"}}],"payload":{"tag":"h2","lines":"26,27"}},{"content":"Mr. ScoField","children":[{"content":"<strong>Task</strong>: Aya Core Emergency &amp; UX Backbone","children":[{"content":"<strong>AI Agents</strong>: Build SOS Agent, Wake Word Agent (&#x201c;Dear Lord&#x201d;), Fall Detection Agent, and Communication Agent (Twilio &#x2192; WhatsApp Business)","children":[],"payload":{"tag":"li","lines":"32,33"}},{"content":"<strong>UX Lead</strong>: Design smooth app flow: Sign-up &#x2192; Sign-in &#x2192; Free Trial &#x2192; Main App Dashboard &#x2192; Emergency Actions","children":[],"payload":{"tag":"li","lines":"33,34"}},{"content":"<strong>Integration</strong>: Ensure early features from team plug into Aya&#x2019;s main flow","children":[],"payload":{"tag":"li","lines":"34,35"}}],"payload":{"tag":"li","lines":"31,35"}},{"content":"<strong>Output</strong>: Working SOS, wake word, fall detection, Twilio alerts, smooth app flow","children":[],"payload":{"tag":"li","lines":"35,36"}}],"payload":{"tag":"h2","lines":"30,31"}}],"payload":{"tag":"h1","lines":"0,1"}},null)</script>
+  <svg id="mindmap"></svg>
+  <script src="https://cdn.jsdelivr.net/npm/d3@7.9.0/dist/d3.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/markmap-view@0.18.12/dist/browser/index.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/markmap-toolbar@0.18.12/dist/index.js"></script>
+  <script>(() => { setTimeout(() => { const { markmap: S, mm: Q } = window, $ = new S.Toolbar; $.attach(Q); const I = $.render(); I.setAttribute("style", "position:absolute;bottom:20px;right:20px"), document.body.append(I) }) })()</script>
+  <script>((l, U, M, R) => { const N = l(); window.mm = N.Markmap.create("svg#mindmap", (U || N.deriveOptions)(R), M), window.matchMedia("(prefers-color-scheme: dark)").matches && document.documentElement.classList.add("markmap-dark") })(() => window.markmap, null, { "content": "Sprint 4", "children": [{ "content": "Mr. Mazibuko", "children": [{ "content": "Database &amp; Offline Sync", "children": [{ "content": "Build offline-first database", "children": [], "payload": { "tag": "li", "lines": "5,6" } }, { "content": "Implement sync engine", "children": [], "payload": { "tag": "li", "lines": "6,7" } }, { "content": "Handle conflict resolution", "children": [], "payload": { "tag": "li", "lines": "7,8" } }], "payload": { "tag": "li", "lines": "4,8" } }], "payload": { "tag": "li", "lines": "3,8" } }, { "content": "Ms. Motsamai", "children": [{ "content": "Status Viewing UX", "children": [{ "content": "Instagram-like status feed", "children": [], "payload": { "tag": "li", "lines": "10,11" } }, { "content": "Support offline playback", "children": [], "payload": { "tag": "li", "lines": "11,12" } }, { "content": "Smooth animations", "children": [], "payload": { "tag": "li", "lines": "12,13" } }], "payload": { "tag": "li", "lines": "9,13" } }], "payload": { "tag": "li", "lines": "8,13" } }, { "content": "Mr. Ngubane", "children": [{ "content": "GBV News API Integration", "children": [{ "content": "Integrate NewsAPI/Guardian API", "children": [], "payload": { "tag": "li", "lines": "15,16" } }, { "content": "Filter GBV content", "children": [], "payload": { "tag": "li", "lines": "16,17" } }, { "content": "Offline caching", "children": [], "payload": { "tag": "li", "lines": "17,18" } }], "payload": { "tag": "li", "lines": "14,18" } }], "payload": { "tag": "li", "lines": "13,18" } }, { "content": "Mr. Stakio", "children": [{ "content": "Backend &amp; Hosting", "children": [{ "content": "Node.js/Express server", "children": [], "payload": { "tag": "li", "lines": "20,21" } }, { "content": "RESTful endpoints", "children": [], "payload": { "tag": "li", "lines": "21,22" } }, { "content": "Authentication &amp; security", "children": [], "payload": { "tag": "li", "lines": "22,23" } }], "payload": { "tag": "li", "lines": "19,23" } }], "payload": { "tag": "li", "lines": "18,23" } }, { "content": "Mr. Qwabe", "children": [{ "content": "Subscription Simulation", "children": [{ "content": "Mock PayPal subscription flow", "children": [], "payload": { "tag": "li", "lines": "25,26" } }, { "content": "Test end-to-end", "children": [], "payload": { "tag": "li", "lines": "26,27" } }], "payload": { "tag": "li", "lines": "24,27" } }], "payload": { "tag": "li", "lines": "23,27" } }, { "content": "Mr. ScoField", "children": [{ "content": "UX Enhancements &amp; Features", "children": [{ "content": "Passkey login", "children": [], "payload": { "tag": "li", "lines": "29,30" } }, { "content": "Interactive tutorials", "children": [], "payload": { "tag": "li", "lines": "30,31" } }, { "content": "Profile management", "children": [], "payload": { "tag": "li", "lines": "31,32" } }, { "content": "NFC integration", "children": [], "payload": { "tag": "li", "lines": "32,33" } }], "payload": { "tag": "li", "lines": "28,33" } }], "payload": { "tag": "li", "lines": "27,33" } }, { "content": "Aya Experience Team", "children": [{ "content": "Onboarding &amp; Social Content", "children": [{ "content": "Onboarding screens", "children": [], "payload": { "tag": "li", "lines": "35,36" } }, { "content": "Aya Digital Card", "children": [], "payload": { "tag": "li", "lines": "36,37" } }, { "content": "Social story feed", "children": [], "payload": { "tag": "li", "lines": "37,38" } }], "payload": { "tag": "li", "lines": "34,38" } }], "payload": { "tag": "li", "lines": "33,38" } }], "payload": { "tag": "li", "lines": "2,38" } }, null)</script>
 </body>
+
 </html>
