@@ -4,8 +4,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Aya Sprint 1 Phase 1 Members</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <title>Sprint 4 Premium Guide</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
     <style>
         * {
             margin: 0;
@@ -15,15 +16,15 @@
 
         body {
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
-            background-color: #ffffff;
+            background-color: #f5f5f7;
             color: #1c1e21;
-            line-height: 1.34;
+            line-height: 1.5;
             padding: 16px;
             min-height: 100vh;
         }
 
         .container {
-            max-width: 420px;
+            max-width: 500px;
             margin: 0 auto;
         }
 
@@ -33,183 +34,197 @@
             padding-top: 8px;
         }
 
+        .header img {
+            max-width: 150px;
+            margin-bottom: 12px;
+        }
+
         .header h1 {
             font-size: 24px;
             font-weight: 700;
             color: #1c1e21;
-            margin-bottom: 4px;
         }
 
         .header p {
             color: #65676b;
             font-size: 15px;
             font-weight: 400;
+            margin-top: 4px;
         }
 
+        /* Search Input */
         .search-container {
-            margin-bottom: 16px;
             position: relative;
+            margin-bottom: 20px;
+        }
+
+        .search-container i {
+            position: absolute;
+            left: 14px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #aaa;
+            font-size: 16px;
+            pointer-events: none;
+            transition: color 0.2s;
         }
 
         .search-input {
             width: 100%;
-            padding: 12px 16px 12px 44px;
-            border: 1px solid #dddfe2;
+            padding: 12px 40px 12px 36px;
             border-radius: 20px;
+            border: 1px solid #ddd;
+            background-color: #f5f5f7;
             font-size: 15px;
-            background-color: #f0f2f5;
-            outline: none;
-            transition: all 0.2s ease;
-            -webkit-appearance: none;
+            transition: all 0.3s ease;
+            box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.08);
         }
 
         .search-input:focus {
-            background-color: #ffffff;
-            border-color: #ed0e64;
+            outline: none;
+            background-color: #fff;
+            border-color: #ff2d55;
+            box-shadow: 0 0 8px rgba(255, 45, 85, 0.3);
         }
 
         .search-input::placeholder {
+            color: #999;
+            font-style: italic;
+        }
+
+        /* Sprint Display */
+        #sprintDisplay {
+            margin-top: 16px;
+            position: relative;
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 0.5s ease, transform 0.5s ease;
+        }
+
+        #sprintDisplay.show {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Task Cards */
+        .task-card {
+            background: #fff;
+            border-radius: 20px;
+            padding: 20px;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+            animation: fadeInUp 0.5s ease forwards;
+            position: relative;
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .task-card h3 {
+            font-size: 18px;
+            font-weight: 600;
+            color: #1c1e21;
+            margin-bottom: 8px;
+        }
+
+        .task-card p {
+            font-size: 14px;
+            color: #4b4f56;
+            margin-bottom: 12px;
+        }
+
+        .task-card ul {
+            padding-left: 20px;
+            margin-bottom: 12px;
+        }
+
+        .task-card li {
+            font-size: 14px;
+            color: #1c1e21;
+            margin-bottom: 8px;
+        }
+
+        .task-card strong {
+            color: #1c1e21;
+            font-weight: 600;
+        }
+
+        /* Loading */
+        .loading {
+            text-align: center;
             color: #65676b;
+            font-size: 14px;
+            display: none;
+            animation: pulse 1.5s infinite;
         }
 
-        .search-icon {
+        .loading.active {
+            display: block;
+        }
+
+        @keyframes pulse {
+            0% {
+                opacity: 0.5;
+            }
+
+            50% {
+                opacity: 1;
+            }
+
+            100% {
+                opacity: 0.5;
+            }
+        }
+
+        /* Action Buttons */
+        .action-buttons {
             position: absolute;
-            left: 16px;
-            top: 50%;
-            transform: translateY(-50%);
-            color: #ed0e64;
-            font-size: 16px;
-        }
-
-        .member-list {
-            background-color: #ffffff;
-            border-radius: 8px;
-            border: 1px solid #dddfe2;
-            overflow: hidden;
-        }
-
-        .member {
+            top: 10px;
+            right: 10px;
             display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 16px;
-            border-bottom: 1px solid #e4e6ea;
-            transition: background-color 0.2s ease;
-            min-height: 72px;
+            gap: 10px;
+            z-index: 10;
         }
 
-        .member:last-child {
-            border-bottom: none;
-        }
-
-        .member:hover {
-            background-color: #f9e6f0;
-        }
-
-        .member:active {
-            background-color: #f0d1e0;
-        }
-
-        .member-info {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            flex: 1;
-        }
-
-        .member-avatar {
-            width: 40px;
-            height: 40px;
+        .action-button {
+            background: #f0f0f5;
+            border: none;
             border-radius: 50%;
-            background-color: #f0f0f0;
+            width: 36px;
+            height: 36px;
             display: flex;
             align-items: center;
             justify-content: center;
-            color: #ed0e64;
-            font-weight: 600;
-            font-size: 16px;
-            flex-shrink: 0;
-        }
-
-        .view-btn {
-            padding: 6px 16px;
-            border-radius: 6px;
-            border: none;
-            background-color: #ed0e64;
-            color: #ffffff;
             cursor: pointer;
-            font-size: 14px;
-            font-weight: 600;
-            transition: background-color 0.2s ease;
-            min-width: 60px;
-            height: 32px;
+            transition: all 0.2s ease;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
         }
 
-        .view-btn:hover {
-            background-color: #c30b50;
+        .action-button:hover {
+            transform: scale(1.15);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
         }
 
-        .view-btn:active {
-            background-color: #a00941;
+        .action-button i {
+            font-size: 16px;
         }
 
-        .no-results {
-            text-align: center;
-            padding: 32px 16px;
-            color: #65676b;
-            font-size: 15px;
-            display: none;
-            background-color: #ffffff;
-            border-radius: 8px;
-            border: 1px solid #dddfe2;
+        .download-icon {
+            color: #ff2d55;
+            /* Apple-style pink */
         }
 
-        /* Mobile-first responsive design */
-        @media (max-width: 480px) {
-            body {
-                padding: 12px;
-            }
-
-            .container {
-                max-width: 100%;
-            }
-
-            .header h1 {
-                font-size: 22px;
-            }
-
-            .search-input {
-                padding: 11px 14px 11px 40px;
-                font-size: 16px;
-                border-radius: 18px;
-            }
-
-            .search-icon {
-                left: 14px;
-                font-size: 15px;
-            }
-
-            .member {
-                padding: 14px;
-                min-height: 68px;
-            }
-
-            .member-avatar {
-                width: 36px;
-                height: 36px;
-                font-size: 14px;
-            }
-
-            .member-info {
-                gap: 10px;
-            }
-
-            .view-btn {
-                padding: 5px 12px;
-                font-size: 13px;
-                min-width: 54px;
-                height: 28px;
-            }
+        .trash-icon {
+            color: #555;
         }
     </style>
 </head>
@@ -217,111 +232,323 @@
 <body>
     <div class="container">
         <div class="header">
-            <h1>Member Portal</h1>
-            <p>Aya Sprint 1 Phase 1</p>
+            <img src="../../Logos/Aya_trans_logo.png" alt="Sprint 4 Logo">
+            <h1>Sprint 4 Premium Guide</h1>
+            <p>Skaira mae...</p>
         </div>
 
         <div class="search-container">
-            <div style="position: relative;">
-                <i class="fas fa-search search-icon"></i>
-                <input type="text" id="search" class="search-input" placeholder="Search members..."
-                    onkeyup="filterMembers()" autocomplete="off">
-            </div>
+            <i class="fas fa-magnifying-glass"></i>
+            <input type="text" id="userSearch" list="userSuggestions" class="search-input"
+                placeholder="Search team member or team" aria-label="Search team member or team">
+            <datalist id="userSuggestions">
+                <option value="Mr. Mazibuko">
+                <option value="Ms. Motsamai">
+                <option value="Mr. Ngubane">
+                <option value="Mr. Stakio">
+                <option value="Mr. Qwabe">
+                <option value="Mr. ScoField">
+                <option value="Ms. Mashele || Ms. Mphelo">
+            </datalist>
         </div>
 
-        <div class="member-list" id="memberList">
-            <div class="member" data-name="Mr. Stakio">
-                <div class="member-info">
-                    <div class="member-avatar"><i class="fas fa-user"></i></div>
-                    <span class="member-name">Mr. Stakio</span>
-                </div>
-                <button class="view-btn" onclick="viewMember('stakio')">View</button>
-            </div>
-
-            <div class="member" data-name="Mr. Qwabe">
-                <div class="member-info">
-                    <div class="member-avatar"><i class="fas fa-user"></i></div>
-                    <span class="member-name">Mr. Qwabe</span>
-                </div>
-                <button class="view-btn" onclick="viewMember('qwabe')">View</button>
-            </div>
-
-            <div class="member" data-name="Ms. Mashele">
-                <div class="member-info">
-                    <div class="member-avatar"><i class="fas fa-user"></i></div>
-                    <span class="member-name">Ms. Mashele</span>
-                </div>
-                <button class="view-btn" onclick="viewMember('mashele')">View</button>
-            </div>
-
-            <div class="member" data-name="Mr. Ngubane">
-                <div class="member-info">
-                    <div class="member-avatar"><i class="fas fa-user"></i></div>
-                    <span class="member-name">Mr. Ngubane</span>
-                </div>
-                <button class="view-btn" onclick="viewMember('ngubane')">View</button>
-            </div>
-
-            <div class="member" data-name="Mr. Mazibuko">
-                <div class="member-info">
-                    <div class="member-avatar"><i class="fas fa-user"></i></div>
-                    <span class="member-name">Mr. Mazibuko</span>
-                </div>
-                <button class="view-btn" onclick="viewMember('mazibuko')">View</button>
-            </div>
-
-            <div class="member" data-name="Ms. Motsamai">
-                <div class="member-info">
-                    <div class="member-avatar"><i class="fas fa-user"></i></div>
-                    <span class="member-name">Ms. Motsamai</span>
-                </div>
-                <button class="view-btn" onclick="viewMember('motsamai')">View</button>
-            </div>
-
-            <div class="member" data-name="Ms. Mphelo">
-                <div class="member-info">
-                    <div class="member-avatar"><i class="fas fa-user"></i></div>
-                    <span class="member-name">Ms. Mphelo</span>
-                </div>
-                <button class="view-btn" onclick="viewMember('mphelo')">View</button>
-            </div>
-
-            <div class="member" data-name="Mr. ScoField">
-                <div class="member-info">
-                    <div class="member-avatar"><i class="fas fa-user"></i></div>
-                    <span class="member-name">Mr. ScoField</span>
-                </div>
-                <button class="view-btn" onclick="viewMember('scofield')">View</button>
-            </div>
-        </div>
-
-        <div class="no-results" id="noResults">
-            <p>No members found matching your search.</p>
-        </div>
+        <div id="loading" class="loading">Loading...</div>
+        <div id="sprintDisplay"></div>
     </div>
 
     <script>
-        function viewMember(member) {
-            window.location.href = 'view.html?member=' + member;
+
+        const sprintGuides = {
+            "Mr. Mazibuko": `
+<div class="task-card">
+    <h3>Database Design & Offline Synchronization</h3>
+    <p><strong>Goal:</strong> Develop a robust, offline-first database system to store and sync Status content, ensuring seamless functionality and data integrity.</p>
+    <p><strong>Steps & Explanation:</strong></p>
+    <ul>
+        <li><strong>Database Schema Design:</strong> Create tables/collections for videos, images, and text with fields such as ID, ownerID, filePath, duration, timestamp, and syncStatus. Use indexing on ownerID and timestamp to optimize queries.</li>
+        <li><strong>Offline Storage Implementation:</strong> Use SQLite or Realm for local storage. Implement a queue system to track unsynced changes when offline.</li>
+        <li><strong>Synchronization Logic:</strong> Develop a sync engine to detect network availability, push local changes to the server, and pull server updates to the local database. Implement conflict resolution (e.g., last-write-wins).</li>
+        <li><strong>Performance Optimization:</strong> Ensure the database can handle thousands of Status items efficiently. Use batch operations for sync to minimize network calls.</li>
+        <li><strong>Testing:</strong> Test offline/online transitions, sync accuracy, and data integrity across multiple content types (videos, images, text).</li>
+    </ul>
+    <p><strong>Deliverables:</strong></p>
+    <ul>
+        <li>Fully functional offline-first database integrated with the Status viewer.</li>
+        <li>Detailed schema documentation (e.g., ERD or JSON schema).</li>
+        <li>Tested sync functionality with no data loss.</li>
+    </ul>
+    <p><strong>Success Criteria:</strong> Users can create, view, and edit Status content offline, with seamless syncing when online.</p>
+    <p><strong>Challenges:</strong> Handling large datasets, conflict resolution during sync, and ensuring low battery/CPU usage.</p>
+    <p><strong>Collaboration:</strong> Work with Ms. Motsamai for offline playback integration and Mr. Stakio for server-side sync endpoints.</p>
+</div>
+`,
+            "Ms. Motsamai": `
+<div class="task-card">
+    <h3>Status Viewing Experience</h3>
+    <p><strong>Goal:</strong> Build an engaging, Instagram-like Status feed with support for 30-second videos and images, seamless transitions, and offline functionality.</p>
+    <p><strong>Steps & Explanation:</strong></p>
+    <ul>
+        <li><strong>UI Design:</strong> Create a clean interface with circular avatars, a progress bar for time tracking, and swipe gestures for navigation.</li>
+        <li><strong>Media Playback:</strong> Implement video/image playback with a 30-second limit per item. Ensure smooth playback using native media players.</li>
+        <li><strong>Offline Support:</strong> Integrate with Mr. Mazibuko’s offline database to load cached content seamlessly.</li>
+        <li><strong>Transitions:</strong> Use fade-in/out animations for content transitions and swipe gestures for navigating between users’ Statuses.</li>
+        <li><strong>Testing:</strong> Validate playback for multiple content types, offline functionality, and performance on various devices.</li>
+    </ul>
+    <p><strong>Deliverables:</strong></p>
+    <ul>
+        <li>Fully functional Status viewer with offline support.</li>
+        <li>Polished UI with smooth animations and responsive design.</li>
+        <li>Tested performance across low-end and high-end devices.</li>
+    </ul>
+    <p><strong>Success Criteria:</strong> Users enjoy a smooth, engaging Status viewing experience with no lag or crashes, even offline.</p>
+    <p><strong>Challenges:</strong> Optimizing media playback for low-end devices and ensuring accessibility for all users.</p>
+    <p><strong>Collaboration:</strong> Coordinate with Mr. Mazibuko for database integration and Mr. ScoField for UX enhancements.</p>
+</div>
+`,
+            "Mr. Ngubane": `
+<div class="task-card">
+    <h3>News API Integration for GBV Content</h3>
+    <p><strong>Goal:</strong> Integrate a news feed displaying gender-based violence (GBV)-related articles, with filtering and offline caching.</p>
+    <p><strong>Steps & Explanation:</strong></p>
+    <ul>
+        <li><strong>API Selection:</strong> Use NewsAPI or The Guardian API. Define GBV-related keywords (e.g., "gender-based violence", "domestic abuse") for filtering.</li>
+        <li><strong>Backend Integration:</strong> Create RESTful endpoints to fetch and filter news articles. Cache results locally for offline access.</li>
+        <li><strong>Frontend Display:</strong> Design a clean news feed UI with article titles, summaries, and images, optimized for mobile.</li>
+        <li><strong>Testing:</strong> Validate filtering accuracy, offline caching, and performance across devices.</li>
+        <li><strong>Error Handling:</strong> Implement fallback UI for failed API calls and network issues.</li>
+    </ul>
+    <p><strong>Deliverables:</strong></p>
+    <ul>
+        <li>Functional GBV news feed with offline support.</li>
+        <li>Documented API integration and filtering logic.</li>
+        <li>Tested performance and reliability.</li>
+    </ul>
+    <p><strong>Success Criteria:</strong> Users can view relevant GBV news articles online and offline with fast load times.</p>
+    <p><strong>Challenges:</strong> Handling API rate limits and ensuring accurate filtering of relevant content.</p>
+    <p><strong>Collaboration:</strong> Work with Mr. Stakio for backend endpoints and Mr. ScoField for UI/UX polish.</p>
+</div>
+`,
+            "Mr. Stakio": `
+<div class="task-card">
+    <h3>Backend Server Setup & Hosting</h3>
+    <p><strong>Goal:</strong> Establish a reliable Node.js/Express backend to support Status, Profiles, Notifications, and News features.</p>
+    <p><strong>Steps & Explanation:</strong></p>
+    <ul>
+        <li><strong>Server Setup:</strong> Configure a Node.js/Express server with MongoDB/PostgreSQL for data storage.</li>
+        <li><strong>API Endpoints:</strong> Develop RESTful endpoints for Status uploads, profile management, notifications, and news fetching.</li>
+        <li><strong>Security:</strong> Implement authentication (JWT) and input validation to prevent injection attacks.</li>
+        <li><strong>Testing:</strong> Use tools like Postman to test endpoints for reliability and performance.</li>
+        <li><strong>Documentation:</strong> Provide Swagger/OpenAPI documentation for all endpoints.</li>
+    </ul>
+    <p><strong>Deliverables:</strong></p>
+    <ul>
+        <li>Fully operational backend server hosted on a cloud platform (e.g., AWS, Heroku).</li>
+        <li>Comprehensive API documentation.</li>
+        <li>Tested endpoints with high uptime.</li>
+    </ul>
+    <p><strong>Success Criteria:</strong> Backend supports all app features with minimal latency and high reliability.</p>
+    <p><strong>Challenges:</strong> Ensuring scalability for high traffic and securing sensitive user data.</p>
+    <p><strong>Collaboration:</strong> Coordinate with Mr. Mazibuko, Mr. Ngubane, and Mr. Qwabe for endpoint integration.</p>
+</div>
+`,
+            "Mr. Qwabe": `
+<div class="task-card">
+    <h3>Simulated Subscription Payments</h3>
+    <p><strong>Goal:</strong> Implement a mock subscription system using PayPal Sandbox for testing payment flows.</p>
+    <p><strong>Steps & Explanation:</strong></p>
+    <ul>
+        <li><strong>PayPal Sandbox Setup:</strong> Create a PayPal Sandbox account and integrate the SDK for subscription payments.</li>
+        <li><strong>Subscription Flow:</strong> Design a UI for selecting subscription plans (e.g., monthly, yearly) and simulate payments without real charges.</li>
+        <li><strong>Backend Integration:</strong> Develop endpoints with Mr. Stakio to store subscription status and validate payments.</li>
+        <li><strong>Testing:</strong> Test end-to-end payment flows, including edge cases like failed payments.</li>
+        <li><strong>Error Handling:</strong> Display user-friendly error messages for payment issues.</li>
+    </ul>
+    <p><strong>Deliverables:</strong></p>
+    <ul>
+        <li>Fully functional mock subscription system.</li>
+        <li>Tested payment flows with documentation.</li>
+        <li>Secure backend endpoints for subscription management.</li>
+    </ul>
+    <p><strong>Success Criteria:</strong> Users can simulate subscriptions seamlessly with clear feedback.</p>
+    <p><strong>Challenges:</strong> Ensuring secure handling of mock payment data and smooth integration with the backend.</p>
+    <p><strong>Collaboration:</strong> Work with Mr. Stakio for backend endpoints and Mr. ScoField for UI/UX.</p>
+</div>
+`,
+            "Mr. ScoField": `
+<div class="task-card">
+    <h3>UX Enhancements, Passkey, Tutorials, Profiles, NFC</h3>
+    <p><strong>Goal:</strong> Deliver a polished UX with secure Passkey login, interactive tutorials, profile management, and NFC-based features.</p>
+    <p><strong>Steps & Explanation:</strong></p>
+    <ul>
+        <li><strong>Deep UX Design:</strong> Apply consistent design principles across all screens, focusing on accessibility and smooth animations.</li>
+        <li><strong>Passkey System:</strong> Implement passwordless authentication using WebAuthn for secure, user-friendly logins.</li>
+        <li><strong>Interactive Tutorials:</strong> Create onboarding guides with step-by-step walkthroughs and animations to explain app features.</li>
+        <li><strong>Profile Management:</strong> Build a profile section for users to edit personal info, with offline persistence via Mr. Mazibuko’s database.</li>
+        <li><strong>NFC Integration:</strong> Enable NFC for login, sharing, or verification using device NFC capabilities.</li>
+        <li><strong>Testing:</strong> Validate UX across devices, ensure accessibility compliance, and test NFC on supported devices.</li>
+    </ul>
+    <p><strong>Deliverables:</strong></p>
+    <ul>
+        <li>Polished UX across all app screens.</li>
+        <li>Secure Passkey login system.</li>
+        <li>Interactive tutorials and functional profiles.</li>
+        <li>NFC-based features with documentation.</li>
+    </ul>
+    <p><strong>Success Criteria:</strong> Users experience an intuitive, secure, and engaging app with minimal learning curve.</p>
+    <p><strong>Challenges:</strong> Ensuring NFC compatibility across devices and meeting accessibility standards.</p>
+    <p><strong>Collaboration:</strong> Work with Ms. Motsamai for Status UI and Aya Experience Team for onboarding visuals.</p>
+</div>
+`,
+            "Aya Experience Team": `
+<div class="task-card">
+    <h3>Onboarding, Digital Card, and Social Content</h3>
+    <p><strong>Goal:</strong> Create an engaging onboarding experience, a polished Aya digital card, and a social story feed.</p>
+    <p><strong>Steps & Explanation:</strong></p>
+    <ul>
+        <li><strong>Onboarding Images:</strong> Design high-quality, welcoming visuals for first-time users, with animations to guide them through app features.</li>
+        <li><strong>Aya Digital Card:</strong> Create an interactive card with animations (e.g., flip or scale effects) to display user info or achievements.</li>
+        <li><strong>Social Story Feed:</strong> Build a story feed with 30-second auto-playing content, supporting offline caching via Mr. Mazibuko’s database.</li>
+        <li><strong>Testing:</strong> Validate responsiveness, animation performance, and offline functionality across devices.</li>
+        <li><strong>Accessibility:</strong> Ensure visuals and interactions are accessible to all users.</li>
+    </ul>
+    <p><strong>Deliverables:</strong></p>
+    <ul>
+        <li>Engaging onboarding experience with visuals.</li>
+        <li>Interactive Aya digital card with animations.</li>
+        <li>Fully functional story feed with offline support.</li>
+    </ul>
+    <p><strong>Success Criteria:</strong> Users are delighted by the onboarding and social features, with high engagement rates.</p>
+    <p><strong>Challenges:</strong> Balancing visual polish with performance on low-end devices.</p>
+    <p><strong>Collaboration:</strong> Work with Mr. ScoField for UX consistency and Ms. Motsamai for story feed integration.</p>
+</div>
+`
+        };
+
+        let currentContent = "";
+        const searchInput = document.getElementById("userSearch");
+        const displayDiv = document.getElementById("sprintDisplay");
+        const loadingDiv = document.getElementById("loading");
+
+        function showSprint() {
+            const select = searchInput.value.trim();
+            loadingDiv.classList.add("active");
+            displayDiv.classList.remove("show");
+
+            setTimeout(() => {
+                if (!select || !sprintGuides[select]) {
+                    displayDiv.innerHTML = "<p>No matching team member or team found.</p>";
+                    displayDiv.classList.add("show");
+                    loadingDiv.classList.remove("active");
+                    return;
+                }
+
+                currentContent = sprintGuides[select];
+                displayDiv.innerHTML = `
+                    <div class="action-buttons">
+                        <button class="action-button" onclick="downloadPDF()" aria-label="Download sprint guide as PDF">
+                            <i class="fas fa-download download-icon"></i>
+                        </button>
+                        <button class="action-button" onclick="deleteSprint()" aria-label="Clear sprint guide">
+                            <i class="fas fa-trash trash-icon"></i>
+                        </button>
+                    </div>
+                    ${currentContent}
+                `;
+                loadingDiv.classList.remove("active");
+                displayDiv.classList.add("show");
+            }, 400);
         }
 
-        function filterMembers() {
-            const input = document.getElementById('search').value.toUpperCase();
-            const members = document.getElementById('memberList').getElementsByClassName('member');
-            const noResults = document.getElementById('noResults');
-            let visibleCount = 0;
+        function downloadPDF() {
+            if (!currentContent) {
+                alert("Please search for a team member or team first.");
+                return;
+            }
+            const { jsPDF } = window.jspdf;
+            const doc = new jsPDF('p', 'pt', 'a4');
+            const select = searchInput.value.trim();
+            const margin = 40;
+            const pageWidth = 515;
+            let y = 40;
 
-            Array.from(members).forEach(member => {
-                const name = member.getAttribute('data-name');
-                const isVisible = name.toUpperCase().includes(input);
-                member.style.display = isVisible ? "flex" : "none";
-                if (isVisible) visibleCount++;
+            doc.setFont("helvetica", "bold");
+            doc.setFontSize(16);
+            doc.text(`Sprint 4 Guide for ${select}`, margin, y);
+            y += 30;
+
+            const elements = document.getElementById("sprintDisplay").querySelectorAll(".task-card");
+
+            elements.forEach(element => {
+                doc.setFontSize(14);
+                doc.setFont("helvetica", "bold");
+
+                if (y > 750) {
+                    doc.addPage();
+                    y = 40;
+                }
+                doc.text(element.querySelector("h3").innerText, margin, y);
+                y += 20;
+
+                const paragraphs = element.querySelectorAll("p");
+                paragraphs.forEach(p => {
+                    doc.setFontSize(12);
+                    doc.setFont("helvetica", "normal");
+                    const lines = doc.splitTextToSize(p.innerText, pageWidth);
+                    lines.forEach(line => {
+                        if (y > 750) {
+                            doc.addPage();
+                            y = 40;
+                        }
+                        doc.text(line, margin, y);
+                        y += 14;
+                    });
+                    y += 6;
+                });
+
+                const lists = element.querySelectorAll("ul");
+                lists.forEach(ul => {
+                    ul.querySelectorAll("li").forEach(li => {
+                        const text = `- ${li.innerText}`;
+                        const lines = doc.splitTextToSize(text, pageWidth - 20);
+                        lines.forEach(line => {
+                            if (y > 750) {
+                                doc.addPage();
+                                y = 40;
+                            }
+                            doc.text(line, margin + 10, y);
+                            y += 14;
+                        });
+                    });
+                    y += 10;
+                });
+
+                y += 10;
             });
 
-            noResults.style.display = visibleCount === 0 && input.length > 0 ? "block" : "none";
+            doc.save(`${select}_Sprint4_Guide.pdf`);
         }
-    </script>
 
+        function deleteSprint() {
+            displayDiv.classList.remove("show");
+            setTimeout(() => {
+                displayDiv.innerHTML = "";
+                searchInput.value = "";
+                currentContent = "";
+            }, 300);
+        }
+
+        searchInput.addEventListener("input", () => {
+            if (searchInput.value.trim().length >= 3) {
+                showSprint();
+            }
+        });
+
+        searchInput.addEventListener("keypress", (e) => {
+            if (e.key === "Enter") {
+                showSprint();
+            }
+        });
+    </script>
 </body>
 
 </html>
