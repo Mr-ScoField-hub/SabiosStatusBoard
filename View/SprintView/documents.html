@@ -242,14 +242,16 @@
             <input type="text" id="userSearch" list="userSuggestions" class="search-input"
                 placeholder="Search team member or team" aria-label="Search team member or team">
             <datalist id="userSuggestions">
-                <option value="Mr. Mazibuko">
-                <option value="Ms. Motsamai">
-                <option value="Mr. Ngubane">
-                <option value="Mr. Stakio">
-                <option value="Mr. Qwabe">
-                <option value="Mr. ScoField">
-                <option value="Ms. Mashele || Ms. Mphelo">
+                <option value="Mazibuko">
+                <option value="Motsamai">
+                <option value="Ngubane">
+                <option value="Stakio">
+                <option value="Qwabe">
+                <option value="ScoField">
+                <option value="Mashele">
+                <option value="Mphelo">
             </datalist>
+
         </div>
 
         <div id="loading" class="loading">Loading...</div>
@@ -259,7 +261,7 @@
     <script>
 
         const sprintGuides = {
-            "Mr. Mazibuko": `
+            "Mazibuko": `
 <div class="task-card">
     <h3>Database Design & Offline Synchronization</h3>
     <p><strong>Goal:</strong> Develop a robust, offline-first database system to store and sync Status content, ensuring seamless functionality and data integrity.</p>
@@ -282,7 +284,7 @@
     <p><strong>Collaboration:</strong> Work with Ms. Motsamai for offline playback integration and Mr. Stakio for server-side sync endpoints.</p>
 </div>
 `,
-            "Ms. Motsamai": `
+            "Motsamai": `
 <div class="task-card">
     <h3>Status Viewing Experience</h3>
     <p><strong>Goal:</strong> Build an engaging, Instagram-like Status feed with support for 30-second videos and images, seamless transitions, and offline functionality.</p>
@@ -305,7 +307,7 @@
     <p><strong>Collaboration:</strong> Coordinate with Mr. Mazibuko for database integration and Mr. ScoField for UX enhancements.</p>
 </div>
 `,
-            "Mr. Ngubane": `
+            "Ngubane": `
 <div class="task-card">
     <h3>News API Integration for GBV Content</h3>
     <p><strong>Goal:</strong> Integrate a news feed displaying gender-based violence (GBV)-related articles, with filtering and offline caching.</p>
@@ -328,7 +330,7 @@
     <p><strong>Collaboration:</strong> Work with Mr. Stakio for backend endpoints and Mr. ScoField for UI/UX polish.</p>
 </div>
 `,
-            "Mr. Stakio": `
+            "Stakio": `
 <div class="task-card">
     <h3>Backend Server Setup & Hosting</h3>
     <p><strong>Goal:</strong> Establish a reliable Node.js/Express backend to support Status, Profiles, Notifications, and News features.</p>
@@ -351,7 +353,7 @@
     <p><strong>Collaboration:</strong> Coordinate with Mr. Mazibuko, Mr. Ngubane, and Mr. Qwabe for endpoint integration.</p>
 </div>
 `,
-            "Mr. Qwabe": `
+            "Qwabe": `
 <div class="task-card">
     <h3>Simulated Subscription Payments</h3>
     <p><strong>Goal:</strong> Implement a mock subscription system using PayPal Sandbox for testing payment flows.</p>
@@ -374,7 +376,7 @@
     <p><strong>Collaboration:</strong> Work with Mr. Stakio for backend endpoints and Mr. ScoField for UI/UX.</p>
 </div>
 `,
-            "Mr. ScoField": `
+            "ScoField": `
 <div class="task-card">
     <h3>UX Enhancements, Passkey, Tutorials, Profiles, NFC</h3>
     <p><strong>Goal:</strong> Deliver a polished UX with secure Passkey login, interactive tutorials, profile management, and NFC-based features.</p>
@@ -399,7 +401,30 @@
     <p><strong>Collaboration:</strong> Work with Ms. Motsamai for Status UI and Aya Experience Team for onboarding visuals.</p>
 </div>
 `,
-            "Aya Experience Team": `
+            "Mphelo": `
+<div class="task-card">
+    <h3>Onboarding, Digital Card, and Social Content</h3>
+    <p><strong>Goal:</strong> Create an engaging onboarding experience, a polished Aya digital card, and a social story feed.</p>
+    <p><strong>Steps & Explanation:</strong></p>
+    <ul>
+        <li><strong>Onboarding Images:</strong> Design high-quality, welcoming visuals for first-time users, with animations to guide them through app features.</li>
+        <li><strong>Aya Digital Card:</strong> Create an interactive card with animations (e.g., flip or scale effects) to display user info or achievements.</li>
+        <li><strong>Social Story Feed:</strong> Build a story feed with 30-second auto-playing content, supporting offline caching via Mr. Mazibuko’s database.</li>
+        <li><strong>Testing:</strong> Validate responsiveness, animation performance, and offline functionality across devices.</li>
+        <li><strong>Accessibility:</strong> Ensure visuals and interactions are accessible to all users.</li>
+    </ul>
+    <p><strong>Deliverables:</strong></p>
+    <ul>
+        <li>Engaging onboarding experience with visuals.</li>
+        <li>Interactive Aya digital card with animations.</li>
+        <li>Fully functional story feed with offline support.</li>
+    </ul>
+    <p><strong>Success Criteria:</strong> Users are delighted by the onboarding and social features, with high engagement rates.</p>
+    <p><strong>Challenges:</strong> Balancing visual polish with performance on low-end devices.</p>
+    <p><strong>Collaboration:</strong> Work with Mr. ScoField for UX consistency and Ms. Motsamai for story feed integration.</p>
+</div>
+`,
+            "Mashele": `
 <div class="task-card">
     <h3>Onboarding, Digital Card, and Social Content</h3>
     <p><strong>Goal:</strong> Create an engaging onboarding experience, a polished Aya digital card, and a social story feed.</p>
