@@ -261,190 +261,146 @@
     <script>
 
         const sprintGuides = {
-            "Mazibuko": `
+            "ScoField": `
 <div class="task-card">
-    <h3>Database Design & Offline Synchronization</h3>
-    <p><strong>Goal:</strong> Develop a robust, offline-first database system to store and sync Status content, ensuring seamless functionality and data integrity.</p>
+    <h3>Offline Emergency Mode + SOS Wakeword</h3>
+    <p><strong>Goal:</strong> Implement a reliable emergency response system with offline capability and SOS wakeword detection.</p>
     <p><strong>Steps & Explanation:</strong></p>
     <ul>
-        <li><strong>Database Schema Design:</strong> Create tables/collections for videos, images, and text with fields such as ID, ownerID, filePath, duration, timestamp, and syncStatus. Use indexing on ownerID and timestamp to optimize queries.</li>
-        <li><strong>Offline Storage Implementation:</strong> Use SQLite or Realm for local storage. Implement a queue system to track unsynced changes when offline.</li>
-        <li><strong>Synchronization Logic:</strong> Develop a sync engine to detect network availability, push local changes to the server, and pull server updates to the local database. Implement conflict resolution (e.g., last-write-wins).</li>
-        <li><strong>Performance Optimization:</strong> Ensure the database can handle thousands of Status items efficiently. Use batch operations for sync to minimize network calls.</li>
-        <li><strong>Testing:</strong> Test offline/online transitions, sync accuracy, and data integrity across multiple content types (videos, images, text).</li>
+        <li><strong>SOS Wakeword:</strong> Detect “Help Aya” voice command using local AI processing.</li>
+        <li><strong>Offline Alerts:</strong> Send SMS to pre-set contacts without internet.</li>
+        <li><strong>Agent Workflow:</strong> Trigger AI guidance and emergency response steps.</li>
+        <li><strong>Battery Efficiency:</strong> Optimize background SOS detection for minimal battery usage.</li>
     </ul>
     <p><strong>Deliverables:</strong></p>
     <ul>
-        <li>Fully functional offline-first database integrated with the Status viewer.</li>
-        <li>Detailed schema documentation (e.g., ERD or JSON schema).</li>
-        <li>Tested sync functionality with no data loss.</li>
+        <li>Fully functional offline SOS system.</li>
+        <li>Alerts reliably sent to all emergency contacts.</li>
+        <li>Integrated AI guidance workflow.</li>
     </ul>
-    <p><strong>Success Criteria:</strong> Users can create, view, and edit Status content offline, with seamless syncing when online.</p>
-    <p><strong>Challenges:</strong> Handling large datasets, conflict resolution during sync, and ensuring low battery/CPU usage.</p>
-    <p><strong>Collaboration:</strong> Work with Ms. Motsamai for offline playback integration and Mr. Stakio for server-side sync endpoints.</p>
-</div>
-`,
-            "Motsamai": `
-<div class="task-card">
-    <h3>Status Viewing Experience</h3>
-    <p><strong>Goal:</strong> Build an engaging, Instagram-like Status feed with support for 30-second videos and images, seamless transitions, and offline functionality.</p>
-    <p><strong>Steps & Explanation:</strong></p>
-    <ul>
-        <li><strong>UI Design:</strong> Create a clean interface with circular avatars, a progress bar for time tracking, and swipe gestures for navigation.</li>
-        <li><strong>Media Playback:</strong> Implement video/image playback with a 30-second limit per item. Ensure smooth playback using native media players.</li>
-        <li><strong>Offline Support:</strong> Integrate with Mr. Mazibuko’s offline database to load cached content seamlessly.</li>
-        <li><strong>Transitions:</strong> Use fade-in/out animations for content transitions and swipe gestures for navigating between users’ Statuses.</li>
-        <li><strong>Testing:</strong> Validate playback for multiple content types, offline functionality, and performance on various devices.</li>
-    </ul>
-    <p><strong>Deliverables:</strong></p>
-    <ul>
-        <li>Fully functional Status viewer with offline support.</li>
-        <li>Polished UI with smooth animations and responsive design.</li>
-        <li>Tested performance across low-end and high-end devices.</li>
-    </ul>
-    <p><strong>Success Criteria:</strong> Users enjoy a smooth, engaging Status viewing experience with no lag or crashes, even offline.</p>
-    <p><strong>Challenges:</strong> Optimizing media playback for low-end devices and ensuring accessibility for all users.</p>
-    <p><strong>Collaboration:</strong> Coordinate with Mr. Mazibuko for database integration and Mr. ScoField for UX enhancements.</p>
-</div>
-`,
-            "Ngubane": `
-<div class="task-card">
-    <h3>News API Integration for GBV Content</h3>
-    <p><strong>Goal:</strong> Integrate a news feed displaying gender-based violence (GBV)-related articles, with filtering and offline caching.</p>
-    <p><strong>Steps & Explanation:</strong></p>
-    <ul>
-        <li><strong>API Selection:</strong> Use NewsAPI or The Guardian API. Define GBV-related keywords (e.g., "gender-based violence", "domestic abuse") for filtering.</li>
-        <li><strong>Backend Integration:</strong> Create RESTful endpoints to fetch and filter news articles. Cache results locally for offline access.</li>
-        <li><strong>Frontend Display:</strong> Design a clean news feed UI with article titles, summaries, and images, optimized for mobile.</li>
-        <li><strong>Testing:</strong> Validate filtering accuracy, offline caching, and performance across devices.</li>
-        <li><strong>Error Handling:</strong> Implement fallback UI for failed API calls and network issues.</li>
-    </ul>
-    <p><strong>Deliverables:</strong></p>
-    <ul>
-        <li>Functional GBV news feed with offline support.</li>
-        <li>Documented API integration and filtering logic.</li>
-        <li>Tested performance and reliability.</li>
-    </ul>
-    <p><strong>Success Criteria:</strong> Users can view relevant GBV news articles online and offline with fast load times.</p>
-    <p><strong>Challenges:</strong> Handling API rate limits and ensuring accurate filtering of relevant content.</p>
-    <p><strong>Collaboration:</strong> Work with Mr. Stakio for backend endpoints and Mr. ScoField for UI/UX polish.</p>
-</div>
-`,
-            "Stakio": `
-<div class="task-card">
-    <h3>Backend Server Setup & Hosting</h3>
-    <p><strong>Goal:</strong> Establish a reliable Node.js/Express backend to support Status, Profiles, Notifications, and News features.</p>
-    <p><strong>Steps & Explanation:</strong></p>
-    <ul>
-        <li><strong>Server Setup:</strong> Configure a Node.js/Express server with MongoDB/PostgreSQL for data storage.</li>
-        <li><strong>API Endpoints:</strong> Develop RESTful endpoints for Status uploads, profile management, notifications, and news fetching.</li>
-        <li><strong>Security:</strong> Implement authentication (JWT) and input validation to prevent injection attacks.</li>
-        <li><strong>Testing:</strong> Use tools like Postman to test endpoints for reliability and performance.</li>
-        <li><strong>Documentation:</strong> Provide Swagger/OpenAPI documentation for all endpoints.</li>
-    </ul>
-    <p><strong>Deliverables:</strong></p>
-    <ul>
-        <li>Fully operational backend server hosted on a cloud platform (e.g., AWS, Heroku).</li>
-        <li>Comprehensive API documentation.</li>
-        <li>Tested endpoints with high uptime.</li>
-    </ul>
-    <p><strong>Success Criteria:</strong> Backend supports all app features with minimal latency and high reliability.</p>
-    <p><strong>Challenges:</strong> Ensuring scalability for high traffic and securing sensitive user data.</p>
-    <p><strong>Collaboration:</strong> Coordinate with Mr. Mazibuko, Mr. Ngubane, and Mr. Qwabe for endpoint integration.</p>
+    <p><strong>Success Criteria:</strong> SOS triggers correctly offline, alerts delivered, minimal battery drain.</p>
+    <p><strong>Challenges:</strong> Wakeword accuracy in noisy environments, SMS failures in low connectivity.</p>
 </div>
 `,
             "Qwabe": `
 <div class="task-card">
-    <h3>Simulated Subscription Payments</h3>
-    <p><strong>Goal:</strong> Implement a mock subscription system using PayPal Sandbox for testing payment flows.</p>
+    <h3>Self-Defense Lessons (Computer Vision / AR/VR)</h3>
+    <p><strong>Goal:</strong> Provide engaging self-defense lessons using Computer Vision and AR/VR options.</p>
     <p><strong>Steps & Explanation:</strong></p>
     <ul>
-        <li><strong>PayPal Sandbox Setup:</strong> Create a PayPal Sandbox account and integrate the SDK for subscription payments.</li>
-        <li><strong>Subscription Flow:</strong> Design a UI for selecting subscription plans (e.g., monthly, yearly) and simulate payments without real charges.</li>
-        <li><strong>Backend Integration:</strong> Develop endpoints with Mr. Stakio to store subscription status and validate payments.</li>
-        <li><strong>Testing:</strong> Test end-to-end payment flows, including edge cases like failed payments.</li>
-        <li><strong>Error Handling:</strong> Display user-friendly error messages for payment issues.</li>
+        <li><strong>Computer Vision Mode:</strong> Detect user poses using TensorFlow.js or MediaPipe.</li>
+        <li><strong>AR/VR Mode:</strong> Overlay lessons with AR/VR for immersive experience.</li>
+        <li><strong>Gamification:</strong> Track points, badges, and lesson streaks.</li>
+        <li><strong>Progress Dashboard:</strong> Show completed lessons in user profile.</li>
     </ul>
     <p><strong>Deliverables:</strong></p>
     <ul>
-        <li>Fully functional mock subscription system.</li>
-        <li>Tested payment flows with documentation.</li>
-        <li>Secure backend endpoints for subscription management.</li>
+        <li>Two fully functional self-defense lesson modes.</li>
+        <li>Gamified scoring and progress tracking.</li>
+        <li>Dashboard visualization of lesson history.</li>
     </ul>
-    <p><strong>Success Criteria:</strong> Users can simulate subscriptions seamlessly with clear feedback.</p>
-    <p><strong>Challenges:</strong> Ensuring secure handling of mock payment data and smooth integration with the backend.</p>
-    <p><strong>Collaboration:</strong> Work with Mr. Stakio for backend endpoints and Mr. ScoField for UI/UX.</p>
+    <p><strong>Success Criteria:</strong> Lessons completeable in both modes, pose detection accurate >90%, gamification motivates engagement.</p>
+    <p><strong>Challenges:</strong> Optimizing AR/VR for mobile, accurate pose detection in varied environments.</p>
 </div>
 `,
-            "ScoField": `
+            "Motsamai": `
 <div class="task-card">
-    <h3>UX Enhancements, Passkey, Tutorials, Profiles, NFC</h3>
-    <p><strong>Goal:</strong> Deliver a polished UX with secure Passkey login, interactive tutorials, profile management, and NFC-based features.</p>
+    <h3>Disguise Mode</h3>
+    <p><strong>Goal:</strong> Provide a stealth interface for Aya by hiding features behind themed icons.</p>
     <p><strong>Steps & Explanation:</strong></p>
     <ul>
-        <li><strong>Deep UX Design:</strong> Apply consistent design principles across all screens, focusing on accessibility and smooth animations.</li>
-        <li><strong>Passkey System:</strong> Implement passwordless authentication using WebAuthn for secure, user-friendly logins.</li>
-        <li><strong>Interactive Tutorials:</strong> Create onboarding guides with step-by-step walkthroughs and animations to explain app features.</li>
-        <li><strong>Profile Management:</strong> Build a profile section for users to edit personal info, with offline persistence via Mr. Mazibuko’s database.</li>
-        <li><strong>NFC Integration:</strong> Enable NFC for login, sharing, or verification using device NFC capabilities.</li>
-        <li><strong>Testing:</strong> Validate UX across devices, ensure accessibility compliance, and test NFC on supported devices.</li>
+        <li><strong>Theme Design:</strong> Implement disguise themes: calculator, gallery, news icons.</li>
+        <li><strong>Integration:</strong> Map gestures/taps to reveal hidden features.</li>
+        <li><strong>Quick Exit:</strong> Hide app interface instantly on demand.</li>
     </ul>
     <p><strong>Deliverables:</strong></p>
     <ul>
-        <li>Polished UX across all app screens.</li>
-        <li>Secure Passkey login system.</li>
-        <li>Interactive tutorials and functional profiles.</li>
-        <li>NFC-based features with documentation.</li>
+        <li>Fully functional disguise mode with multiple themes.</li>
+        <li>Quick exit functionality operational.</li>
     </ul>
-    <p><strong>Success Criteria:</strong> Users experience an intuitive, secure, and engaging app with minimal learning curve.</p>
-    <p><strong>Challenges:</strong> Ensuring NFC compatibility across devices and meeting accessibility standards.</p>
-    <p><strong>Collaboration:</strong> Work with Ms. Motsamai for Status UI and Aya Experience Team for onboarding visuals.</p>
+    <p><strong>Success Criteria:</strong> Hidden features accessible without detection, seamless theme switching.</p>
+    <p><strong>Challenges:</strong> Designing intuitive gestures, avoiding accidental activation.</p>
 </div>
 `,
-            "Mphelo": `
+            "AyaExperienceTeam": `
 <div class="task-card">
-    <h3>Onboarding, Digital Card, and Social Content</h3>
-    <p><strong>Goal:</strong> Create an engaging onboarding experience, a polished Aya digital card, and a social story feed.</p>
+    <h3>UX/UI Enhancements</h3>
+    <p><strong>Goal:</strong> Improve onboarding, profile management, and real-time Aya Listen/Talk Status for a polished mobile experience.</p>
     <p><strong>Steps & Explanation:</strong></p>
     <ul>
-        <li><strong>Onboarding Images:</strong> Design high-quality, welcoming visuals for first-time users, with animations to guide them through app features.</li>
-        <li><strong>Aya Digital Card:</strong> Create an interactive card with animations (e.g., flip or scale effects) to display user info or achievements.</li>
-        <li><strong>Social Story Feed:</strong> Build a story feed with 30-second auto-playing content, supporting offline caching via Mr. Mazibuko’s database.</li>
-        <li><strong>Testing:</strong> Validate responsiveness, animation performance, and offline functionality across devices.</li>
-        <li><strong>Accessibility:</strong> Ensure visuals and interactions are accessible to all users.</li>
+        <li><strong>NewUserForm UX:</strong> Step-by-step onboarding with progress bars and animations.</li>
+        <li><strong>Profile Page:</strong> Allow users to edit avatar, name, and settings.</li>
+        <li><strong>Aya Listen/Talk Status:</strong> Implement real-time voice prompts and feedback.</li>
+        <li><strong>Mobile Optimization:</strong> Ensure smooth rendering and accessibility on various devices.</li>
     </ul>
     <p><strong>Deliverables:</strong></p>
     <ul>
-        <li>Engaging onboarding experience with visuals.</li>
-        <li>Interactive Aya digital card with animations.</li>
-        <li>Fully functional story feed with offline support.</li>
+        <li>Completed onboarding form.</li>
+        <li>Editable profile page.</li>
+        <li>Functional Listen/Talk Status feature.</li>
     </ul>
-    <p><strong>Success Criteria:</strong> Users are delighted by the onboarding and social features, with high engagement rates.</p>
-    <p><strong>Challenges:</strong> Balancing visual polish with performance on low-end devices.</p>
-    <p><strong>Collaboration:</strong> Work with Mr. ScoField for UX consistency and Ms. Motsamai for story feed integration.</p>
+    <p><strong>Success Criteria:</strong> Users can complete onboarding quickly, edit profile easily, and interact with Aya via voice prompts.</p>
+    <p><strong>Challenges:</strong> Balancing detailed UX with mobile readability, ensuring responsive voice interaction.</p>
 </div>
 `,
-            "Mashele": `
+            "Ngubane": `
 <div class="task-card">
-    <h3>Onboarding, Digital Card, and Social Content</h3>
-    <p><strong>Goal:</strong> Create an engaging onboarding experience, a polished Aya digital card, and a social story feed.</p>
+    <h3>Full-Stack Social Status Feature (Hardcoded)</h3>
+    <p><strong>Goal:</strong> Implement a temporary social status feed, allowing users to add statuses without persistence.</p>
     <p><strong>Steps & Explanation:</strong></p>
     <ul>
-        <li><strong>Onboarding Images:</strong> Design high-quality, welcoming visuals for first-time users, with animations to guide them through app features.</li>
-        <li><strong>Aya Digital Card:</strong> Create an interactive card with animations (e.g., flip or scale effects) to display user info or achievements.</li>
-        <li><strong>Social Story Feed:</strong> Build a story feed with 30-second auto-playing content, supporting offline caching via Mr. Mazibuko’s database.</li>
-        <li><strong>Testing:</strong> Validate responsiveness, animation performance, and offline functionality across devices.</li>
-        <li><strong>Accessibility:</strong> Ensure visuals and interactions are accessible to all users.</li>
+        <li><strong>Hardcoded Feed:</strong> Preload example statuses.</li>
+        <li><strong>User Add Status:</strong> Allow users to add temporary statuses that disappear on refresh.</li>
+        <li><strong>Feed Display:</strong> Display statuses with basic interactions like swipe or scroll.</li>
     </ul>
     <p><strong>Deliverables:</strong></p>
     <ul>
-        <li>Engaging onboarding experience with visuals.</li>
-        <li>Interactive Aya digital card with animations.</li>
-        <li>Fully functional story feed with offline support.</li>
+        <li>Functional hardcoded social status feed.</li>
+        <li>Users can add temporary statuses during session.</li>
     </ul>
-    <p><strong>Success Criteria:</strong> Users are delighted by the onboarding and social features, with high engagement rates.</p>
-    <p><strong>Challenges:</strong> Balancing visual polish with performance on low-end devices.</p>
-    <p><strong>Collaboration:</strong> Work with Mr. ScoField for UX consistency and Ms. Motsamai for story feed integration.</p>
+    <p><strong>Success Criteria:</strong> Status updates visible immediately, feed renders correctly on mobile.</p>
+    <p><strong>Challenges:</strong> Maintaining feed consistency without database persistence, handling multiple updates.</p>
+</div>
+`,
+            "Mazibuko": `
+<div class="task-card">
+    <h3>Newsfeed CRUD</h3>
+    <p><strong>Goal:</strong> Enable users to create, read, update, and delete posts with text, images, and videos.</p>
+    <p><strong>Steps & Explanation:</strong></p>
+    <ul>
+        <li><strong>CRUD Implementation:</strong> Allow full content management by users.</li>
+        <li><strong>Media Support:</strong> Enable text, image, and video posts.</li>
+        <li><strong>Feed Display:</strong> Show chronological feed of posts.</li>
+        <li><strong>Backend APIs:</strong> Integrate with backend for persistence and retrieval.</li>
+    </ul>
+    <p><strong>Deliverables:</strong></p>
+    <ul>
+        <li>Fully functional newsfeed with CRUD capabilities.</li>
+        <li>Feed displays all media types correctly.</li>
+    </ul>
+    <p><strong>Success Criteria:</strong> Users can add, edit, and delete content reliably, feed updates in real-time.</p>
+    <p><strong>Challenges:</strong> Optimizing media upload/rendering, moderation of inappropriate content.</p>
+</div>
+`,
+            "Stakio": `
+<div class="task-card">
+    <h3>Build & Host Backend + Co-Pilot Integration</h3>
+    <p><strong>Goal:</strong> Host a robust backend and assist all team members in integrating and testing features.</p>
+    <p><strong>Steps & Explanation:</strong></p>
+    <ul>
+        <li><strong>Backend Hosting:</strong> Deploy Node.js/Express backend with MongoDB/PostgreSQL.</li>
+        <li><strong>API Testing:</strong> Ensure endpoints for profile, newsfeed, and AR/VR modules work correctly.</li>
+        <li><strong>Co-Pilot Support:</strong> Assist team members in integration, debugging, and testing.</li>
+        <li><strong>Error Reporting:</strong> Collect logs and errors for improvements.</li>
+    </ul>
+    <p><strong>Deliverables:</strong></p>
+    <ul>
+        <li>Fully hosted backend server.</li>
+        <li>All app modules integrated and tested.</li>
+        <li>Comprehensive error logs and documentation.</li>
+    </ul>
+    <p><strong>Success Criteria:</strong> App functions end-to-end with minimal errors and high reliability.</p>
+    <p><strong>Challenges:</strong> Coordinating multiple module integrations, ensuring cloud deployment stability.</p>
 </div>
 `
         };
