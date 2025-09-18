@@ -4,11 +4,12 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Sprint 4 Weekly Goals</title>
+    <title>Aya Weekly Sprint Goals</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
     <style>
+        /* same CSS as before, unchanged */
         * {
             margin: 0;
             padding: 0;
@@ -44,7 +45,7 @@
         }
 
         .goal-card {
-            background: #ffffff;
+            background: #fff;
             border-radius: 16px;
             box-shadow: 0 6px 15px rgba(0, 0, 0, 0.08);
             margin-bottom: 16px;
@@ -164,8 +165,8 @@
 
 <body>
     <div class="container">
-        <h1>Sprint 4 Weekly Goals</h1>
-        <div class="summary">Track progress and download weekly sprint guide</div>
+        <h1>Aya Weekly Sprint Goals</h1>
+        <div class="summary">Track progress and download the current weekly sprint guide</div>
 
         <div class="action-buttons">
             <button class="action-button" onclick="downloadPDF()" title="Download PDF">
@@ -176,56 +177,60 @@
         <!-- Goal Cards -->
         <div id="goalsContainer">
             <div class="goal-card">
-                <h2>1. Database & Offline Sync</h2>
+                <h2>1. Offline Emergency Mode + SOS Wakeword</h2>
                 <div class="subtask">
-                    <span class="label mazibuko">Offline-first DB & sync engine – <strong>Mr. Mazibuko</strong></span>
-                    <span class="status completed">completed</span>
-                </div>
-            </div>
-            <div class=" goal-card">
-                <h2>2. Status Viewing UX</h2>
-                <div class="subtask">
-                    <span class="label motsamai">Instagram-like status feed – <strong>Ms.
-                            Motsamai</strong></span>
+                    <span class="label scofield">Offline SOS system – <strong>Mr. ScoField</strong></span>
                     <span class="status pending">Pending</span>
                 </div>
             </div>
+
             <div class="goal-card">
-                <h2>3. GBV News API Integration</h2>
+                <h2>2. Self-Defense Lessons (CV / AR/VR)</h2>
                 <div class="subtask">
-                    <span class="label ngubane">News feed + offline caching – <strong>Mr. Ngubane</strong></span>
-                    <span class="status completed">completed</span>
-                </div>
-            </div>
-            <div class="goal-card">
-                <h2>4. Backend & Hosting</h2>
-                <div class="subtask">
-                    <span class="label stakio">Node.js/Express server & endpoints – <strong>Mr.
-                            Stakio</strong></span>
+                    <span class="label qwabe">Computer Vision & AR/VR lessons – <strong>Mr. Qwabe</strong></span>
                     <span class="status pending">Pending</span>
                 </div>
             </div>
+
             <div class="goal-card">
-                <h2>5. Subscription Simulation</h2>
+                <h2>3. Disguise Mode</h2>
                 <div class="subtask">
-                    <span class="label qwabe">Mock PayPal subscription flow – <strong>Mr. Qwabe</strong></span>
-                    <span class="status completed">completed</span>
+                    <span class="label motsamai">Design & implement themes – <strong>Ms. Motsamai</strong></span>
+                    <span class="status pending">Pending</span>
                 </div>
             </div>
+
             <div class="goal-card">
-                <h2>6. UX Enhancements & Features</h2>
+                <h2>4. UX/UI Enhancements</h2>
                 <div class="subtask">
-                    <span class="label scofield">Passkey login, tutorials<strong>Mr.
-                            ScoField</strong></span>
-                    <span class="status completed">completed</span>
-                </div>
-            </div>
-            <div class="goal-card">
-                <h2>7. Onboarding & Social Content</h2>
-                <div class="subtask">
-                    <span class="label mphelo">Onboarding + Aya Digital<strong>Experience
+                    <span class="label mashele">Onboarding, Listen/Talk Status, Profile Page – <strong>Aya Experience
                             Team</strong></span>
-                    <span class="status completed">completed</span>
+                    <span class="status pending">Pending</span>
+                </div>
+            </div>
+
+            <div class="goal-card">
+                <h2>5. Full-Stack Social Status Feature (Hardcoded)</h2>
+                <div class="subtask">
+                    <span class="label ngubane">Temporary status feed – <strong>Mr. Ngubane</strong></span>
+                    <span class="status pending">Pending</span>
+                </div>
+            </div>
+
+            <div class="goal-card">
+                <h2>6. Newsfeed CRUD</h2>
+                <div class="subtask">
+                    <span class="label mazibuko">Create, Read, Update, Delete posts – <strong>Mr.
+                            Mazibuko</strong></span>
+                    <span class="status pending">Pending</span>
+                </div>
+            </div>
+
+            <div class="goal-card">
+                <h2>7. Build & Host Backend + Co-Pilot Integration</h2>
+                <div class="subtask">
+                    <span class="label stakio">Node.js/Express backend hosting – <strong>Mr. Stakio</strong></span>
+                    <span class="status pending">Pending</span>
                 </div>
             </div>
         </div>
@@ -239,7 +244,7 @@
             let y = 40;
             doc.setFont("helvetica", "bold");
             doc.setFontSize(18);
-            doc.text("Sprint 4 Weekly Goals", margin, y);
+            doc.text("Aya Weekly Sprint Goals", margin, y);
             y += 30;
 
             const goals = document.querySelectorAll(".goal-card");
@@ -260,7 +265,7 @@
                 if (y > 750) { doc.addPage(); y = 40; }
             });
 
-            doc.save("Sprint4_WeeklyGoals.pdf");
+            doc.save("Aya_WeeklySprintGoals.pdf");
         }
     </script>
 </body>
