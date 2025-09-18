@@ -4,8 +4,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Sprint 4 Premium Guide for team management">
     <title>Sprint 4 Premium Guide</title>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js" defer></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
     <style>
         * {
@@ -24,8 +25,9 @@
         }
 
         .container {
-            max-width: 500px;
+            max-width: 600px;
             margin: 0 auto;
+            padding: 0 16px;
         }
 
         .header {
@@ -36,23 +38,26 @@
 
         .header img {
             max-width: 150px;
+            height: auto;
             margin-bottom: 12px;
+            display: block;
+            margin-left: auto;
+            margin-right: auto;
         }
 
         .header h1 {
-            font-size: 24px;
+            font-size: clamp(20px, 5vw, 24px);
             font-weight: 700;
             color: #1c1e21;
         }
 
         .header p {
             color: #65676b;
-            font-size: 15px;
+            font-size: clamp(14px, 3vw, 15px);
             font-weight: 400;
             margin-top: 4px;
         }
 
-        /* Search Input */
         .search-container {
             position: relative;
             margin-bottom: 20px;
@@ -92,7 +97,10 @@
             font-style: italic;
         }
 
-        /* Sprint Display */
+        .search-input:invalid {
+            border-color: #ff4444;
+        }
+
         #sprintDisplay {
             margin-top: 16px;
             position: relative;
@@ -106,7 +114,6 @@
             transform: translateY(0);
         }
 
-        /* Task Cards */
         .task-card {
             background: #fff;
             border-radius: 20px;
@@ -158,7 +165,6 @@
             font-weight: 600;
         }
 
-        /* Loading */
         .loading {
             text-align: center;
             color: #65676b;
@@ -185,7 +191,6 @@
             }
         }
 
-        /* Action Buttons */
         .action-buttons {
             position: absolute;
             top: 10px;
@@ -214,17 +219,44 @@
             box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
         }
 
+        .action-button:focus {
+            outline: 2px solid #ff2d55;
+            outline-offset: 2px;
+        }
+
         .action-button i {
             font-size: 16px;
         }
 
         .download-icon {
             color: #ff2d55;
-            /* Apple-style pink */
         }
 
         .trash-icon {
             color: #555;
+        }
+
+        .error-message {
+            color: #ff4444;
+            font-size: 14px;
+            text-align: center;
+            margin-top: 10px;
+            display: none;
+        }
+
+        @media (max-width: 480px) {
+            .container {
+                padding: 0 8px;
+            }
+
+            .task-card {
+                padding: 16px;
+            }
+
+            .action-button {
+                width: 32px;
+                height: 32px;
+            }
         }
     </style>
 </head>
@@ -232,35 +264,35 @@
 <body>
     <div class="container">
         <div class="header">
-            <img src="../../Logos/Aya_trans_logo.png" alt="Sprint 4 Logo">
+            <img src="../../Logos/Aya_trans_logo.png" alt="Sprint 4 Logo" loading="lazy">
             <h1>Sprint 4 Premium Guide</h1>
-            <p>Ping! Auctuslabs or 0712233272 for query.</p>
+            <p>--Zero Day Sprint--</p>
         </div>
 
         <div class="search-container">
-            <i class="fas fa-magnifying-glass"></i>
+            <i class="fas fa-magnifying-glass" aria-hidden="true"></i>
             <input type="text" id="userSearch" list="userSuggestions" class="search-input"
-                placeholder="Search team member or team" aria-label="Search team member or team">
+                placeholder="Search team member or team" aria-label="Search team member or team" required minlength="3"
+                autocomplete="off">
             <datalist id="userSuggestions">
                 <option value="Mazibuko">
                 <option value="Motsamai">
                 <option value="Ngubane">
                 <option value="Stakio">
                 <option value="Qwabe">
-                <option value="ScoField">
+                <option value="Scofield">
                 <option value="Aya Experience Team">
             </datalist>
-
+            <div id="errorMessage" class="error-message"></div>
         </div>
 
         <div id="loading" class="loading">Loading...</div>
-        <div id="sprintDisplay"></div>
+        <div id="sprintDisplay" role="region" aria-live="polite"></div>
     </div>
 
     <script>
-
         const sprintGuides = {
-            "ScoField": `
+            "Scofield": `
 <div class="task-card">
     <h3>Offline Emergency Mode + SOS Wakeword</h3>
     <p><strong>Goal:</strong> Implement a reliable emergency response system with offline capability and SOS wakeword detection.</p>
@@ -408,15 +440,48 @@
         const searchInput = document.getElementById("userSearch");
         const displayDiv = document.getElementById("sprintDisplay");
         const loadingDiv = document.getElementById("loading");
+        const errorMessage = document.getElementById("errorMessage");
+
+        // Debounce function to limit search frequency
+        function debounce(func, wait) {
+            let timeout;
+            return function executedFunction(...args) {
+                const later = () => {
+                    clearTimeout(timeout);
+                    func(...args);
+                };
+                clearTimeout(timeout);
+                timeout = setTimeout(later, wait);
+            };
+        }
+
+        function validateInput(input) {
+            return input.trim().length >= 3 && /^[a-zA-Z\s]+$/.test(input);
+        }
+
+        function showError(message) {
+            errorMessage.textContent = message;
+            errorMessage.style.display = 'block';
+            setTimeout(() => {
+                errorMessage.style.display = 'none';
+            }, 3000);
+        }
 
         function showSprint() {
             const select = searchInput.value.trim();
+
+            if (!validateInput(select)) {
+                showError("Please enter a valid name (at least 3 letters)");
+                return;
+            }
+
             loadingDiv.classList.add("active");
             displayDiv.classList.remove("show");
 
             setTimeout(() => {
                 if (!select || !sprintGuides[select]) {
                     displayDiv.innerHTML = "<p>No matching team member or team found.</p>";
+                    showError("No matching team member or team found");
                     displayDiv.classList.add("show");
                     loadingDiv.classList.remove("active");
                     return;
@@ -439,11 +504,17 @@
             }, 400);
         }
 
-        function downloadPDF() {
+        async function downloadPDF() {
             if (!currentContent) {
-                alert("Please search for a team member or team first.");
+                showError("Please search for a team member or team first.");
                 return;
             }
+
+            if (!window.jspdf) {
+                showError("PDF generation library failed to load. Please try again.");
+                return;
+            }
+
             const { jsPDF } = window.jspdf;
             const doc = new jsPDF('p', 'pt', 'a4');
             const select = searchInput.value.trim();
@@ -451,61 +522,68 @@
             const pageWidth = 515;
             let y = 40;
 
-            doc.setFont("helvetica", "bold");
-            doc.setFontSize(16);
-            doc.text(`Sprint 4 Guide for ${select}`, margin, y);
-            y += 30;
-
-            const elements = document.getElementById("sprintDisplay").querySelectorAll(".task-card");
-
-            elements.forEach(element => {
-                doc.setFontSize(14);
+            try {
+                // Add header
                 doc.setFont("helvetica", "bold");
+                doc.setFontSize(16);
+                doc.text(`Sprint 4 Guide for ${select}`, margin, y);
+                y += 30;
 
-                if (y > 750) {
-                    doc.addPage();
-                    y = 40;
-                }
-                doc.text(element.querySelector("h3").innerText, margin, y);
-                y += 20;
+                const elements = document.getElementById("sprintDisplay").querySelectorAll(".task-card");
 
-                const paragraphs = element.querySelectorAll("p");
-                paragraphs.forEach(p => {
-                    doc.setFontSize(12);
-                    doc.setFont("helvetica", "normal");
-                    const lines = doc.splitTextToSize(p.innerText, pageWidth);
-                    lines.forEach(line => {
-                        if (y > 750) {
-                            doc.addPage();
-                            y = 40;
-                        }
-                        doc.text(line, margin, y);
-                        y += 14;
-                    });
-                    y += 6;
-                });
+                for (const element of elements) {
+                    doc.setFontSize(14);
+                    doc.setFont("helvetica", "bold");
 
-                const lists = element.querySelectorAll("ul");
-                lists.forEach(ul => {
-                    ul.querySelectorAll("li").forEach(li => {
-                        const text = `- ${li.innerText}`;
-                        const lines = doc.splitTextToSize(text, pageWidth - 20);
-                        lines.forEach(line => {
+                    if (y > 750) {
+                        doc.addPage();
+                        y = 40;
+                    }
+                    doc.text(element.querySelector("h3").innerText, margin, y);
+                    y += 20;
+
+                    const paragraphs = element.querySelectorAll("p");
+                    for (const p of paragraphs) {
+                        doc.setFontSize(12);
+                        doc.setFont("helvetica", "normal");
+                        const lines = doc.splitTextToSize(p.innerText, pageWidth);
+                        for (const line of lines) {
                             if (y > 750) {
                                 doc.addPage();
                                 y = 40;
                             }
-                            doc.text(line, margin + 10, y);
+                            doc.text(line, margin, y);
                             y += 14;
-                        });
-                    });
+                        }
+                        y += 6;
+                    }
+
+                    const lists = element.querySelectorAll("ul");
+                    for (const ul of lists) {
+                        const listItems = ul.querySelectorAll("li");
+                        for (const li of listItems) {
+                            const text = `- ${li.innerText}`;
+                            const lines = doc.splitTextToSize(text, pageWidth - 20);
+                            for (const line of lines) {
+                                if (y > 750) {
+                                    doc.addPage();
+                                    y = 40;
+                                }
+                                doc.text(line, margin + 10, y);
+                                y += 14;
+                            }
+                        }
+                        y += 10;
+                    }
+
                     y += 10;
-                });
+                }
 
-                y += 10;
-            });
-
-            doc.save(`${select}_Sprint4_Guide.pdf`);
+                doc.save(`${select}_Sprint4_Guide.pdf`);
+            } catch (error) {
+                console.error("PDF generation error:", error);
+                showError("Failed to generate PDF. Please try again.");
+            }
         }
 
         function deleteSprint() {
@@ -514,18 +592,27 @@
                 displayDiv.innerHTML = "";
                 searchInput.value = "";
                 currentContent = "";
+                errorMessage.style.display = 'none';
             }, 300);
         }
 
+        // Debounced search
+        const debouncedSearch = debounce(showSprint, 300);
+
         searchInput.addEventListener("input", () => {
-            if (searchInput.value.trim().length >= 3) {
-                showSprint();
-            }
+            debouncedSearch();
         });
 
         searchInput.addEventListener("keypress", (e) => {
             if (e.key === "Enter") {
                 showSprint();
+            }
+        });
+
+        // Add keyboard navigation for action buttons
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') {
+                deleteSprint();
             }
         });
     </script>
